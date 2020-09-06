@@ -101,7 +101,7 @@ deploy:
   github_token: ${Travis_token}  # Set in the settings page of your repository, as a secure variable
   keep_history: true
   on:
-    branch: gh-pages
+    branch: master
 
 # 添加下列参数
 
