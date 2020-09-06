@@ -41,7 +41,7 @@ deploy:
   github_token: ${Travis_token}  # Set in the settings page of your repository, as a secure variable
   keep_history: true
   on:
-    branch: gh-pages
+    branch: master
 # configure notifications (email, IRC, campfire etc)
 # please update this section to your needs!
 # https://docs.travis-ci.com/user/notifications/
