@@ -96,12 +96,9 @@ theme: hexo-theme-Annie
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  provider: pages
-  skip_cleanup: true
-  b9c7210b25c92baec6533c1dee2f7f3e9e05baf4: ${Travis_token}  # Set in the settings page of your repository, as a secure variable
-  keep_history: true
-  on:
-    branch: master
+  type: git   
+  repository: git@github.com:10veU/10veU.github.io  
+  branch: m
 
 # 添加下列参数
 
