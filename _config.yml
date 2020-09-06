@@ -97,8 +97,8 @@ theme: hexo-theme-Annie
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git   
-  repository: git@github.com:10veU/10veU.github.io  
-  branch: m
+  repository: https://github.com:10veU/10veU.github.io  
+  branch: gh-pages
 
 # 添加下列参数
 
