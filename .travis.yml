@@ -9,7 +9,7 @@ env:
 # 设置钩子只检测blog-source分支的push变动
 branches:
   only:
-    - develop_source
+    - master
 
 # 设置缓存文件
 cache:
