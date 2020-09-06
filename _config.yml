@@ -100,8 +100,8 @@ deploy:
   skip_cleanup: true
   github_token: ${Travis_token}  # Set in the settings page of your repository, as a secure variable
   keep_history: true
-  on:
-    branch: master
+  branch: gh-pages
+  local-dir: public
 
 # 添加下列参数
 
