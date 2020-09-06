@@ -47,7 +47,6 @@ deploy:
 # https://docs.travis-ci.com/user/notifications/
 notifications:
   email:
-    - xiaojie_wangxj@163.com
     - 514084647@qq.com
   on_success: change
   on_failure: always
