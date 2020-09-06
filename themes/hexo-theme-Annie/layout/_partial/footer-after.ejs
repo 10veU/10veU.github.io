@@ -1,0 +1,40 @@
+<% if (theme.motto.enable) { %>
+	<%- partial('plugin/motto') %>
+<% } %>
+
+<% if (theme.local_search.enable) { %>
+	<%- partial('plugin/search') %>
+<% } %>
+
+<!-- love effect -->
+<% if (theme.love.enable) { %>
+	<%- js('plugin/love/love.js') %>
+<% } %>
+<!-- firework effect -->
+<% if (theme.fireworks.enable) { %>
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+	<%- js('plugin/love/fireworks.js') %>
+<% } %>
+<!--daovoice-->
+<% if (theme.daovoice) { %>
+	<%- js('plugin/daovoice/daovoice.js') %>
+<% } %>
+<!-- back to top -->
+<% if (theme.totop.enable) { %>
+	<%- partial('widget/totop') %>
+<% } %>
+<!-- site analysis -->
+<%- partial('plugin/statistics', {type: 'site-analysis'}) %>
+
+<%- 
+	js([
+		'plugin/vibrant/vibrant.js',
+		'plugin/chinese/chinese.js',
+		'plugin/imgLazyLoader/yall.min.js',
+		'plugin/imgResize/jquery.resizeimagetoparent.min.js',
+		'plugin/nicescroll/jquery.nicescroll.js',
+		'js/resizediv.js',
+		'js/main.js'
+	]) 
+%>

@@ -1,0 +1,262 @@
+#########################################################################################################
+# 001-HEADER
+#########################################################################################################
+# menu
+menu:
+    home: /
+    archive: /archives
+    categories: /categories
+    tags: /tags
+    about: /about
+    gallery: /gallery
+
+# favicon & logo
+# if the value of logo is false, the 'title' is optional.
+# favicon: /img/favicon.ico
+favicon: /img/Mr-Wang-facvion.ico
+# logo: /img/logo.png
+logo: /img/Mr-Wang-logo.png
+title: Welcome 
+
+# background_image
+# /img/1.jpg
+# https://source.unsplash.com/collection/954550/1920x1080
+# https://sariay.github.io/Random-img/
+# May be cause CROS bug!
+background_image:
+    # mode: normal #normal or random
+    # normal_url: /img/1.jpg
+    # mode: normal #normal or random
+    # normal_url: https://source.unsplash.com/collection/954550/1920x1080 
+    mode: random
+    random_max: 110 
+    random_url: https://10veu.github.io/Random-img/
+# show motto
+motto:
+    enable: true
+    
+# show current time
+# This is only a demo, please go to "https://time.is" to set your city time!
+timejs:
+    enable: true
+
+#########################################################################################################
+# 002-PROLOADER
+#########################################################################################################
+# animation: spinner | transition | cyclic
+preloader:
+    enable: true
+    animation: spinner
+
+#########################################################################################################
+# 003-INDEX
+#########################################################################################################
+# index-style: pure | cart
+index_style: cart
+
+# index_cart_cover
+cover: /img/cart_cover.jpg
+lazy_image: /img/placeholder.jpg
+
+#########################################################################################################
+# 004-POST
+#########################################################################################################
+# post_relate
+relate:
+    enable: true
+    posts_limit: 10
+    posts_excerpt: 120
+
+# post_comment
+comment:
+    enable: true
+
+gitalk:
+    enable: true
+    clientID: 36a5ea1eb92d0cdb0a6b
+    clientSecret: 6e1940c0dcd00e3b9216f008368995a1988bd3fd
+    repo: Blog-Comment-Repo
+    owner: 10veU
+    admin: 10veU
+    distractionFreeMode: true
+    #去除 more、index.html、?query=123等格式尾部 
+    hrefTrimend: '#.*$,\\?.*$,index.html$' 
+    
+valine: 
+    enable: false
+    appid: 'DU--'
+    appkey: 'DU--'
+    placeholder: no any!
+    
+livere: 
+    enable: false
+    livere_uid: 'sdd'
+    
+# post_count
+leancloud_count:
+    # enable: false
+    # appid: 'dX--'
+    # appkey: 'dX--'
+    enable: true
+    appid: xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI
+    appkey: Tkq82uGKwAFYHPeTF3Q6MVDp
+    like_post:
+        enable: true
+    visit_post:
+        enable: true
+    topN_post: 
+        enable: true #param1 for topN_post
+        limit: 10 #param2 for topN_post
+
+busuanzi_count:
+    enable: true
+
+baidu_analytics:
+    enable: true
+    id: bc5394d96eab6c50c0a37cb03555fc96
+
+cnzz_analytics:
+    enable: false
+    id:
+
+google_analytics:
+    enable: false
+    id:
+
+tencent_analytics:
+    enable: false
+    id:
+
+# post_toc
+post_toc:
+    enable: true
+    katelog: true
+    
+# post_mathJax
+mathjax:
+  # enable: false
+  enable: true
+# post_code
+# highlight_theme: normal | night | night blue | night bright | night eighties
+highlight_theme: night bright
+code_copy:
+    enable: true
+
+# post_excerpt for index page
+excerpt_cart: 80
+excerpt_pure: 300   
+excerpt_link: true
+
+# archive
+archive: 1
+category: 1
+tag: 1
+
+archive_generator:
+  per_page: 10
+
+tag_generator:
+  per_page: 0
+
+category_generator: 
+  per_page: 0
+
+# post_share
+share:
+    enable: true
+# https://www.addthis.com/
+# 注意浏览器的内容拦截插件
+addThis:
+    enable: false
+    id: ra-xxx
+# http://share.baidu.com/code
+baiduShare: 
+    enable: false
+    style: button # you can add slide style!
+# https://www.sharethis.com/onboarding-cms/    
+shareThis:
+    enable: false
+    id: 5c-xxx
+# https://github.com/overtrue/share.js
+socialShare:
+    enable: true
+
+#########################################################################################################
+# 005-FOOTER
+#########################################################################################################
+# social
+social:
+    github:
+        url: https://github.com/10veU
+        icon: fa fa-github
+    weibo:
+        url: https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1
+        icon: fa fa-weibo    
+    wechat: 
+        url: /img/wechat.jpg
+        icon: fa fa-wechat
+    qq:
+        url: tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com
+        icon: fa fa-qq
+    envelope:
+        url: mailto:xiaojie_wangxj@163.com
+        icon: fa fa-envelope
+    rss: 
+        url: /atom.xml
+        icon: fa fa-rss
+
+# copyright  
+since: 2019
+cotent_author: Xiaojie Wang
+
+#########################################################################################################
+# 006-GALLERY PAGE
+#########################################################################################################
+# gallery page
+# gallery_format: natural | square
+gallery_format: natural
+# one time to load 4 rows or other count, 0 to load img automatically when scrolling.(0,1,2,3,4,5,6......)
+gallery_limit: 0
+# data url
+gallery_data: plugin/gallerypage/data.json
+
+#########################################################################################################
+# 007-LOCAL SEARCH
+#########################################################################################################
+# Local search
+# Dependencies: https://github.com/flashlab/hexo-generator-search
+local_search:
+    # enable: false
+    enable: true
+    # if auto, trigger search by changing input
+    # if manual, trigger search by pressing enter key or search button
+    trigger: auto
+    # show top n results per article, show all results by setting to -1
+    top_n_per_article: 2
+
+#########################################################################################################
+# 008-OTHERS
+#########################################################################################################
+# when click, emerge heart
+love:
+    enable: false
+    
+# Fireworks
+fireworks: 
+    enable: true
+
+# back to top
+totop:
+    enable: true
+# Online contact 
+daovoice: true
+daovoice_app_id: 75159429
+
+# 网易云音乐插件
+music:
+  enable: true
+  id: 2980425507  # 网易云分享的ID
+  autoplay: true  # 是否开启自动播放
+bilibili:
+  width: 452
+  height: 544
