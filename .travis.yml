@@ -1,6 +1,8 @@
 # 指定构建环境是Node.js，当前版本是稳定版
+sudo: false
 language: node_js
-node_js: 12.18.3
+node_js:
+  - 10
 
 env:
  global:
@@ -35,6 +37,7 @@ deploy:
   keep_history: true
   on:
     branch: master
+  local-dir: public
 # configure notifications (email, IRC, campfire etc)
 # please update this section to your needs!
 # https://docs.travis-ci.com/user/notifications/
