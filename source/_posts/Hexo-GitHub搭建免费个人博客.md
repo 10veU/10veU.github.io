@@ -184,7 +184,7 @@ post_asset_folder: true
 
 将_config.yml文件中的配置项`post_asset_folder`设为`true`后，执行命令`$ hexo new post_name`，在`source/_posts`中会生成文章`post_name.md`和同名文件夹`post_name`。将图片资源放在`post_name`文件夹中，文章就可以使用相对路径引用图片资源了。`_posts/post_name/图片名称.jpg`这张图片可以用以下方式访问：  
 
-```
+```cmd
 ![图片说明](图片名称.jpg) 
 ```   
 
@@ -202,7 +202,7 @@ eg:
  4. 将链接插入文章  
 引用格式：  
 
-```
+```cmd
 ![logo](https://github.com/xxxx/xx.jpg)
 ```  
 
@@ -217,7 +217,7 @@ npm install hexo-asset-image --save
  3. 在`blog（hexo）`目录下`Git Bash Here`，运行`hexo n "博客文章名"`来生成`md`博客时，会在`_post`目录下看到一个与博客同名的文件夹。  
  4. 将想要上传的图片先扔到文件夹下，然后在博客中使用`markdown`的格式引入图片：  
 
-```  
+```cmd  
 ![你想要输入的替代文字](xxxx/图片名.jpg) 
 ```   
 
@@ -230,19 +230,16 @@ npm install hexo-asset-image --save
 - 在文章中插入视频外链   
 我们知道在`md`中可以直接插入`html`代码。这里我们就插入视频外链。代码如下：  
 
-```
+```html
 <iframe src="//player.bilibili.com/player.html?aid=68662896&cid=118997493&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 ```   
-
-真实效果如下：      
-<iframe src="//player.bilibili.com/player.html?aid=68662896&cid=118997493&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 
 我们可以看到效果令人很不满意。  
 
 - 修改代码，美化播放器样式。  
 代码如下：  
 
-```  
+```html 
 <div style="position: relative; width: 100%; height: 0;padding-bottom: 75%;" >
 <iframe src="//player.bilibili.com/player.html?aid=68662896&cid=118997493&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;"> </iframe></div>
 ```   
