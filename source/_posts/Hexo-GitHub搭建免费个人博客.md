@@ -247,21 +247,13 @@ npm install hexo-asset-image --save
 <iframe src="//player.bilibili.com/player.html?aid=68662896&cid=118997493&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;"> </iframe></div>
 ```   
 
-真实效果如下：  
-<div style="position: relative; width: 100%; height: 0;padding-bottom: 75%;" >
-<iframe src="//player.bilibili.com/player.html?aid=68662896&cid=118997493&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;"> </iframe></div> 
-
 ### 5.3博客中添加网易云音乐歌单    
 - （以 Chrome 为例，其他浏览器类似）打开歌单页面，在“生成外链播放器”上右击，点击检查（审查元素 `ctrl+shift+i`）；  
 ![网易云音乐外链](网易云音乐外链.png)
 - 接着找到生成外链播放器这段文字直接双击复制前面的`/outchain/0/170792779/`  
 ![外链id](外链id.png)  
 - 然后修改歌单链接示例：http://music.163.com/#/outchain/0/170792779/（可以修改自己喜欢的播放器尺寸，播放模式后再复制代码） 
-![网易云音乐歌单](网易云音乐歌单.png)   
-
-真实效果如下：  
-
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=450 src="//music.163.com/outchain/player?type=0&id=170792779&auto=1&height=430"></iframe>  
+![网易云音乐歌单](网易云音乐歌单.png)    
 
 >由于版权限制，好多歌曲可能在播放器中无法播放，毕竟没有收费，将就用吧！😂
 ### 5.4博客中实现在线联系功能  
