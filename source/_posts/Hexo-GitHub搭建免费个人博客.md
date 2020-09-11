@@ -170,17 +170,19 @@ E:\Git>
 #### 本地引用    
 - 绝对路径  
 直接在主题下的`img`（存储图片文件夹，不同的主题存储图片的名称可能不同）文件夹下(themes/所选主题文件夹/source/img),`/img/图片名称.jpg`这张图片，就可以使用以下方式访问： 
-```
+```cmd
 ![图片说明](/img/图片名称.jpg)  
 ```
 eg:    
-![wechat](/img/wechat.jpg)  
+![wechat](/img/wechat.jpg)   
+
 - 相对路径  
 图片除了可以放在统一的`img`文件夹中，还可以放在文章自己的目录中。文章的目录可以通过配置博客根目录下的`_config.yml`来生成。  
 
 ```javascript
 post_asset_folder: true 
 ```  
+
 将_config.yml文件中的配置项`post_asset_folder`设为`true`后，执行命令`$ hexo new post_name`，在`source/_posts`中会生成文章`post_name.md`和同名文件夹`post_name`。将图片资源放在`post_name`文件夹中，文章就可以使用相对路径引用图片资源了。`_posts/post_name/图片名称.jpg`这张图片可以用以下方式访问：  
 
 ```cmd
