@@ -170,10 +170,9 @@ E:\Git>
 #### 本地引用    
 - 绝对路径  
 直接在主题下的`img`（存储图片文件夹，不同的主题存储图片的名称可能不同）文件夹下(themes/所选主题文件夹/source/img),`/img/图片名称.jpg`这张图片，就可以使用以下方式访问： 
-```markdown
-![图片说明](/img/图片名称.jpg) 
-```  
-
+```
+![图片说明](/img/图片名称.jpg)  
+```
 eg:    
 ![wechat](/img/wechat.jpg)  
 - 相对路径  
@@ -185,7 +184,7 @@ post_asset_folder: true
 
 将_config.yml文件中的配置项`post_asset_folder`设为`true`后，执行命令`$ hexo new post_name`，在`source/_posts`中会生成文章`post_name.md`和同名文件夹`post_name`。将图片资源放在`post_name`文件夹中，文章就可以使用相对路径引用图片资源了。`_posts/post_name/图片名称.jpg`这张图片可以用以下方式访问：  
 
-```markdown
+```
 ![图片说明](图片名称.jpg) 
 ```   
 
@@ -203,7 +202,7 @@ eg:
  4. 将链接插入文章  
 引用格式：  
 
-```markdown 
+```
 ![logo](https://github.com/xxxx/xx.jpg)
 ```  
 
@@ -218,7 +217,7 @@ npm install hexo-asset-image --save
  3. 在`blog（hexo）`目录下`Git Bash Here`，运行`hexo n "博客文章名"`来生成`md`博客时，会在`_post`目录下看到一个与博客同名的文件夹。  
  4. 将想要上传的图片先扔到文件夹下，然后在博客中使用`markdown`的格式引入图片：  
 
-```markdown  
+```  
 ![你想要输入的替代文字](xxxx/图片名.jpg) 
 ```   
 
@@ -231,7 +230,7 @@ npm install hexo-asset-image --save
 - 在文章中插入视频外链   
 我们知道在`md`中可以直接插入`html`代码。这里我们就插入视频外链。代码如下：  
 
-```hexo
+```
 <iframe src="//player.bilibili.com/player.html?aid=68662896&cid=118997493&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 ```   
 
@@ -243,7 +242,7 @@ npm install hexo-asset-image --save
 - 修改代码，美化播放器样式。  
 代码如下：  
 
-```hexo  
+```  
 <div style="position: relative; width: 100%; height: 0;padding-bottom: 75%;" >
 <iframe src="//player.bilibili.com/player.html?aid=68662896&cid=118997493&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;"> </iframe></div>
 ```   
@@ -315,51 +314,51 @@ CI(`Continuous Integration`)翻译为持续集成。
 **配置.travis.yml（如果没有，新建)**  
 我个人的.travis.yml 可供参考
 ```yml
-language: node_js  #设置语言
+# 指定构建环境是Node.js，当前版本是稳定版
+sudo: false
+language: node_js
+node_js:
+  - 10
 
-node_js: stable  #设置相应的版本
-
-cache:
-    apt: true
-    directories:
-        - node_modules # 缓存不经常更改的内容
-
-before_install:
-    - export TZ='Asia/Shanghai' # 更改时区
-
-install:
-  - npm install  #安装hexo及插件
-
-script:
-  - hexo clean  #清除
-  - hexo g  #生成
-
-after_script:
-  - git clone https://${GH_REF} .deploy_git  # GH_REF是最下面配置的仓库地址
-  - cd .deploy_git
-  - git checkout master
-  - cd ../
-  - mv .deploy_git/.git/ ./public/   # 这一步之前的操作是为了保留master分支的提交记录，不然每次git init的话只有1条commit
-  - cd ./public
-  - git config user.name "10veU"  #修改name
-  - git config user.email "xiaojie_wangxj@163.com"  #修改email
-  - git add .
-  - git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"  # 提交记录包含时间 跟上面更改时区配合
-  - git push --force --quiet "https://${Travis_token}@${GH_REF}" master:master  #Travis_Token是在Travis中配置环境变量的名称
-
-branches:
-  only:
-    - master  #只监测master分支，master是我的分支的名称，可根据自己情况设置
 env:
  global:
-   - GH_REF: github.com/10veU/10veU.github.io.git  #设置GH_REF，注意更改yourname
+   - URL_REPO: github.com/10veU/10veU.github.io.git
 
+# 设置钩子只检测blog-source分支的push变动
+branches:
+  only:
+    - master
+
+# 设置缓存文件
+cache:
+  directories:
+    - node_modules
+
+#在构建之前安装hexo环境
+before_install:
+  - npm install -g hexo-cli
+
+#安装git插件和搜索功能插件
+install:
+  - npm install
+
+# 执行清缓存，生成网页操作
+script:
+  - hexo clean
+  - hexo generate
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GH_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  on:
+    branch: master
+  local-dir: public
 # configure notifications (email, IRC, campfire etc)
 # please update this section to your needs!
 # https://docs.travis-ci.com/user/notifications/
 notifications:
   email:
-    - xiaojie_wangxj@163.com
     - 514084647@qq.com
   on_success: change
   on_failure: always
