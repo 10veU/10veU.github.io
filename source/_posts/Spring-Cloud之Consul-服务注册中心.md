@@ -2,7 +2,7 @@
 title: Spring Cloud之Consul 服务注册中心
 date: 2021-09-01 19:30:44
 categories: 微服务,Spring Cloud
-cover: /img/post_cover/cover_sonsul.jpg
+cover: /img/post_cover/cover_consul.jpg
 tags:
     - 微服务
     - Spring Cloud
@@ -52,7 +52,7 @@ Eureka 其实就是个 Servlet 程序，跑在 Servlet 容器中；Consul 则是
 [Download Consul](https://www.consul.io/downloads)
 ### Windows下单节点安装
 下载一个Consul的windows安装包  
-![consul_package](consul_package)  
+![consul_package](consul_package.png)  
 cd到对应的目录下，使用cmd启动Consul。  
 ```shell
 # -dev表示开发模式运行，另外还有 -server 表示服务模式运行
@@ -70,15 +70,15 @@ pause
 访问管理后台：http://localhost:8500/ 看到下图意味着我们的 Consul 服务启动成功了。
 ## 6. Consul入门案例
 ### 服务发现
-[基础环境](https://gitee.com/I10veU/springcloud-demo)
-- 注册中心
-    - `consule.exe`（从Consul官网下载）
-- 服务提供者
-    - `spring-cloud-demo-service-provider`
-- 服务消费者
-    - `spring-cloud-demo-service-consumer`
+[基础环境](https://gitee.com/I10veU/springcloud-demo)  
+**注册中心**
+ `consule.exe`（从Consul官网下载）  
+**服务提供者**
+`spring-cloud-demo-service-provider`  
+**服务消费者**
+`spring-cloud-demo-service-consumer`  
 #### 服务接入注册中心
-- 添加依赖
+**添加依赖**
 ```xml
 <!-- spring cloud consul 依赖 -->
 <dependency>
@@ -91,7 +91,7 @@ pause
     <artifactId>spring-boot-starter-actuator</artifactId>
 </dependency>
 ```
-- 配置文件
+**配置文件**
 ```yml
 spring:
   # 配置 Consul 注册中心
