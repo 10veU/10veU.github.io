@@ -1,0 +1,42 @@
+# 工作流程
+name: Github Action for Hexo Deploy
+on: #[push]   # 事件
+   push:
+     branches:
+       - master
+jobs:  # 作业
+  build: # 作业id
+    name: A Job for Deploy Hexo Blog On Github Pages # 作业名称
+    runs-on: ubuntu-latest # 配置作业在 Ubuntu Linux 运行器上运行
+    steps: # 将 build 作业中运行的所有步骤组合在一起
+      - id: CheckOut  # 步骤的唯一标识符。
+        name: Checkout  # 步骤的名称 
+        uses: actions/checkout@v2  # 选择要作为作业中步骤的一部分运行的操作。 操作是一种可重复使用的代码单位。# 使用公共库版本化操作
+        with:
+           submodules: true # 输入参数的 map 由操作定义。 每个输入参数都是一个键/值对。 输入参数被设置为环境变量。 该变量的前缀为 INPUT_，并转换为大写。
+      #缓存依赖项以加快工作流程。 （GitHub 将删除任何超过 7 天未访问的缓存条目。）      
+      - id: Cache
+        name: Cache node modules
+        uses: actions/cache@v2
+        with:
+         path: node_modules
+         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+         restore-keys: |
+               ${{ runner.os }}-node-
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Build
+        run: npm run build
+        
+     # Delopy Hexo 博客网站
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+         github_token: ${{ secrets.GITHUB_TOKEN }}  # For more details about GITHUB_TOKEN: Authenticating with the GITHUB_TOKEN - GitHub Help
+         publish_dir: ./public
+
+     # 使用 `deploy` 步骤的输出（用于测试操作）
+      - name: Get the output
+        run: |
+         echo "${{ steps.deploy.outputs.notify }}"	
