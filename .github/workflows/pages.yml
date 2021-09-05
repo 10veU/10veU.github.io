@@ -14,9 +14,13 @@ jobs:  # 作业
         uses: actions/checkout@v2  # 选择要作为作业中步骤的一部分运行的操作。 操作是一种可重复使用的代码单位。# 使用公共库版本化操作
         with:
            submodules: true # 输入参数的 map 由操作定义。 每个输入参数都是一个键/值对。 输入参数被设置为环境变量。 该变量的前缀为 INPUT_，并转换为大写。
-      #缓存依赖项以加快工作流程。 （GitHub 将删除任何超过 7 天未访问的缓存条目。）      
+      #缓存依赖项以加快工作流程。 （GitHub 将删除任何超过 7 天未访问的缓存条目。）
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
       - id: Cache
-        name: Cache node modules
+        name: Cache NPM dependencies
         uses: actions/cache@v2
         with:
          path: node_modules
@@ -25,10 +29,11 @@ jobs:  # 作业
                ${{ runner.os }}-node-
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm install
+        
       - name: Build
         run: npm run build
-        
+
      # Delopy Hexo 博客网站
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
