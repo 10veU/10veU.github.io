@@ -1,0 +1,1081 @@
+<!--
+	作者：Sariay
+	时间：2018-09-25
+	描述：There may be a bug, but don't worry, QiLing(器灵) says that it can work normally!
+-->
+<!DOCTYPE html>
+<html class="html-loading">
+		
+
+<head><meta name="generator" content="Hexo 3.9.0">
+	<meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <title>
+    
+      Hexo+GitHub搭建免费个人博客 | Mr.Wang-Blog
+    
+  </title>
+  <meta name="author" content="XiaoJie Wang">
+  <meta name="keywords" content>
+  <meta name="description" content>
+	<!-- favicon -->
+  <link rel="shortcut icon" href="/img/Mr-Wang-facvion.ico">
+
+  <!-- css -->
+  <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/Annie.css">
+  
+  <!-- jquery -->
+	<script src="/js/jquery.min.js"></script>
+
+  <!-- leancloud -->
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+<script src="/js/leancloud.js"></script>
+</head>
+	<body>
+		<!-- Preloader -->
+
+	<div id="preloader">
+		<div class="pre-container">
+			
+				<div class="spinner">
+					<div class="double-bounce1"></div>
+					<div class="double-bounce2"></div>
+				</div>
+						
+		</div>
+	</div>
+
+
+<!-- header -->
+<header class="fixbackground" data-img-mode="random" data-normal-src="/" data-random-max="110" data-random-src="https://10veu.github.io/Random-img/">
+	<div class="mask">
+		<!-- Logo and navigation -->
+		<div class="h-header">
+			<div id="logo">
+				<a href="/">
+						
+						<img src="/img/Mr-Wang-logo.png" alt="Logo">
+					
+				</a>
+			</div>
+			
+			<div id="navigation-show">
+				<ul>
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home">主页</a>
+		</li>
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive">归档</a>
+		</li>
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories">分类</a>
+		</li>
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags">标签</a>
+		</li>
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about">关于</a>
+		</li>
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery">相册</a>
+		</li>
+	
+
+	
+		<li class="menu-search">
+			<a href="javascript:;" class="popup-trigger">搜索</a>
+		</li>
+	
+</ul>
+			</div>				
+		</div>
+
+		<!-- motto -->
+		<div class="h-body">	
+			
+				<p class="motto"></p>
+			
+		</div>
+		
+		<!-- others: such as time... -->			
+		<div class="h-footer">
+			<a href="javascript:;" id="read-more"><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+			</a>
+
+			
+				<!-- 
+	This is only a demo, please go to "https://time.is" to set your city time! 
+-->
+<style type="text/css">
+	.header-date {
+		font-size: 1.6rem;
+		color: #fff;
+		position: absolute;
+		bottom: 5px;
+		right: 1rem;
+		writing-mode: tb-rl;
+	}	
+	
+	.header-date a {
+		border-bottom: none;
+	}
+
+	@media only screen and (max-width: 768 ) {
+		.header-date {
+			font-size: 1rem;
+		}			
+	}
+</style>
+<div class="header-date">
+	<a href="https://time.is/Beijing" id="time_is_link" rel="nofollow" ></a>
+	<span id="Beijing_z43d"></span>
+</div>
+<script src="//widget.time.is/zh.js"></script>
+<script>
+	time_is_widget.init({
+		Beijing_z43d:{
+			template:"DATE", 
+			date_format:"year年 monthname dnum日"
+		}
+	});
+</script>
+			
+		</div>
+	</div>
+</header>
+
+<div id="navigation-hide">
+	<!-- Progress bar -->
+	<div id="progress-bar"></div>
+
+	<!-- Progress percent -->
+	<div id="progress-percentage"><h1>0.0%</h1></div>
+
+	<div class="toc-switch"><span class="switch-button">目录</span></div>
+
+	<!-- Page title -->
+	<p>
+		
+			当前文章&nbsp;:&nbsp;《Hexo+GitHub搭建免费个人博客》
+		
+	</p>
+
+	<!-- Nav trigger for navigation-H-->
+	<a class="nav-trigger"><span></span></a>
+</div>
+
+<!-- Navigation in div(id="navigation-H") -->
+<nav class="nav-container" id="cd-nav">
+	<div class="nav-header">
+		<h3>Navigation</h3>
+		<a href="javascript:;" class="nav-close"></a>
+	</div>
+	<div class="nav-body">
+		<ul>
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home">主页</a>
+		</li>
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive">归档</a>
+		</li>
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories">分类</a>
+		</li>
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags">标签</a>
+		</li>
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about">关于</a>
+		</li>
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery">相册</a>
+		</li>
+	
+
+	
+		<li class="menu-search">
+			<a href="javascript:;" class="popup-trigger">搜索</a>
+		</li>
+	
+</ul>
+	</div>
+	<div class="nav-footer">
+		<ul>
+	
+		<li>
+			<a href="https://github.com/10veU" target="_blank">
+				<i class="fa fa-github"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank">
+				<i class="fa fa-weibo"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/img/wechat.jpg" target="_blank">
+				<i class="fa fa-wechat"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com" target="_blank">
+				<i class="fa fa-qq"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="mailto:xiaojie_wangxj@163.com" target="_blank">
+				<i class="fa fa-envelope"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<i class="fa fa-rss"></i>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+</nav>
+			
+		<!--main-->
+		<main>
+			<!--
+	时间：2018-11-17
+	描述：
+		插件名称：katelog.min.js
+		插件作者：KELEN
+		插件来源: https://github.com/KELEN/katelog
+-->
+
+	
+		<div class="layout-toc">
+			<div id="layout-toc">
+				<div class="k-catelog-list" id="catelog-list" data-title="文章目录"></div>
+			</div>
+		</div>
+
+		
+		<script src="/plugin/toc/katelog.min.js"></script>
+
+		
+	 
+
+<div class="layout-post">
+	<div id="layout-post">
+	<div class="article-title">
+		<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+		
+	<a href="/2019/10/09/Hexo-GitHub搭建免费个人博客/" itemprop="url">
+		Hexo+GitHub搭建免费个人博客
+	</a>
+
+	</div>
+
+	<div class="article-meta">
+		<span>
+			<i class="fa fa-calendar"></i>
+			
+
+
+	发布于
+
+	<a href="/2019/10/09/Hexo-GitHub搭建免费个人博客/" itemprop="url">
+		<time datetime="2019-10-09T16:42:07.000Z" itemprop="datePublished">
+	  		2019-10-09
+	  </time>
+	</a>
+	&nbsp;
+
+
+
+
+
+			
+
+
+
+
+	更新于
+
+	<a href="/2019/10/09/Hexo-GitHub搭建免费个人博客/" itemprop="url">
+		<time datetime="2019-10-09T16:42:07.000Z" itemprop="dateUpdated">
+	  		2021-09-05
+	  </time>
+	</a> 
+
+
+
+		</span>
+		<span>
+			<i class="fa fa-tags"></i>
+			
+	
+		<a href="/tags/GitHub/" class=" ">
+			GitHub
+		</a>
+	
+		<a href="/tags/Hexo/" class=" ">
+			Hexo
+		</a>
+	
+		<a href="/tags/博客/" class=" ">
+			博客
+		</a>
+	
+		
+		</span>
+		
+		
+
+	
+    <span class="leancloud_visitors" id="/2019/10/09/Hexo-GitHub搭建免费个人博客/_visitors" data-url="/2019/10/09/Hexo-GitHub搭建免费个人博客/" data-title="Hexo+GitHub搭建免费个人博客">
+       	<i class="fa fa-eye"></i>
+       	热度
+        <i class="leancloud_visitors_count" id="leancloud_visitors_count">0</i>
+    </span>
+    
+
+
+
+	
+    <span class="leancloud_likes" id="/2019/10/09/Hexo-GitHub搭建免费个人博客/_likes" data-url="/2019/10/09/Hexo-GitHub搭建免费个人博客/" data-title="Hexo+GitHub搭建免费个人博客" rel="unlike">
+        <i class="fa fa-heart"></i>
+        喜欢
+        <i class="leancloud_likes_count" id="leancloud_likes_count">0</i>
+    </span>
+
+	</div>
+
+	<div class="article-content" id="article-content">
+		<head><meta name="generator" content="Hexo 3.9.0"> 
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js"></script> 
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/v4-shims.js"></script> 
+</head> 
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">  
+
+<h1 id="Hexo-GitHub免费搭建个人博客"><a href="#Hexo-GitHub免费搭建个人博客" class="headerlink" title="Hexo+GitHub免费搭建个人博客"></a>Hexo+GitHub免费搭建个人博客</h1><blockquote>
+<p>作者：大大蜡笔小小新    </p>
+</blockquote>
+<h2 id="1-Hexo框架的介绍"><a href="#1-Hexo框架的介绍" class="headerlink" title="1.  Hexo框架的介绍"></a>1. <i class="fas fa-blog"></i> Hexo框架的介绍</h2><p><code>Hexo</code>的官方介绍：<code>A fast,simple&amp;powerful blog framework</code>。  </p>
+<p><code>Hexo</code>框架具有以下特点：  </p>
+<ul>
+<li>快速搭建</li>
+<li>支持<code>Markdown</code>语法  </li>
+<li>支持一键部署  </li>
+<li>丰富的主题和插件  </li>
+</ul>
+<h2 id="2-环境准备"><a href="#2-环境准备" class="headerlink" title="2.  环境准备"></a>2. <i class="fas fa-home"></i> 环境准备</h2><h3 id="2-1申请一个GitHub账户"><a href="#2-1申请一个GitHub账户" class="headerlink" title="2.1申请一个GitHub账户"></a>2.1申请一个<code>GitHub</code>账户</h3><p>  <a href="https://github.com/" target="_blank" rel="noopener"><code>GitHub</code>账户申请</a></p>
+<p>  <a href="https://help.github.com/cn" target="_blank" rel="noopener"><code>GitHub</code>疑问解答</a></p>
+<h3 id="2-2搭建Hexo需要的环境"><a href="#2-2搭建Hexo需要的环境" class="headerlink" title="2.2搭建Hexo需要的环境"></a>2.2搭建<code>Hexo</code>需要的环境</h3><p>  如何安装<code>Hexo</code>及安装<code>Hexo</code>需要的环境，可以参考<code>Hexo</code>官方文档  </p>
+<p>  <a href="https://hexo.io/docs/index.html" target="_blank" rel="noopener">Hexo官方文档</a>  </p>
+<h3 id="2-3环境验证"><a href="#2-3环境验证" class="headerlink" title="2.3环境验证"></a>2.3环境验证</h3><p><code>Node.js</code>和<code>Git</code>安装是否成功?  </p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Microsoft Windows [版本 <span class="number">10</span>.<span class="number">0</span>.<span class="number">17134</span>.<span class="number">590</span>]  </span><br><span class="line">(c) <span class="number">2018</span> Microsoft Corporation。保留所有权利。    </span><br><span class="line"><span class="function">C:\<span class="title">Users</span>\<span class="title">lenovopc</span>&gt;<span class="title">node</span> -<span class="title">v</span>  </span></span><br><span class="line"><span class="function"><span class="title">v8</span>.11.2    </span></span><br><span class="line"><span class="function"><span class="title">C</span>:\<span class="title">Users</span>\<span class="title">lenovopc</span>&gt;<span class="title">npm</span> -<span class="title">v</span>  </span></span><br><span class="line"><span class="function">5.6.0</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">E</span>:\<span class="title">Git</span>&gt;<span class="title">git</span> --<span class="title">version</span>  </span></span><br><span class="line"><span class="function"><span class="title">git</span> <span class="title">version</span> 2.16.2.<span class="title">windows</span>.1  </span></span><br><span class="line"><span class="function"><span class="title">E</span>:\<span class="title">Git</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>Node.js</code>和<code>npm</code>的关系  </p>
+<blockquote>
+<p><i class="fas fa-quote-left fa-3x fa-pull-left"></i><code>Node.js</code>是<code>javascript</code>的一种运行环境，是对<code>Google V8</code>引擎进行的封装。是一个服务器端的<code>javascript</code>的解释器。<br> 包含关系:<code>Node.js</code>中含有<code>npm</code>，比如说你安装好<code>Node.js</code>，你打开<code>cmd</code>输入<code>npm -v</code>会发现npm的版本号，说明<code>npm</code>已经安装好。<br>引用大神的总结:<br>其实<code>npm</code>是<code>Node.js</code>的包管理器（<code>package manager</code>）。我们在<code>Node.js</code>上开发时，会用到很多别人已经写好的<code>javascript</code>代码，<br>如果每当我们需要别人的代码时，都根据名字搜索一下，下载源码，解压，再使用，会非常麻烦。于是就出现了包管理器<code>npm</code>。<br>大家把自己写好的源码上传到<code>npm</code>官网上，如果要用某个或某些个，直接通过<code>npm</code>安装就可以了，不用管那个源码在哪里。<br>并且如果我们要使用模块<code>A</code>，而模块<code>A</code>又依赖模块<code>B</code>，模块<code>B</code>又依赖模块<code>C</code>和<code>D</code>，此时<code>npm</code>会根据依赖关系， 把所有依赖的包都下载下来并且管理起来。试想如果这些工作全靠我们自己去完成会多么麻烦！其实就是类似于<code>Java</code>中的<code>Maven</code>。  </p>
+</blockquote>
+<h2 id="3-下载及安装Hexo"><a href="#3-下载及安装Hexo" class="headerlink" title="3.  下载及安装Hexo"></a>3. <i class="fas fa-cloud-download-alt"></i> 下载及安装Hexo</h2><h3 id="3-1下载及安装Hexo"><a href="#3-1下载及安装Hexo" class="headerlink" title="3.1下载及安装Hexo"></a>3.1下载及安装<code>Hexo</code></h3><p>  在<code>cmd</code>终端窗口执行下载安装命令  </p>
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+
+<p>  安装完成如下图：  </p>
+<p>  <img src="%E5%AE%89%E8%A3%85Hexo.png" alt="安装Hexo"></p>
+<p>  执行命令判断<code>Hexo</code>安装是否成功</p>
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo -v</span><br></pre></td></tr></table></figure>
+
+<p>  安装成功如下：  </p>
+<p>  <img src="%E5%AE%89%E8%A3%85Hexo%E6%88%90%E5%8A%9F.png" alt="安装Hexo成功"></p>
+<h3 id="3-2初始化博客"><a href="#3-2初始化博客" class="headerlink" title="3.2初始化博客"></a>3.2初始化博客</h3><blockquote>
+<p>以下操作尽可能都在<code>Git</code>终端操作</p>
+</blockquote>
+<p>  首先在自己本地磁盘创建一个安装目录，这里以<code>Hexo</code>为例；</p>
+<p>  <img src="Hexo%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95.png" alt="Hexo安装目录"></p>
+<p>  切换到此文件夹目录下执行初始化命令  </p>
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+
+<p>  <img src="Hexo%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%AD.png" alt="Hexo初始化中"></p>
+<p>  如果你未自己手动创建文件夹，也可通过以下的命令去初始化<br>  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 建立一个博客文件夹，并初始化博客，&lt;folder&gt;为文件夹的名称，可以随便起名字</span></span><br><span class="line">hexo init &lt;folder&gt;</span><br><span class="line"><span class="comment">// 进入博客文件夹，&lt;folder&gt;为文件夹的名称</span></span><br><span class="line">cd &lt;folder&gt;</span><br><span class="line"><span class="comment">// node.js的命令，根据博客既定的dependencies配置安装所有的依赖包</span></span><br><span class="line">npm install</span><br></pre></td></tr></table></figure></p>
+<p>  初始化完成  </p>
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo g <span class="comment">// 生成网页。</span></span><br><span class="line">hexo s <span class="comment">// 将生成的网页放在了本地服务器。</span></span><br></pre></td></tr></table></figure>
+
+<p>  <img src="%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AE%8C%E6%88%90.png" alt="初始化完成"></p>
+<p>  通过提示的信息，访问本地服务器  </p>
+<p>  <img src="%E5%8D%9A%E5%AE%A2.png" alt="博客"></p>
+<h2 id="4-配置博客"><a href="#4-配置博客" class="headerlink" title="4.  配置博客"></a>4. <i class="fas fa-cog fa-spin"></i> 配置博客</h2><p>当然，目前的博客界面不是很美观，如果想做的比较有点逼格，当然还是得个性化定制下，我们可以去<code>Hexo</code>官网下载自己喜欢的主题。  </p>
+<p><a href="https://hexo.io/themes/" target="_blank" rel="noopener">Hexo官方主题</a></p>
+<p>选择你喜欢的主题，复制它的链接，<code>clone</code>到本地博客的<code>themes</code>目录下  </p>
+<p><img src="%E5%85%8B%E9%9A%86%E4%B8%BB%E9%A2%98%E4%B8%AD.png" alt="克隆主题中"></p>
+<p><img src="%E4%B8%BB%E9%A2%98%E5%85%8B%E9%9A%86%E5%AE%8C%E6%88%90.png" alt="主题克隆完成"></p>
+<p><img src="%E5%85%8B%E9%9A%86%E5%88%B0%E6%9C%AC%E5%9C%B0%E7%9A%84%E4%B8%BB%E9%A2%98.png" alt="克隆到本地的主题"></p>
+<p>配置博客我们首先就得了解博客文件结构</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">|node_modules:node.js的相关组件</span><br><span class="line">|scaddolds: 定义的一些东西，固定的</span><br><span class="line">|soorce: Markdown博客文档</span><br><span class="line">|themes: 一些主题</span><br><span class="line">	|主题名-|</span><br><span class="line">    	   |主题内容（包含README.md,config.yml）</span><br><span class="line">|config: 配置文件（博客全局配置）</span><br><span class="line">|db.json: 生成的一些东西</span><br><span class="line">|package.json:  当前npm的相关的包</span><br><span class="line">|package-lock.json: npm管理的一些东西</span><br></pre></td></tr></table></figure>
+
+<p>按照主题的<code>README.md</code>文档进行配置。<br>例如我使用的博客主题是<a href="https://github.com/Sariay/hexo-theme-Annie" target="_blank" rel="noopener">Annie</a>  </p>
+<h2 id="5-博客个性化设置"><a href="#5-博客个性化设置" class="headerlink" title="5.  博客个性化设置"></a>5. <i class="fas fa-user-cog"></i> 博客个性化设置</h2><p>我们按照自己选择的<code>Hexo</code>主题进行配置后，如果想根据自己的喜好做相应的修改当然也是可以的。比如可以给博客添加图片、视频、音乐播放器等等。  </p>
+<h3 id="5-1博客中添加图片1"><a href="#5-1博客中添加图片1" class="headerlink" title="5.1博客中添加图片1"></a>5.1博客中添加图片<a href="https://vwin.github.io/2018/08/07/Hexo%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87/" target="_blank" rel="noopener">1</a></h3><p>博客中的图片添加有以下几种方式：</p>
+<h4 id="本地引用"><a href="#本地引用" class="headerlink" title="本地引用"></a>本地引用</h4><ul>
+<li>绝对路径<br>直接在主题下的<code>img</code>（存储图片文件夹，不同的主题存储图片的名称可能不同）文件夹下(themes/所选主题文件夹/source/img),<code>/img/图片名称.jpg</code>这张图片，就可以使用以下方式访问： <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![图片说明](/img/图片名称.jpg)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>eg:<br><img src="/img/wechat.jpg" alt="wechat">   </p>
+<ul>
+<li>相对路径<br>图片除了可以放在统一的<code>img</code>文件夹中，还可以放在文章自己的目录中。文章的目录可以通过配置博客根目录下的<code>_config.yml</code>来生成。  </li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>将_config.yml文件中的配置项<code>post_asset_folder</code>设为<code>true</code>后，执行命令<code>$ hexo new post_name</code>，在<code>source/_posts</code>中会生成文章<code>post_name.md</code>和同名文件夹<code>post_name</code>。将图片资源放在<code>post_name</code>文件夹中，文章就可以使用相对路径引用图片资源了。<code>_posts/post_name/图片名称.jpg</code>这张图片可以用以下方式访问：  </p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![图片说明](图片名称.jpg)</span><br></pre></td></tr></table></figure>
+
+<p>eg:<br><img src="%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7.jpg" alt="微信公众号">  </p>
+<h4 id="CDN引用"><a href="#CDN引用" class="headerlink" title="CDN引用"></a>CDN引用</h4><p>除了在本地存储图片，还可以将图片上传到一些免费的 <code>CDN</code>服务中。因国内访问<code>GitHub</code>速度较慢，所以将突破放到国内图床上，然后引用外链接是常用的方法。<br>常用图床总结：<a href="https://sspai.com/post/40499" target="_blank" rel="noopener">https://sspai.com/post/40499</a><br>常用的图床有：七牛云、腾讯云、微博图床等。  </p>
+<h4 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h4><p>使用<code>github</code>存储博客图片</p>
+<ol>
+<li>创建一个空的仓库  </li>
+<li>将图片<code>push</code>到仓库中</li>
+<li>点击图片进去，有个<code>download</code>，右键复制链接</li>
+<li>将链接插入文章<br>引用格式：  </li>
+</ol>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">![logo](https://github.com/xxxx/xx.jpg)</span><br><span class="line">```  </span><br><span class="line">#### 使用插件  </span><br><span class="line"> <span class="number">1</span>. 首先把`blog（hexo）`目录下的`_config.yml`里的`psot_asset_folder:`设置为`true`</span><br><span class="line"> <span class="number">2</span>. 在`blog（hexo）`目录下执行:  </span><br><span class="line">```<span class="built_in">cmd</span>  </span><br><span class="line">npm install hexo-asset-image --save</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在<code>blog（hexo）</code>目录下<code>Git Bash Here</code>，运行<code>hexo n &quot;博客文章名&quot;</code>来生成<code>md</code>博客时，会在<code>_post</code>目录下看到一个与博客同名的文件夹。  </li>
+<li>将想要上传的图片先扔到文件夹下，然后在博客中使用<code>markdown</code>的格式引入图片：  <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![你想要输入的替代文字](xxxx/图片名.jpg)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<blockquote>
+<p>因为博客名和文件夹名字相同，所以不需要绝对路径，只要xxxx是文件夹的名字就可以了。</p>
+</blockquote>
+<h3 id="5-2博客中添加视频2"><a href="#5-2博客中添加视频2" class="headerlink" title="5.2博客中添加视频2"></a>5.2博客中添加视频<a href="https://baijiahao.baidu.com/s?id=1623914788952059989&wfr=spider&for=pc" target="_blank" rel="noopener">2</a></h3><blockquote>
+<p>以<code>bilibili</code>为例，B站无广告   </p>
+</blockquote>
+<ul>
+<li>去B站获取视频外链<br><img src="%E8%8E%B7%E5%8F%96%E8%A7%86%E9%A2%91%E5%A4%96%E9%93%BE.png" alt="获取视频外链">  </li>
+<li>在文章中插入视频外链<br>我们知道在<code>md</code>中可以直接插入<code>html</code>代码。这里我们就插入视频外链。代码如下：  </li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"//player.bilibili.com/player.html?aid=68662896&amp;cid=118997493&amp;page=1"</span> <span class="attr">scrolling</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">framespacing</span>=<span class="string">"0"</span> <span class="attr">allowfullscreen</span>=<span class="string">"true"</span>&gt;</span> <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到效果令人很不满意。  </p>
+<ul>
+<li>修改代码，美化播放器样式。<br>代码如下：  <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"position: relative; width: 100%; height: 0;padding-bottom: 75%;"</span> &gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"//player.bilibili.com/player.html?aid=68662896&amp;cid=118997493&amp;page=1"</span> <span class="attr">scrolling</span>=<span class="string">"no"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">frameborder</span>=<span class="string">"no"</span> <span class="attr">framespacing</span>=<span class="string">"0"</span> <span class="attr">allowfullscreen</span>=<span class="string">"true"</span> <span class="attr">style</span>=<span class="string">"position: absolute; width: 100%; height: 100%; left: 0; top: 0;"</span>&gt;</span> <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="5-3博客中添加网易云音乐歌单"><a href="#5-3博客中添加网易云音乐歌单" class="headerlink" title="5.3博客中添加网易云音乐歌单"></a>5.3博客中添加网易云音乐歌单</h3><ul>
+<li>（以 Chrome 为例，其他浏览器类似）打开歌单页面，在“生成外链播放器”上右击，点击检查（审查元素 <code>ctrl+shift+i</code>）；<br><img src="%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E5%A4%96%E9%93%BE.png" alt="网易云音乐外链"></li>
+<li>接着找到生成外链播放器这段文字直接双击复制前面的<code>/outchain/0/170792779/</code><br><img src="%E5%A4%96%E9%93%BEid.png" alt="外链id">  </li>
+<li>然后修改歌单链接示例：<a href="http://music.163.com/#/outchain/0/170792779/（可以修改自己喜欢的播放器尺寸，播放模式后再复制代码）" target="_blank" rel="noopener">http://music.163.com/#/outchain/0/170792779/（可以修改自己喜欢的播放器尺寸，播放模式后再复制代码）</a><br><img src="%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%AD%8C%E5%8D%95.png" alt="网易云音乐歌单">    </li>
+</ul>
+<blockquote>
+<p>由于版权限制，好多歌曲可能在播放器中无法播放，毕竟没有收费，将就用吧！😂</p>
+</blockquote>
+<h3 id="5-4博客中实现在线联系功能"><a href="#5-4博客中实现在线联系功能" class="headerlink" title="5.4博客中实现在线联系功能"></a>5.4博客中实现在线联系功能</h3><p>在线联系功能可以使访客及时，快捷的与博主交流，也能帮助博主及时的解决访客提出的博文中的问题。<code>Hexo</code>实现在线联系功能主要有以下两种方式:  </p>
+<h4 id="DaoVoice实现在线联系"><a href="#DaoVoice实现在线联系" class="headerlink" title="DaoVoice实现在线联系"></a>DaoVoice实现在线联系</h4><ul>
+<li><p>注册登录<code>DaoVoice</code><br><a href="http://dashboard.daovoice.io/get-started?invite_code=75159429" target="_blank" rel="noopener">注册登录DaoVoice</a>  </p>
+</li>
+<li><p><code>DaoVoice</code>接入<br><a href="http://guide.daocloud.io/daovoice/daovoice-9151028.html" target="_blank" rel="noopener"><code>DaoVoice</code>接入</a>  </p>
+</li>
+<li><p><code>Daovoice</code>绑定微信（可选）<br><code>DaoVoice</code>虽然可以很好的与访客交流，但是还是不能像微信聊天一样方便，所以我们绑定微信，瞬间秒回访客消息，不再等待！<br><img src="DaoVoice%E7%BB%91%E5%AE%9A%E5%BE%AE%E4%BF%A1.png" alt="DaoVoice绑定微信"></p>
+<h4 id="HEXO的博客添加gitter在线交流"><a href="#HEXO的博客添加gitter在线交流" class="headerlink" title="HEXO的博客添加gitter在线交流"></a>HEXO的博客添加gitter在线交流</h4><p><a href="https://blog.csdn.net/u011606307/article/details/89504541" target="_blank" rel="noopener">给基于HEXO的博客添加gitter在线交流</a></p>
+<h2 id="6-持续集成Hexo博客"><a href="#6-持续集成Hexo博客" class="headerlink" title="6.  持续集成Hexo博客"></a>6. <i class="fab fa-dev"></i> 持续集成Hexo博客</h2><h4 id="6-1使用Jenkins持续集成Hexo博客3"><a href="#6-1使用Jenkins持续集成Hexo博客3" class="headerlink" title="6.1使用Jenkins持续集成Hexo博客3"></a>6.1使用Jenkins持续集成Hexo博客<a href="https://www.karlzhou.com/2016/05/28/travis-ci-deploy-blog/" target="_blank" rel="noopener">3</a></h4><p><a href="http://www.sevenyuan.cn/2019/03/18/%E4%BD%BF%E7%94%A8Jenkins%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90Hexo%E5%8D%9A%E5%AE%A2/" target="_blank" rel="noopener">使用Jenkins持续集成Hexo博客</a>  </p>
+<h4 id="6-2用TravisCI持续集成Hexo博客"><a href="#6-2用TravisCI持续集成Hexo博客" class="headerlink" title="6.2用TravisCI持续集成Hexo博客"></a>6.2用TravisCI持续集成Hexo博客</h4><p><a href="https://travis-ci.org/" target="_blank" rel="noopener">Travis CI个人免费站点</a><br><a href="https://travis-ci.com/" target="_blank" rel="noopener">Travis CI企业收费站点</a>  </p>
+<h5 id="6-2-1核心概念"><a href="#6-2-1核心概念" class="headerlink" title="6.2.1核心概念"></a>6.2.1核心概念</h5></li>
+<li><p>什么是持续集成（CI）？<a href="https://docs.travis-ci.com/user/for-beginners/#breaking-the-build" target="_blank" rel="noopener">4</a><br>CI(<code>Continuous Integration</code>)翻译为持续集成。<br>持续集成是经常合并小的代码更改的实践，而不是在开发周期结束时合并大的更改。目的是通过以较小的增量开发和测试来构建更健康的软件。这就是<code>Travis CI</code>出现的地方。<br>作为一个持续集成平台，<code>Travis CI</code>通过自动构建和测试代码更改来支持您的开发过程，并提供有关更改成功的即时反馈。<code>Travis CI</code>还可以通过管理部署和通知来自动化开发过程的其他部分。  </p>
+<h5 id="6-2-2准备条件"><a href="#6-2-2准备条件" class="headerlink" title="6.2.2准备条件"></a>6.2.2准备条件</h5><p>要开始使用Travis CI，请确保您具有：</p>
+</li>
+<li><p>一个<a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>的帐户。  </p>
+</li>
+<li><p><a href="https://help.github.com/en/github/importing-your-projects-to-github" target="_blank" rel="noopener">托管在GitHub上的项目</a>的所有者权限。  </p>
+<ul>
+<li>博客源码仓库  </li>
+<li>博客部署仓库  <h5 id="6-2-3-关联仓库"><a href="#6-2-3-关联仓库" class="headerlink" title="6.2.3 关联仓库"></a>6.2.3 关联仓库</h5>使用GitHub登录到<a href="https://travis-ci.org/" target="_blank" rel="noopener">Travis CI个人免费站点</a><br><img src="travis_login.png" alt="travis login"><br>关联到持续集成的仓库<br><img src="repo.png" alt="持续集成的仓库">  </li>
+</ul>
+</li>
+</ul>
+<p><strong>配置 Access Token</strong><br>如下图，Environment Variables 区域就是用来添加权限信息的。我们需要填写一个Token的名称和值，该名称可以在配置文件中以 ${变量名} 来引用，该Token我们需要从Github中获取。<br><img src="travis_setting.png" alt><br><strong>从Github获取Access Token</strong><br>在Github的setting页面，左侧面板选择Developer settings然后Personal access tokens, 右上角点击Generate new token。生成token时候需要确定访问scope，这里我们选择我们的repo即可。<br><img src="travis_token.png" alt><br>重要：生成的token只有第一次可见，一定要保存下来备用。<br><img src="token.png" alt="token"><br><strong>在Travis CI中配置</strong><br>将上面获取到的token添加到 Environment Variables 部分，值为该 token ,而名称即为上面设置的 Travis_Token (请更改为个人所设置名称)。不勾选后面的 Display value in build log . 否则会在日志文件中暴露你的 token 信息，而日志文件是公开可见的。</p>
+<p>至此我们已经配置好了要构建的仓库和访问的token，接下来就是如何构建的问题了。<br><strong>配置.travis.yml（如果没有，新建)</strong><br>我个人的.travis.yml 可供参考</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定构建环境是Node.js，当前版本是稳定版</span></span><br><span class="line"><span class="attr">sudo:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">node_js</span></span><br><span class="line"><span class="attr">node_js:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="attr">env:</span></span><br><span class="line"><span class="attr"> global:</span></span><br><span class="line"><span class="attr">   - URL_REPO:</span> <span class="string">github.com/10veU/10veU.github.io.git</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置钩子只检测blog-source分支的push变动</span></span><br><span class="line"><span class="attr">branches:</span></span><br><span class="line"><span class="attr">  only:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">master</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置缓存文件</span></span><br><span class="line"><span class="attr">cache:</span></span><br><span class="line"><span class="attr">  directories:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">node_modules</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在构建之前安装hexo环境</span></span><br><span class="line"><span class="attr">before_install:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">npm</span> <span class="string">install</span> <span class="bullet">-g</span> <span class="string">hexo-cli</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#安装git插件和搜索功能插件</span></span><br><span class="line"><span class="attr">install:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">npm</span> <span class="string">install</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行清缓存，生成网页操作</span></span><br><span class="line"><span class="attr">script:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">hexo</span> <span class="string">clean</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">hexo</span> <span class="string">generate</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line"><span class="attr">  provider:</span> <span class="string">pages</span></span><br><span class="line"><span class="attr">  skip_cleanup:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  github_token:</span> <span class="string">$GH_TOKEN</span>  <span class="comment"># Set in the settings page of your repository, as a secure variable</span></span><br><span class="line"><span class="attr">  keep_history:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  on:</span></span><br><span class="line"><span class="attr">    branch:</span> <span class="string">master</span></span><br><span class="line"><span class="attr">  local-dir:</span> <span class="string">public</span></span><br><span class="line"><span class="comment"># configure notifications (email, IRC, campfire etc)</span></span><br><span class="line"><span class="comment"># please update this section to your needs!</span></span><br><span class="line"><span class="comment"># https://docs.travis-ci.com/user/notifications/</span></span><br><span class="line"><span class="attr">notifications:</span></span><br><span class="line"><span class="attr">  email:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="number">514084647</span><span class="string">@qq.com</span></span><br><span class="line"><span class="attr">  on_success:</span> <span class="string">change</span></span><br><span class="line"><span class="attr">  on_failure:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：需要将配置文件中的 GH_TOKEN 换成我们自己设定的名称，这里我的配置应该是 Travis_token 即 - git push –force –quiet “https://${Travis_token}@${GH_REF}” master:master # GH_TOKEN是在Travis中配置token的名称。 还要更改 GH_REF 中我们的博客仓库的地址。<br><img src="travis_success.png" alt="travis_success"></p>
+	
+	</div>
+	
+	<div id="current-post-cover" data-scr="/img/post_cover/Hexo+GitHub搭建免费个人博客.jpg"></div>
+
+	<!-- relate post, comment...-->
+	<div class="investment-container">
+		<div class="investment-header">
+			<div class="investment-title-1">
+				<div class="on">相关文章</div>
+				<div>评论</div>
+				<div>分享</div>
+			</div>
+			<div class="investment-title-2">	            
+				
+	<span>
+		<a href="javascript: window.scrollTo(0, 0);">返回顶部</a>
+		
+			<a href="/2021/09/01/Spring-Cloud之Consul-服务注册中心/" title="Spring Cloud之Consul 服务注册中心" rel="prev">
+				&laquo;上一篇
+			</a>
+		
+			
+	</span>
+
+
+      		
+			</div>	
+		</div>
+		
+		<div class="investment-content">
+			<div class="investment-content-list">
+				
+
+<div class="relate-post">
+	
+		<ul>
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/05/hello-world/" title="Hello World">
+								Hello World			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 5日, 2021				
+							</p>
+							<p class="relate-post-content">
+								一切始于Hello World!
+
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/05/hello-world/" title="Hello World">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/HelloWorld.jpg" alt="Hello World"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/01/Spring-Cloud之Consul-服务注册中心/" title="Spring Cloud之Consul 服务注册中心">
+								Spring Cloud之Consul 服务注册中心			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 1日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Consul 服务注册中心1.什么是Consul?Consul 是 HashiCorp 公司推出的开源产品，是一种服务网格(Service Mesh)解决方案。用于实现分布式系统的服务发现、服务隔离、服务配置...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/01/Spring-Cloud之Consul-服务注册中心/" title="Spring Cloud之Consul 服务注册中心">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/cover_consul.jpg" alt="Spring Cloud之Consul 服务注册中心"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+		</ul>
+	
+</div>	
+			</div>
+			<div class="investment-content-list">
+				<div class="layout-comment">
+
+	
+
+		
+
+			<!-- gitalk comment -->
+			<!-- show gitalk comment -->
+<div id="gitalk-container"></div>
+
+<!-- gitalk`s css & js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<link rel="stylesheet" href="/css/comment.css">
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+	//Thanks O-R
+	//https://github.com/gitalk/gitalk/issues/102#issuecomment-382970552
+	//去除尾部匹配正则数组的字符串  
+	//Remove redundant characters
+	String.prototype.trimEnd = function(regStr) {
+		var result = this;
+		if(regStr == undefined || regStr == null || regStr == "") {
+			return result;
+		}
+		var array = regStr.split(',');
+
+		if(array.length > 0) {
+
+			var c = array.shift();
+			var str = this;
+			var i = str.length;
+			var rg = new RegExp(c);
+			var matchArr = str.match(rg);
+
+			if(matchArr != undefined && matchArr != null && matchArr.length > 0) {
+				var matchStr = matchArr[0].replace(/\\/g, "\\\\").replace(/\*/g, "\\*")
+					.replace(/\+/g, "\\+").replace(/\|/g, "\\|")
+					.replace(/\{/g, "\\{").replace(/\}/g, "\\}")
+					.replace(/\(/g, "\\(").replace(/\)/g, "\\)")
+					.replace(/\^/g, "\\^").replace(/\$/g, "\\$")
+					.replace(/\[/g, "\\[").replace(/\]/g, "\\]")
+					.replace(/\?/g, "\\?").replace(/\,/g, "\\,")
+					.replace(/\./g, "\\.").replace(/\&/g, "\\&");
+				matchStr = matchStr + '$';
+				result = str.replace(new RegExp(matchStr), "");
+			}
+
+			if(array.length > 0) {
+				return result.trimEnd(array.join())
+			} else {
+				return result;
+			}
+		}
+	};
+
+	//Create gitalk
+	var gitalk = new Gitalk({
+		clientID: '36a5ea1eb92d0cdb0a6b',
+		clientSecret: '6e1940c0dcd00e3b9216f008368995a1988bd3fd',
+		//id: window.location.pathname,
+		//id: decodeURI(window.location.pathname),
+		//id: (window.location.pathname).split("/").pop().substring(0, 49),
+		id: decodeURI( md5( location.href.trimEnd('#.*$,\\?.*$,index.html$') ) ),
+		repo: 'Blog-Comment-Repo',
+		owner: '10veU',
+		admin: '10veU',
+		distractionFreeMode: 'true',
+	})
+	gitalk.render('gitalk-container');
+</script>
+
+		
+		
+	
+
+</div>
+			</div>
+			<div class="investment-content-list">
+				<div class="layout-share">
+	
+	
+
+		
+			
+			<!-- socialShare share -->
+			<div class="social-share"></div>
+
+<!--  css & js -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+			
+		
+		
+	
+</div>
+
+
+			</div>
+		</div>	
+	</div>
+	</div>
+</div>
+
+
+
+	<!-- leancloud -->
+	<!--
+	时间：2018-11-27
+	描述：
+		文章访问量：visitors
+		文章喜欢量：likes	
+		文章排行榜：topNPost
+		其他得说明：
+			01-Cookie相关的函数 
+				https://blog.csdn.net/somehow1002/article/details/78511541（Author：somehow1002）
+			02-visitors相关的函数 
+				https://blog.csdn.net/u013553529/article/details/63357382（Author：爱博客大伯）
+				https://notes.doublemine.me/2015-10-21-为NexT主题添加文章阅读量统计功能.html（Author：夏末）
+			03-topNPost相关的函数
+				https://hoxis.github.io/hexo-next-read-rank.html（Author：hoxis）
+			04-likes相关的函数，
+				参考了01 & 02进行简单的设计与实现
+-->
+
+
+
+	<script>
+		var appid = 'xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI',
+            appkey = 'Tkq82uGKwAFYHPeTF3Q6MVDp';	  
+        AnnieLeancloud(appid, appkey);         
+	</script>
+    
+
+	
+
+
+<!-- show math formula -->
+
+
+
+	 
+	<script src="/plugin/clipboard/clipboard.js"></script>
+	<script>
+		// Copy code !
+	    function codePreprocessing() {
+	        $("#article-content .highlight").each(function() {
+
+	            $(this).wrap('<div id="post-code"></div>');
+
+	        })
+
+	        $("#article-content #post-code").each(function() {
+
+	            $(this).prepend('<nav class="copy-nav"><span><i class="code-language"></i></span></nav>');
+
+	        })
+
+	        $("#article-content .copy-nav").each(function() {
+	            var temp = $(this).next().attr('class'),
+	                language = ((temp.length > 9) && (temp != null)) ? temp.substr(10) : "none"; //why 9? Need to check language?
+
+	            $(this).find('.code-language').text(language);
+
+	            $(this).append('<span class="copy-btn"><i class="fa fa-copy" aria-hidden="true"></i></span>');
+
+	        });
+	    }
+
+		function codeCopy() {
+		    $('#article-content #post-code').each(function(i) {
+		        var codeCopyId = 'codeCopy-' + i;
+
+		        var codeNode = $(this).find('.code'),
+		            copyButton = $(this).find('.copy-btn');
+
+		        codeNode.attr('id', codeCopyId);
+		        copyButton.attr('data-clipboard-target-id', codeCopyId);
+		    })
+
+		    
+			var clipboard = new ClipboardJS('.copy-btn', {
+					target: function(trigger) {
+						return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+					}
+		      	});
+
+			//pure js
+			function showTooltip(elem, msg) {		   
+				elem.setAttribute('aria-label', msg);
+				elem.setAttribute('class', 'copy-btn copy-status');
+				setTimeout(function() {
+					elem.setAttribute('class', 'copy-btn');
+				}, 2000);
+			}
+
+			clipboard.on('success', function(e) {
+			    e.clearSelection();
+			    console.info('Action:', e.action);		   
+			    console.info('Trigger:', e.trigger);
+			    showTooltip(e.trigger, 'Copied!');
+			    
+			});
+			clipboard.on('error', function(e) {
+			    console.error('Action:', e.action);
+			    console.error('Trigger:', e.trigger);
+			});
+		
+
+		}
+
+		if ($('.layout-post').length) {
+		    codePreprocessing();
+		    codeCopy();
+		} 
+	</script>
+
+
+
+
+
+<link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+<script src="/plugin/fancybox/jquery.fancybox.js"></script>
+
+<script type="text/javascript">
+	var titleID = $('.article-title a'),
+		imageID = $('.article-content img'),
+		videoID = $('.article-content video');
+
+	var postTitle = titleID.text() ? titleID.text() : "No post title!";
+
+	imageID.each(function() {
+		var imgPath = $(this).attr('src'),
+			imgTitle = $(this).attr('alt') ? $(this).attr('alt') : "No image description!";
+
+		//给每个匹配的<img>元素打包, 即添加父元素<a>
+		$(this).wrap('<a data-fancybox="gallery" data-caption=" 《 ' + postTitle + ' 》 ' + imgTitle + ' "  href=" ' + imgPath + ' "> </a>');
+	});
+
+	videoID.each(function() {
+		var videoPath = $(this).attr('src');
+
+		//给每个匹配的<img>元素打包, 即添加父元素<a>
+		$(this).wrap('<a data-fancybox href=" ' + videoPath + ' "> </a>');
+	});
+	//TODO：支持html5 video
+
+	if($('#layout-post').length) {
+		$('[data-fancybox="gallery"]').fancybox({
+			loop: true,
+			buttons: [
+				"zoom",
+				"share",
+				"slideShow",
+				"fullScreen",
+				//"download",
+				"thumbs",
+				"close"
+			],
+			protect: false
+		});
+	}
+</script>
+		</main>
+
+		<!--footer-->
+		<footer>
+	<div class="social">
+		<ul>
+	
+		<li>
+			<a href="https://github.com/10veU" target="_blank">
+				<i class="fa fa-github"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank">
+				<i class="fa fa-weibo"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/img/wechat.jpg" target="_blank">
+				<i class="fa fa-wechat"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com" target="_blank">
+				<i class="fa fa-qq"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="mailto:xiaojie_wangxj@163.com" target="_blank">
+				<i class="fa fa-envelope"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<i class="fa fa-rss"></i>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+	<div class="copyright">
+		<p>
+			 
+				&copy;2019 - 2021, content by XiaoJie Wang. All Rights Reserved.
+			
+			
+			
+
+	<!-- busuanzi -->
+	<!-- busuanzi -->
+
+		
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+
+		<span id="busuanzi_container_page_pv">
+	  		本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+		</span>
+
+	
+
+
+
+
+		</p>
+		<p>
+			<a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> Theme <a href="https://github.com/Sariay/hexo-theme-Annie" title="Annie" target="_blank" rel="noopener">Annie</a> by Sariay.
+			<a href="javascript:zh_tran('s');" class="zh_click" id="zh_click_s">简体</a> 
+			<a href="javascript:zh_tran('t');" class="zh_click" id="zh_click_t">繁體</a>				
+		</p>
+	</div>	
+</footer>
+		
+	<!-- set '1' to show motto in all pages! -->
+
+	<script src="/plugin/motto/motto.js"></script>
+	
+	<script type="text/javascript">
+		$(".motto").html( getMingYanContent() );
+	</script>	
+
+
+
+
+	<!--
+	时间：2018-10-3
+	描述：
+		插件名称：hexo-generator-search-zip
+		插件来源: https://github.com/SuperKieran/hexo-generator-search-zip
+		代码参考：https://github.com/SuperKieran/TKL/blob/master/layout/_partial/search.ejs(Include: js & css)	
+-->
+<div class="popup search-popup local-search-popup" >
+	<div class="local-search-container">
+		<span class="popup-btn-close">
+      		ESC
+   		</span>
+		<div class="local-search-header">
+			<div class="input-prompt">				
+			</div>
+			<input autocomplete="off" placeholder="Search..." type="text" id="local-search-input">
+		</div>
+		<div class="local-search-body">
+			<div id="local-search-output"></div>
+		</div>
+		<div class="local-search-footer">
+			<div class="topN-post">				
+				
+
+   
+	<div id="topN">
+		<div class="topN-title" data-title= "热门文章"></div> 
+	</div>
+	
+    <script>
+        var appid = 'xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI',
+            appkey = 'Tkq82uGKwAFYHPeTF3Q6MVDp',
+            limitCount = 10;
+        if( $('#topN').length ){
+            AV.initialize(appid, appkey);
+            var Counter = AV.Object.extend("Counter");  
+            topNPost(Counter, limitCount);
+        }
+    </script>
+   
+								
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="/plugin/search/ziploader.js"></script>
+<script src="/plugin/search/search.js"></script>
+
+<script type="text/javascript">
+	var search_path = 'search.json',
+		zip_Path = '/search.zip',
+		version_Path = '/searchVersion.txt',
+		input_Trigger = 'auto',
+		top_N = '2';
+
+	themeLocalSearch({
+		search_path, 
+		zip_Path, 
+		version_Path, 
+		input_Trigger, 
+		top_N
+	});
+</script>
+
+
+<!-- love effect -->
+
+<!-- firework effect -->
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+	<script src="/plugin/love/fireworks.js"></script>
+
+<!--daovoice-->
+
+	<script src="/plugin/daovoice/daovoice.js"></script>
+
+<!-- back to top -->
+
+	
+	<div id="totop">
+  		<a href="javascript:;"  name="TOTOP" class="fa fa-arrow-up" ></a>
+	</div>
+
+
+
+<!-- site analysis -->
+
+
+	<!-- site-analysis -->
+	
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+		var hm = document.createElement("script");
+		hm.src = "//hm.baidu.com/hm.js?bc5394d96eab6c50c0a37cb03555fc96";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+	
+	
+	
+	
+ 
+
+<script src="/plugin/vibrant/vibrant.js"></script>
+<script src="/plugin/chinese/chinese.js"></script>
+<script src="/plugin/imgLazyLoader/yall.min.js"></script>
+<script src="/plugin/imgResize/jquery.resizeimagetoparent.min.js"></script>
+<script src="/plugin/nicescroll/jquery.nicescroll.js"></script>
+<script src="/js/resizediv.js"></script>
+<script src="/js/main.js"></script>
+	</body>	
+</html>
