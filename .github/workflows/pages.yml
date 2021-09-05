@@ -26,7 +26,9 @@ jobs:  # 作业
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-
+      - name: Build
+        run: npm run build
+        
      # Delopy Hexo 博客网站
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
