@@ -1,7 +1,9 @@
 ---
 title: Spring Cloud之Consul 服务注册中心
 date: 2021-09-01 19:30:44
-categories: 微服务,Spring Cloud
+categories: 
+    - 微服务
+    - Spring Cloud
 cover: /img/post_cover/cover_consul.jpg
 tags:
     - 微服务
