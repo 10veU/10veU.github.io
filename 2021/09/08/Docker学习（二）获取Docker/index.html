@@ -1,0 +1,1056 @@
+<!--
+	作者：Sariay
+	时间：2018-09-25
+	描述：There may be a bug, but don't worry, QiLing(器灵) says that it can work normally!
+-->
+<!DOCTYPE html>
+<html class="html-loading">
+		
+
+<head><meta name="generator" content="Hexo 3.9.0">
+	<meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <title>
+    
+      Docker学习（二）获取Docker | Mr.Wang-Blog
+    
+  </title>
+  <meta name="author" content="XiaoJie Wang">
+  <meta name="keywords" content>
+  <meta name="description" content>
+	<!-- favicon -->
+  <link rel="shortcut icon" href="/img/Mr-Wang-facvion.ico">
+
+  <!-- css -->
+  <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/Annie.css">
+  
+  <!-- jquery -->
+	<script src="/js/jquery.min.js"></script>
+
+  <!-- leancloud -->
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+<script src="/js/leancloud.js"></script>
+</head>
+	<body>
+		<!-- Preloader -->
+
+	<div id="preloader">
+		<div class="pre-container">
+			
+				<div class="spinner">
+					<div class="double-bounce1"></div>
+					<div class="double-bounce2"></div>
+				</div>
+						
+		</div>
+	</div>
+
+
+<!-- header -->
+<header class="fixbackground" data-img-mode="random" data-normal-src="/" data-random-max="110" data-random-src="https://10veu.github.io/Random-img/">
+	<div class="mask">
+		<!-- Logo and navigation -->
+		<div class="h-header">
+			<div id="logo">
+				<a href="/">
+						
+						<img src="/img/Mr-Wang-logo.png" alt="Logo">
+					
+				</a>
+			</div>
+			
+			<div id="navigation-show">
+				<ul>
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home">主页</a>
+		</li>
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive">归档</a>
+		</li>
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories">分类</a>
+		</li>
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags">标签</a>
+		</li>
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about">关于</a>
+		</li>
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery">相册</a>
+		</li>
+	
+
+	
+		<li class="menu-search">
+			<a href="javascript:;" class="popup-trigger">搜索</a>
+		</li>
+	
+</ul>
+			</div>				
+		</div>
+
+		<!-- motto -->
+		<div class="h-body">	
+			
+				<p class="motto"></p>
+			
+		</div>
+		
+		<!-- others: such as time... -->			
+		<div class="h-footer">
+			<a href="javascript:;" id="read-more"><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+			</a>
+
+			
+				<!-- 
+	This is only a demo, please go to "https://time.is" to set your city time! 
+-->
+<style type="text/css">
+	.header-date {
+		font-size: 1.6rem;
+		color: #fff;
+		position: absolute;
+		bottom: 5px;
+		right: 1rem;
+		writing-mode: tb-rl;
+	}	
+	
+	.header-date a {
+		border-bottom: none;
+	}
+
+	@media only screen and (max-width: 768 ) {
+		.header-date {
+			font-size: 1rem;
+		}			
+	}
+</style>
+<div class="header-date">
+	<a href="https://time.is/Beijing" id="time_is_link" rel="nofollow" ></a>
+	<span id="Beijing_z43d"></span>
+</div>
+<script src="//widget.time.is/zh.js"></script>
+<script>
+	time_is_widget.init({
+		Beijing_z43d:{
+			template:"DATE", 
+			date_format:"year年 monthname dnum日"
+		}
+	});
+</script>
+			
+		</div>
+	</div>
+</header>
+
+<div id="navigation-hide">
+	<!-- Progress bar -->
+	<div id="progress-bar"></div>
+
+	<!-- Progress percent -->
+	<div id="progress-percentage"><h1>0.0%</h1></div>
+
+	<div class="toc-switch"><span class="switch-button">目录</span></div>
+
+	<!-- Page title -->
+	<p>
+		
+			当前文章&nbsp;:&nbsp;《Docker学习（二）获取Docker》
+		
+	</p>
+
+	<!-- Nav trigger for navigation-H-->
+	<a class="nav-trigger"><span></span></a>
+</div>
+
+<!-- Navigation in div(id="navigation-H") -->
+<nav class="nav-container" id="cd-nav">
+	<div class="nav-header">
+		<h3>Navigation</h3>
+		<a href="javascript:;" class="nav-close"></a>
+	</div>
+	<div class="nav-body">
+		<ul>
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home">主页</a>
+		</li>
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive">归档</a>
+		</li>
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories">分类</a>
+		</li>
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags">标签</a>
+		</li>
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about">关于</a>
+		</li>
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery">相册</a>
+		</li>
+	
+
+	
+		<li class="menu-search">
+			<a href="javascript:;" class="popup-trigger">搜索</a>
+		</li>
+	
+</ul>
+	</div>
+	<div class="nav-footer">
+		<ul>
+	
+		<li>
+			<a href="https://github.com/10veU" target="_blank">
+				<i class="fa fa-github"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank">
+				<i class="fa fa-weibo"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/img/wechat.jpg" target="_blank">
+				<i class="fa fa-wechat"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com" target="_blank">
+				<i class="fa fa-qq"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="mailto:xiaojie_wangxj@163.com" target="_blank">
+				<i class="fa fa-envelope"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<i class="fa fa-rss"></i>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+</nav>
+			
+		<!--main-->
+		<main>
+			<!--
+	时间：2018-11-17
+	描述：
+		插件名称：katelog.min.js
+		插件作者：KELEN
+		插件来源: https://github.com/KELEN/katelog
+-->
+
+	
+		<div class="layout-toc">
+			<div id="layout-toc">
+				<div class="k-catelog-list" id="catelog-list" data-title="文章目录"></div>
+			</div>
+		</div>
+
+		
+		<script src="/plugin/toc/katelog.min.js"></script>
+
+		
+	 
+
+<div class="layout-post">
+	<div id="layout-post">
+	<div class="article-title">
+		<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+		
+	<a href="/2021/09/08/Docker学习（二）获取Docker/" itemprop="url">
+		Docker学习（二）获取Docker
+	</a>
+
+	</div>
+
+	<div class="article-meta">
+		<span>
+			<i class="fa fa-calendar"></i>
+			
+
+
+	发布于
+
+	<a href="/2021/09/08/Docker学习（二）获取Docker/" itemprop="url">
+		<time datetime="2021-09-08T17:04:41.000Z" itemprop="datePublished">
+	  		2021-09-08
+	  </time>
+	</a>
+	&nbsp;
+
+
+
+
+
+			
+
+
+
+
+	更新于
+
+	<a href="/2021/09/08/Docker学习（二）获取Docker/" itemprop="url">
+		<time datetime="2021-09-08T17:04:41.000Z" itemprop="dateUpdated">
+	  		2021-09-08
+	  </time>
+	</a> 
+
+
+
+		</span>
+		<span>
+			<i class="fa fa-tags"></i>
+			
+	
+		<a href="/tags/Docker/" class=" ">
+			Docker
+		</a>
+	
+		
+		</span>
+		
+		
+
+	
+    <span class="leancloud_visitors" id="/2021/09/08/Docker学习（二）获取Docker/_visitors" data-url="/2021/09/08/Docker学习（二）获取Docker/" data-title="Docker学习（二）获取Docker">
+       	<i class="fa fa-eye"></i>
+       	热度
+        <i class="leancloud_visitors_count" id="leancloud_visitors_count">0</i>
+    </span>
+    
+
+
+
+	
+    <span class="leancloud_likes" id="/2021/09/08/Docker学习（二）获取Docker/_likes" data-url="/2021/09/08/Docker学习（二）获取Docker/" data-title="Docker学习（二）获取Docker" rel="unlike">
+        <i class="fa fa-heart"></i>
+        喜欢
+        <i class="leancloud_likes_count" id="leancloud_likes_count">0</i>
+    </span>
+
+	</div>
+
+	<div class="article-content" id="article-content">
+		<h1 id="Docker学习（二）获取Docker"><a href="#Docker学习（二）获取Docker" class="headerlink" title="Docker学习（二）获取Docker"></a>Docker学习（二）获取Docker</h1><p>您可以在多个平台(Mac/Windows/Linux)上<a href="https://docs.docker.com/get-docker/" target="_blank" rel="noopener">下载</a>并安装 Docker。</p>
+<h2 id="1-在Windows上安装Docker-Desktop前置条件"><a href="#1-在Windows上安装Docker-Desktop前置条件" class="headerlink" title="1. 在Windows上安装Docker Desktop前置条件"></a>1. 在Windows上安装Docker Desktop前置条件</h2><p>对于仍在微软服务时间表内的 Windows 10版本，Docker 只支持 Windows 上的 Docker 桌面。</p>
+<h3 id="1-1-系统需求"><a href="#1-1-系统需求" class="headerlink" title="1.1 系统需求"></a>1.1 系统需求</h3><h4 id="WSL-Windows-Subsystem-for-Linux-2后端"><a href="#WSL-Windows-Subsystem-for-Linux-2后端" class="headerlink" title="WSL(Windows Subsystem for Linux) 2后端"></a>WSL(Windows Subsystem for Linux) 2后端</h4><ul>
+<li>Windows 10 64bit: 家庭版或者专业版2004（build 19041）或者更高版本<br> Windows 10 64bit: 企业版或者教育版1909（build 18363） 或者更高版本</li>
+<li>在Windows上启用WSL2特性，更多细节请参考<a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10" target="_blank" rel="noopener">Miscrosoft documentation</a>.</li>
+<li>在Windows 10上成功运行WSL 2需要一下先决条件：<br>64位处理器和Second Level Address Translation(SLAT)（二级地址转换）<br>4GB系统内存<br>必须在BIOS设置中启用BIOS级虚拟化支持。更多信息参考<a href="https://docs.docker.com/docker-for-windows/troubleshoot/#virtualization-must-be-enabled" target="_blank" rel="noopener">Virtualization</a>.</li>
+<li>下载并安装Linux内核更新包。<a href="https://docs.microsoft.com/zh-cn/windows/wsl/install-win10#step-4---download-the-linux-kernel-update-package" target="_blank" rel="noopener">在 Windows 10 上安装 WSL | Microsoft Docs</a><h4 id="Hyper-V-后端和Windows容器"><a href="#Hyper-V-后端和Windows容器" class="headerlink" title="Hyper-V 后端和Windows容器"></a>Hyper-V 后端和Windows容器</h4></li>
+<li>Windows 10 64-bit: 专业版2004 (build 19041) 或者更高版本<br>  Windows 10 64bit: 企业版或者教育版1909（build 18363） 或者更高版本</li>
+<li>必须启用 Hyper-V 和 Containers Windows 特性</li>
+<li>在Windows 10上成功运行WSL 2需要一下先决条件：<ul>
+<li>64位处理器和Second Level Address Translation(SLAT)（二级地址转换）</li>
+<li>4GB系统内存</li>
+<li>必须在BIOS设置中启用BIOS级虚拟化支持。更多信息参考<a href="https://docs.docker.com/docker-for-windows/troubleshoot/#virtualization-must-be-enabled" target="_blank" rel="noopener">Virtualization</a>.<h4 id="Docker-Desktop-Installer包含哪些内容？"><a href="#Docker-Desktop-Installer包含哪些内容？" class="headerlink" title="Docker Desktop Installer包含哪些内容？"></a>Docker Desktop Installer包含哪些内容？</h4>Docker Desktop包含<a href="https://docs.docker.com/engine/" target="_blank" rel="noopener">Docker Engine</a>，Docker CLI client，<a href="https://docs.docker.com/compose/" target="_blank" rel="noopener">Docker Compose</a>，Docker Content Trust，<a href="https://github.com/kubernetes/kubernetes/" target="_blank" rel="noopener">Kubernetes</a>和<a href="https://github.com/docker/docker-credential-helpers/" target="_blank" rel="noopener">Credential Helper</a>。<br>使用 Docker Desktop 创建的容器和镜像在安装它的计算机上的所有用户帐户之间共享。这是因为所有 Windows 帐户都使用相同的 VM 来构建和运行容器。请注意，在使用 Docker Desktop WSL 2后端时，不可能在用户帐户之间共享容器和镜像。<br>嵌套的虚拟化场景，比如在 VMWare 或 Parallels 实例上运行 Docker Desktop 可能可以使用，但这并不能保证。有关的更多信息，请参考<a href="https://docs.docker.com/docker-for-windows/troubleshoot/#running-docker-desktop-for-windows-in-nested-virtualization-scenarios" target="_blank" rel="noopener">在嵌套虚拟化场景中运行 Docker 桌面</a>。<h4 id="关于Windows容器"><a href="#关于Windows容器" class="headerlink" title="关于Windows容器"></a>关于Windows容器</h4></li>
+</ul>
+</li>
+<li><a href="https://docs.docker.com/docker-for-windows/#switch-between-windows-and-linux-containers" target="_blank" rel="noopener">在Windows容器之间切换</a></li>
+<li><a href="https://github.com/docker/labs/blob/master/windows/windows-containers/README.md" target="_blank" rel="noopener">开始使用windows容器（Lab）</a></li>
+<li><a href="https://docs.docker.com/docker-for-windows/troubleshoot/#limitations-of-windows-containers-for-localhost-and-published-ports" target="_blank" rel="noopener">适用于Windows的Docker容器平台的文章和博客</a></li>
+</ul>
+<h3 id="1-2-Install-Docker-Desktop-on-Windows"><a href="#1-2-Install-Docker-Desktop-on-Windows" class="headerlink" title="1.2 Install Docker Desktop on Windows"></a>1.2 Install Docker Desktop on Windows</h3><h4 id="查看自己的电脑系统是否满足系统需求"><a href="#查看自己的电脑系统是否满足系统需求" class="headerlink" title="查看自己的电脑系统是否满足系统需求"></a>查看自己的电脑系统是否满足系统需求</h4><p>开始-设置-系统-关于，如下示例：<br><strong>设备规格</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">设备名称	ESR-20151030WHY</span><br><span class="line">处理器	Intel(R) Core(TM) i5-4200U CPU @ 1.60GHz   2.30 GHz</span><br><span class="line">机带 RAM	8.00 GB</span><br><span class="line">设备 ID	9E4CA172-84E3-48EB-8909-8E0CCD2D66A1</span><br><span class="line">产品 ID	00330-50000-00000-AAOEM</span><br><span class="line">系统类型	64 位操作系统, 基于 x64 的处理器</span><br><span class="line">笔和触控	没有可用于此显示器的笔或触控输入</span><br></pre></td></tr></table></figure>
+
+<p><strong>Windows规格</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">版本	Windows 10 专业版</span><br><span class="line">版本号	21H1</span><br><span class="line">安装日期	‎2021/‎7/‎12</span><br><span class="line">操作系统内部版本	19043.1083</span><br><span class="line">体验	Windows Feature Experience Pack 120.2212.3530.0</span><br></pre></td></tr></table></figure>
+
+<p><strong><a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10" target="_blank" rel="noopener">Enable the Windows Subsystem for Linux</a></strong></p>
+<ol>
+<li>以管理员身份打开 PowerShell 并运行:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Windows PowerShell</span><br><span class="line">版权所有 (C) Microsoft Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line">尝试新的跨平台 PowerShell https://aka.ms/pscore6</span><br><span class="line"></span><br><span class="line">PS C:\WINDOWS\system32&gt; dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart</span><br><span class="line"></span><br><span class="line">部署映像服务和管理工具</span><br><span class="line">版本: 10.0.19041.844</span><br><span class="line"></span><br><span class="line">映像版本: 10.0.19043.1083</span><br><span class="line"></span><br><span class="line">启用一个或多个功能</span><br><span class="line">[==========================100.0%==========================]</span><br><span class="line">操作成功完成。</span><br><span class="line">PS C:\WINDOWS\system32&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="docker_02_01.png" alt="docker install"></p>
+<ol start="2">
+<li>Check requirements for running WSL 2<br>要更新到 wsl2，您必须运行 Windows 10.</li>
+</ol>
+<ul>
+<li>For x64 systems: Version 1903 or higher, with Build 18362 or higher.</li>
+<li>For ARM64 systems: Version 2004 or higher, with Build 19041 or higher.</li>
+<li>Builds lower than 18362 do not support WSL 2. Use the <a href="https://www.microsoft.com/software-download/windows10" target="_blank" rel="noopener">Windows Update Assistant</a> to update your version of Windows.<br>To check your version and build number, select Windows logo key + R, type winver, select OK. <a href="http://ms-settings:windowsupdate/" target="_blank" rel="noopener">Update to the latest Windows version</a> in the Settings menu.</li>
+</ul>
+<ol start="3">
+<li>Enable Virtual Machine feature<br>在安装 wsl2之前，您必须启用虚拟机平台的可选特性。您的计算机将需要虚拟化能力来使用这个特性。<br>以管理员身份打开 PowerShell 并运行:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>重新启动计算机以完成 WSL 安装并更新到 wsl2。</p>
+<ol start="4">
+<li>Download the Linux kernel update package<br>下载最新软件包:</li>
+</ol>
+<ul>
+<li><a href="https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi" target="_blank" rel="noopener">WSL2 Linux kernel update package for x64 machines 针对 x64机器的 WSL2 Linux 内核更新包</a></li>
+<li>运行上一步中下载的更新包。(双击运行——系统将提示您提高权限，选择“是”以批准此安装。)</li>
+</ul>
+<ol start="5">
+<li>将 WSL 2 设置为默认版本<br>打开 PowerShell 并运行以下命令，在安装新的 Linux 发行版时将 WSL 2设置为默认版本:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Windows PowerShell</span><br><span class="line">版权所有 (C) Microsoft Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line">尝试新的跨平台 PowerShell https://aka.ms/pscore6</span><br><span class="line"></span><br><span class="line">PS C:\WINDOWS\system32&gt; wsl --set-default-version 2</span><br><span class="line">有关与 WSL 2 的主要区别的信息，请访问 https://aka.ms/wsl2</span><br><span class="line">PS C:\WINDOWS\system32&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p><strong>检查系统的处理器，系统RAM，BIOS中是否开启了虚拟化</strong><br>打开 PowerShell 并运行以下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">Windows PowerShell</span><br><span class="line">版权所有 (C) Microsoft Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line">尝试新的跨平台 PowerShell https://aka.ms/pscore6</span><br><span class="line"></span><br><span class="line">PS C:\WINDOWS\system32&gt; systeminfo</span><br><span class="line"></span><br><span class="line">主机名:           ESR-20151030WHY</span><br><span class="line">OS 名称:          Microsoft Windows 10 专业版</span><br><span class="line">OS 版本:          10.0.19043 暂缺 Build 19043</span><br><span class="line">OS 制造商:        Microsoft Corporation</span><br><span class="line">OS 配置:          独立工作站</span><br><span class="line">OS 构建类型:      Multiprocessor Free</span><br><span class="line">注册的所有人:     微软用户</span><br><span class="line">注册的组织:       微软中国</span><br><span class="line">产品 ID:          00330-50000-00000-AAOEM</span><br><span class="line">初始安装日期:     2021/7/12, 21:17:33</span><br><span class="line">系统启动时间:     2021/8/1, 16:05:23</span><br><span class="line">系统制造商:       LENOVO</span><br><span class="line">系统型号:         80EQCTO1WW</span><br><span class="line">系统类型:         x64-based PC</span><br><span class="line">处理器:           安装了 1 个处理器。</span><br><span class="line">                  [01]: Intel64 Family 6 Model 69 Stepping 1 GenuineIntel ~1600 Mhz</span><br><span class="line">BIOS 版本:        LENOVO 9DCN26WW(V2.07), 2014/9/23</span><br><span class="line">Windows 目录:     C:\WINDOWS</span><br><span class="line">系统目录:         C:\WINDOWS\system32</span><br><span class="line">启动设备:         \Device\HarddiskVolume1</span><br><span class="line">系统区域设置:     zh-cn;中文(中国)</span><br><span class="line">输入法区域设置:   zh-cn;中文(中国)</span><br><span class="line">时区:             (UTC+08:00) 北京，重庆，香港特别行政区，乌鲁木齐</span><br><span class="line">物理内存总量:     8,120 MB</span><br><span class="line">可用的物理内存:   4,186 MB</span><br><span class="line">虚拟内存: 最大值: 16,312 MB</span><br><span class="line">虚拟内存: 可用:   11,908 MB</span><br><span class="line">虚拟内存: 使用中: 4,404 MB</span><br><span class="line">页面文件位置:     C:\pagefile.sys</span><br><span class="line">域:               WorkGroup</span><br><span class="line">登录服务器:       \\ESR-20151030WHY</span><br><span class="line">修补程序:         安装了 4 个修补程序。</span><br><span class="line">                  [01]: KB5003254</span><br><span class="line">                  [02]: KB5000736</span><br><span class="line">                  [03]: KB5004945</span><br><span class="line">                  [04]: KB5003742</span><br><span class="line">网卡:             安装了 2 个 NIC。</span><br><span class="line">                  [01]: Realtek PCIe GBE Family Controller</span><br><span class="line">                      连接名:      本地连接</span><br><span class="line">                      状态:        媒体连接已中断</span><br><span class="line">                  [02]: Qualcomm Atheros AR956x Wireless Network Adapter</span><br><span class="line">                      连接名:      无线网络连接</span><br><span class="line">                      启用 DHCP:   是</span><br><span class="line">                      DHCP 服务器: 192.168.0.1</span><br><span class="line">                      IP 地址</span><br><span class="line">                        [01]: 192.168.0.195</span><br><span class="line">                        [02]: fe80::78dd:61d6:a6e8:e5d4</span><br><span class="line">Hyper-V 要求:     已检测到虚拟机监控程序。将不显示 Hyper-V 所需的功能。</span><br><span class="line">PS C:\WINDOWS\system32&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="docker_02_02.png" alt="cpu"></p>
+<h2 id="2-在-Windows-上安装-Docker-桌面"><a href="#2-在-Windows-上安装-Docker-桌面" class="headerlink" title="2. 在 Windows 上安装 Docker 桌面"></a>2. 在 Windows 上安装 Docker 桌面</h2><ul>
+<li>双击 Docker Desktop Installer.exe 运行安装程序。</li>
+<li>当提示时，确保启用 Hyper-V Windows 特性或者安装 WSL 2所需的 Windows 组件选项在 Configuration 页面上被选中。<br><img src="docker_02_03.png" alt="docker configuration"><br><img src="docker_02_04.png" alt="docker configuration"><br><img src="docker_02_05.png" alt="docker configuration"></li>
+<li>按照安装向导上的说明授权安装程序并继续安装。<br><img src="docker_02_06.png" alt="docker configuration"></li>
+<li>安装成功后，单击“关闭”完成安装过程。<br><img src="docker_02_07.png" alt="doccker configuration"></li>
+<li>如果您的管理帐户与您的用户帐户不同，则必须将该用户添加到 docker-users 组中。以管理员身份运行计算机管理并导航到 <code>Local Users and Groups &gt; Groups &gt; docker-users</code>。右击可将用户添加到组中。注销并重新登录以使更改生效。<h2 id="3-启动Docker桌面"><a href="#3-启动Docker桌面" class="headerlink" title="3. 启动Docker桌面"></a>3. 启动Docker桌面</h2>点击Docker Desktop图标即可启动。<br><img src="docker_02_08.png" alt="docker configuration"><br><img src="docker_02_09.png" alt="docker configuration"><br>当状态栏中的鲸图标保持稳定时，Docker 桌面就会启动并运行，并且可以从任何终端窗口访问。要了解更多信息，请参见<a href="https://docs.docker.com/docker-for-windows/#docker-settings-dialog" target="_blank" rel="noopener">Docker设置</a>。<h2 id="4-快速入门指南"><a href="#4-快速入门指南" class="headerlink" title="4. 快速入门指南"></a>4. 快速入门指南</h2>要根据需要运行快速启动指南，右键单击通知区域(或系统托盘)中的 Docker 图标，以打开 Docker Desktop 菜单，然后选择快速启动指南。</li>
+</ul>
+<h2 id="5-更新"><a href="#5-更新" class="headerlink" title="5. 更新"></a>5. 更新</h2><p>从 Docker Desktop 3.0.0开始，Docker Desktop 的更新将作为以前版本的 delta 更新提供。当更新可用时，dockerdesktop 会显示一个图标，指示更新版本的可用性。您可以选择何时开始下载和安装过程。<br><img src="docker_02_10.png" alt="docker configuration"><br>单击“下载更新”当您准备好下载更新时。这将在后台下载更新。下载更新后，单击 Update 并从 Docker 菜单重新启动。这将安装最新更新并重新启动 Docker Desktop 以使更改生效。</p>
+<h2 id="6-卸载Docker-Desktop"><a href="#6-卸载Docker-Desktop" class="headerlink" title="6. 卸载Docker Desktop"></a>6. 卸载Docker Desktop</h2><p>从Windows卸载Docker Desktop:</p>
+<ul>
+<li>点击Windows的开始菜单，选择设置-应用-应用和功能</li>
+<li>在应用列表中选择Docker Desktop，选择卸载</li>
+<li>点击卸载确认你的选择。</li>
+</ul>
+	
+	</div>
+	
+	<div id="current-post-cover" data-scr="/img/post_cover/Docker_02.jpg"></div>
+
+	<!-- relate post, comment...-->
+	<div class="investment-container">
+		<div class="investment-header">
+			<div class="investment-title-1">
+				<div class="on">相关文章</div>
+				<div>评论</div>
+				<div>分享</div>
+			</div>
+			<div class="investment-title-2">	            
+				
+	<span>
+		<a href="javascript: window.scrollTo(0, 0);">返回顶部</a>
+		
+		
+			<a href="/2021/09/08/Docker学习（一）概述/" title="Docker学习（一）概述" rel="next">
+				下一篇&raquo;
+			</a>
+			
+	</span>
+
+
+      		
+			</div>	
+		</div>
+		
+		<div class="investment-content">
+			<div class="investment-content-list">
+				
+
+<div class="relate-post">
+	
+		<ul>
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/08/Docker学习（一）概述/" title="Docker学习（一）概述">
+								Docker学习（一）概述			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 8日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Docker学习（一）概述Docker 是一个用于开发、发布和运行应用程序的开放平台。Docker 使您能够将应用程序与基础结构分离开来，从而可以快速交付软件。使用 Docker，您可以像管理应用程序一样管理基础结构。通过利用 Doc...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/08/Docker学习（一）概述/" title="Docker学习（一）概述">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/Docker_01.png" alt="Docker学习（一）概述"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/08/hello-world/" title="Hello World">
+								Hello World			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 8日, 2021				
+							</p>
+							<p class="relate-post-content">
+								一切始于Hello World!
+
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/08/hello-world/" title="Hello World">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/HelloWorld.jpeg" alt="Hello World"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/01/Spring-Cloud之Consul-服务注册中心/" title="Spring Cloud之Consul 服务注册中心">
+								Spring Cloud之Consul 服务注册中心			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 1日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Consul 服务注册中心1.什么是Consul?Consul 是 HashiCorp 公司推出的开源产品，是一种服务网格(Service Mesh)解决方案。用于实现分布式系统的服务发现、服务隔离、服务配置...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/01/Spring-Cloud之Consul-服务注册中心/" title="Spring Cloud之Consul 服务注册中心">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/cover_consul.jpg" alt="Spring Cloud之Consul 服务注册中心"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2019/10/09/Hexo-GitHub搭建免费个人博客/" title="Hexo+GitHub搭建免费个人博客">
+								Hexo+GitHub搭建免费个人博客			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十月 9日, 2019				
+							</p>
+							<p class="relate-post-content">
+								 
+     
+     
+ 
+  
+
+Hexo+GitHub免费搭建个人博客
+作者：大大蜡笔小小新    
+
+1.  Hexo框架的介绍Hexo的官方介绍：A fast,simple&amp;powerful blog framew...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2019/10/09/Hexo-GitHub搭建免费个人博客/" title="Hexo+GitHub搭建免费个人博客">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/Hexo+GitHub搭建免费个人博客.jpg" alt="Hexo+GitHub搭建免费个人博客"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+		</ul>
+	
+</div>	
+			</div>
+			<div class="investment-content-list">
+				<div class="layout-comment">
+
+	
+
+		
+
+			<!-- gitalk comment -->
+			<!-- show gitalk comment -->
+<div id="gitalk-container"></div>
+
+<!-- gitalk`s css & js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<link rel="stylesheet" href="/css/comment.css">
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+	//Thanks O-R
+	//https://github.com/gitalk/gitalk/issues/102#issuecomment-382970552
+	//去除尾部匹配正则数组的字符串  
+	//Remove redundant characters
+	String.prototype.trimEnd = function(regStr) {
+		var result = this;
+		if(regStr == undefined || regStr == null || regStr == "") {
+			return result;
+		}
+		var array = regStr.split(',');
+
+		if(array.length > 0) {
+
+			var c = array.shift();
+			var str = this;
+			var i = str.length;
+			var rg = new RegExp(c);
+			var matchArr = str.match(rg);
+
+			if(matchArr != undefined && matchArr != null && matchArr.length > 0) {
+				var matchStr = matchArr[0].replace(/\\/g, "\\\\").replace(/\*/g, "\\*")
+					.replace(/\+/g, "\\+").replace(/\|/g, "\\|")
+					.replace(/\{/g, "\\{").replace(/\}/g, "\\}")
+					.replace(/\(/g, "\\(").replace(/\)/g, "\\)")
+					.replace(/\^/g, "\\^").replace(/\$/g, "\\$")
+					.replace(/\[/g, "\\[").replace(/\]/g, "\\]")
+					.replace(/\?/g, "\\?").replace(/\,/g, "\\,")
+					.replace(/\./g, "\\.").replace(/\&/g, "\\&");
+				matchStr = matchStr + '$';
+				result = str.replace(new RegExp(matchStr), "");
+			}
+
+			if(array.length > 0) {
+				return result.trimEnd(array.join())
+			} else {
+				return result;
+			}
+		}
+	};
+
+	//Create gitalk
+	var gitalk = new Gitalk({
+		clientID: '36a5ea1eb92d0cdb0a6b',
+		clientSecret: '6e1940c0dcd00e3b9216f008368995a1988bd3fd',
+		//id: window.location.pathname,
+		//id: decodeURI(window.location.pathname),
+		//id: (window.location.pathname).split("/").pop().substring(0, 49),
+		id: decodeURI( md5( location.href.trimEnd('#.*$,\\?.*$,index.html$') ) ),
+		repo: 'Blog-Comment-Repo',
+		owner: '10veU',
+		admin: '10veU',
+		distractionFreeMode: 'true',
+	})
+	gitalk.render('gitalk-container');
+</script>
+
+		
+		
+	
+
+</div>
+			</div>
+			<div class="investment-content-list">
+				<div class="layout-share">
+	
+	
+
+		
+			
+			<!-- socialShare share -->
+			<div class="social-share"></div>
+
+<!--  css & js -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+			
+		
+		
+	
+</div>
+
+
+			</div>
+		</div>	
+	</div>
+	</div>
+</div>
+
+
+
+	<!-- leancloud -->
+	<!--
+	时间：2018-11-27
+	描述：
+		文章访问量：visitors
+		文章喜欢量：likes	
+		文章排行榜：topNPost
+		其他得说明：
+			01-Cookie相关的函数 
+				https://blog.csdn.net/somehow1002/article/details/78511541（Author：somehow1002）
+			02-visitors相关的函数 
+				https://blog.csdn.net/u013553529/article/details/63357382（Author：爱博客大伯）
+				https://notes.doublemine.me/2015-10-21-为NexT主题添加文章阅读量统计功能.html（Author：夏末）
+			03-topNPost相关的函数
+				https://hoxis.github.io/hexo-next-read-rank.html（Author：hoxis）
+			04-likes相关的函数，
+				参考了01 & 02进行简单的设计与实现
+-->
+
+
+
+	<script>
+		var appid = 'xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI',
+            appkey = 'Tkq82uGKwAFYHPeTF3Q6MVDp';	  
+        AnnieLeancloud(appid, appkey);         
+	</script>
+    
+
+	
+
+
+<!-- show math formula -->
+
+
+
+	 
+	<script src="/plugin/clipboard/clipboard.js"></script>
+	<script>
+		// Copy code !
+	    function codePreprocessing() {
+	        $("#article-content .highlight").each(function() {
+
+	            $(this).wrap('<div id="post-code"></div>');
+
+	        })
+
+	        $("#article-content #post-code").each(function() {
+
+	            $(this).prepend('<nav class="copy-nav"><span><i class="code-language"></i></span></nav>');
+
+	        })
+
+	        $("#article-content .copy-nav").each(function() {
+	            var temp = $(this).next().attr('class'),
+	                language = ((temp.length > 9) && (temp != null)) ? temp.substr(10) : "none"; //why 9? Need to check language?
+
+	            $(this).find('.code-language').text(language);
+
+	            $(this).append('<span class="copy-btn"><i class="fa fa-copy" aria-hidden="true"></i></span>');
+
+	        });
+	    }
+
+		function codeCopy() {
+		    $('#article-content #post-code').each(function(i) {
+		        var codeCopyId = 'codeCopy-' + i;
+
+		        var codeNode = $(this).find('.code'),
+		            copyButton = $(this).find('.copy-btn');
+
+		        codeNode.attr('id', codeCopyId);
+		        copyButton.attr('data-clipboard-target-id', codeCopyId);
+		    })
+
+		    
+			var clipboard = new ClipboardJS('.copy-btn', {
+					target: function(trigger) {
+						return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+					}
+		      	});
+
+			//pure js
+			function showTooltip(elem, msg) {		   
+				elem.setAttribute('aria-label', msg);
+				elem.setAttribute('class', 'copy-btn copy-status');
+				setTimeout(function() {
+					elem.setAttribute('class', 'copy-btn');
+				}, 2000);
+			}
+
+			clipboard.on('success', function(e) {
+			    e.clearSelection();
+			    console.info('Action:', e.action);		   
+			    console.info('Trigger:', e.trigger);
+			    showTooltip(e.trigger, 'Copied!');
+			    
+			});
+			clipboard.on('error', function(e) {
+			    console.error('Action:', e.action);
+			    console.error('Trigger:', e.trigger);
+			});
+		
+
+		}
+
+		if ($('.layout-post').length) {
+		    codePreprocessing();
+		    codeCopy();
+		} 
+	</script>
+
+
+
+
+
+<link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+<script src="/plugin/fancybox/jquery.fancybox.js"></script>
+
+<script type="text/javascript">
+	var titleID = $('.article-title a'),
+		imageID = $('.article-content img'),
+		videoID = $('.article-content video');
+
+	var postTitle = titleID.text() ? titleID.text() : "No post title!";
+
+	imageID.each(function() {
+		var imgPath = $(this).attr('src'),
+			imgTitle = $(this).attr('alt') ? $(this).attr('alt') : "No image description!";
+
+		//给每个匹配的<img>元素打包, 即添加父元素<a>
+		$(this).wrap('<a data-fancybox="gallery" data-caption=" 《 ' + postTitle + ' 》 ' + imgTitle + ' "  href=" ' + imgPath + ' "> </a>');
+	});
+
+	videoID.each(function() {
+		var videoPath = $(this).attr('src');
+
+		//给每个匹配的<img>元素打包, 即添加父元素<a>
+		$(this).wrap('<a data-fancybox href=" ' + videoPath + ' "> </a>');
+	});
+	//TODO：支持html5 video
+
+	if($('#layout-post').length) {
+		$('[data-fancybox="gallery"]').fancybox({
+			loop: true,
+			buttons: [
+				"zoom",
+				"share",
+				"slideShow",
+				"fullScreen",
+				//"download",
+				"thumbs",
+				"close"
+			],
+			protect: false
+		});
+	}
+</script>
+		</main>
+
+		<!--footer-->
+		<footer>
+	<div class="social">
+		<ul>
+	
+		<li>
+			<a href="https://github.com/10veU" target="_blank">
+				<i class="fa fa-github"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank">
+				<i class="fa fa-weibo"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/img/wechat.jpg" target="_blank">
+				<i class="fa fa-wechat"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com" target="_blank">
+				<i class="fa fa-qq"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="mailto:xiaojie_wangxj@163.com" target="_blank">
+				<i class="fa fa-envelope"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<i class="fa fa-rss"></i>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+	<div class="copyright">
+		<p>
+			 
+				&copy;2019 - 2021, content by XiaoJie Wang. All Rights Reserved.
+			
+			
+			
+
+	<!-- busuanzi -->
+	<!-- busuanzi -->
+
+		
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+
+		<span id="busuanzi_container_page_pv">
+	  		本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+		</span>
+
+	
+
+
+
+
+		</p>
+		<p>
+			<a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> Theme <a href="https://github.com/Sariay/hexo-theme-Annie" title="Annie" target="_blank" rel="noopener">Annie</a> by Sariay.
+			<a href="javascript:zh_tran('s');" class="zh_click" id="zh_click_s">简体</a> 
+			<a href="javascript:zh_tran('t');" class="zh_click" id="zh_click_t">繁體</a>				
+		</p>
+	</div>	
+</footer>
+		
+	<!-- set '1' to show motto in all pages! -->
+
+	<script src="/plugin/motto/motto.js"></script>
+	
+	<script type="text/javascript">
+		$(".motto").html( getMingYanContent() );
+	</script>	
+
+
+
+
+	<!--
+	时间：2018-10-3
+	描述：
+		插件名称：hexo-generator-search-zip
+		插件来源: https://github.com/SuperKieran/hexo-generator-search-zip
+		代码参考：https://github.com/SuperKieran/TKL/blob/master/layout/_partial/search.ejs(Include: js & css)	
+-->
+<div class="popup search-popup local-search-popup" >
+	<div class="local-search-container">
+		<span class="popup-btn-close">
+      		ESC
+   		</span>
+		<div class="local-search-header">
+			<div class="input-prompt">				
+			</div>
+			<input autocomplete="off" placeholder="Search..." type="text" id="local-search-input">
+		</div>
+		<div class="local-search-body">
+			<div id="local-search-output"></div>
+		</div>
+		<div class="local-search-footer">
+			<div class="topN-post">				
+				
+
+   
+	<div id="topN">
+		<div class="topN-title" data-title= "热门文章"></div> 
+	</div>
+	
+    <script>
+        var appid = 'xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI',
+            appkey = 'Tkq82uGKwAFYHPeTF3Q6MVDp',
+            limitCount = 10;
+        if( $('#topN').length ){
+            AV.initialize(appid, appkey);
+            var Counter = AV.Object.extend("Counter");  
+            topNPost(Counter, limitCount);
+        }
+    </script>
+   
+								
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="/plugin/search/ziploader.js"></script>
+<script src="/plugin/search/search.js"></script>
+
+<script type="text/javascript">
+	var search_path = 'search.json',
+		zip_Path = '/search.zip',
+		version_Path = '/searchVersion.txt',
+		input_Trigger = 'auto',
+		top_N = '2';
+
+	themeLocalSearch({
+		search_path, 
+		zip_Path, 
+		version_Path, 
+		input_Trigger, 
+		top_N
+	});
+</script>
+
+
+<!-- love effect -->
+
+<!-- firework effect -->
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+	<script src="/plugin/love/fireworks.js"></script>
+
+<!--daovoice-->
+
+	<script src="/plugin/daovoice/daovoice.js"></script>
+
+<!-- back to top -->
+
+	
+	<div id="totop">
+  		<a href="javascript:;"  name="TOTOP" class="fa fa-arrow-up" ></a>
+	</div>
+
+
+
+<!-- site analysis -->
+
+
+	<!-- site-analysis -->
+	
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+		var hm = document.createElement("script");
+		hm.src = "//hm.baidu.com/hm.js?bc5394d96eab6c50c0a37cb03555fc96";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+	
+	
+	
+	
+ 
+
+<script src="/plugin/vibrant/vibrant.js"></script>
+<script src="/plugin/chinese/chinese.js"></script>
+<script src="/plugin/imgLazyLoader/yall.min.js"></script>
+<script src="/plugin/imgResize/jquery.resizeimagetoparent.min.js"></script>
+<script src="/plugin/nicescroll/jquery.nicescroll.js"></script>
+<script src="/js/resizediv.js"></script>
+<script src="/js/main.js"></script>
+	</body>	
+</html>
