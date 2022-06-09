@@ -1,0 +1,1455 @@
+<!--
+	作者：Sariay
+	时间：2018-09-25
+	描述：There may be a bug, but don't worry, QiLing(器灵) says that it can work normally!
+-->
+<!DOCTYPE html>
+<html class="html-loading">
+		
+
+<head><meta name="generator" content="Hexo 3.9.0">
+	<meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <title>
+    
+      Spring Cloud之Sleuth链路追踪 | Mr.Wang-Blog
+    
+  </title>
+  <meta name="author" content="XiaoJie Wang">
+  <meta name="keywords" content>
+  <meta name="description" content>
+	<!-- favicon -->
+  <link rel="shortcut icon" href="/img/Mr-Wang-facvion.ico">
+
+  <!-- css -->
+  <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/Annie.css">
+  
+  <!-- jquery -->
+	<script src="/js/jquery.min.js"></script>
+
+  <!-- leancloud -->
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+<script src="/js/leancloud.js"></script>
+</head>
+	<body>
+		<!-- Preloader -->
+
+	<div id="preloader">
+		<div class="pre-container">
+			
+				<div class="spinner">
+					<div class="double-bounce1"></div>
+					<div class="double-bounce2"></div>
+				</div>
+						
+		</div>
+	</div>
+
+
+<!-- header -->
+<header class="fixbackground" data-img-mode="random" data-normal-src="/" data-random-max="110" data-random-src="https://10veu.github.io/Random-img/">
+	<div class="mask">
+		<!-- Logo and navigation -->
+		<div class="h-header">
+			<div id="logo">
+				<a href="/">
+						
+						<img src="/img/Mr-Wang-logo.png" alt="Logo">
+					
+				</a>
+			</div>
+			
+			<div id="navigation-show">
+				<ul>
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home">主页</a>
+		</li>
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive">归档</a>
+		</li>
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories">分类</a>
+		</li>
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags">标签</a>
+		</li>
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about">关于</a>
+		</li>
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery">相册</a>
+		</li>
+	
+
+	
+		<li class="menu-search">
+			<a href="javascript:;" class="popup-trigger">搜索</a>
+		</li>
+	
+</ul>
+			</div>				
+		</div>
+
+		<!-- motto -->
+		<div class="h-body">	
+			
+				<p class="motto"></p>
+			
+		</div>
+		
+		<!-- others: such as time... -->			
+		<div class="h-footer">
+			<a href="javascript:;" id="read-more"><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+			</a>
+
+			
+				<!-- 
+	This is only a demo, please go to "https://time.is" to set your city time! 
+-->
+<style type="text/css">
+	.header-date {
+		font-size: 1.6rem;
+		color: #fff;
+		position: absolute;
+		bottom: 5px;
+		right: 1rem;
+		writing-mode: tb-rl;
+	}	
+	
+	.header-date a {
+		border-bottom: none;
+	}
+
+	@media only screen and (max-width: 768 ) {
+		.header-date {
+			font-size: 1rem;
+		}			
+	}
+</style>
+<div class="header-date">
+	<a href="https://time.is/Beijing" id="time_is_link" rel="nofollow" ></a>
+	<span id="Beijing_z43d"></span>
+</div>
+<script src="//widget.time.is/zh.js"></script>
+<script>
+	time_is_widget.init({
+		Beijing_z43d:{
+			template:"DATE", 
+			date_format:"year年 monthname dnum日"
+		}
+	});
+</script>
+			
+		</div>
+	</div>
+</header>
+
+<div id="navigation-hide">
+	<!-- Progress bar -->
+	<div id="progress-bar"></div>
+
+	<!-- Progress percent -->
+	<div id="progress-percentage"><h1>0.0%</h1></div>
+
+	<div class="toc-switch"><span class="switch-button">目录</span></div>
+
+	<!-- Page title -->
+	<p>
+		
+			当前文章&nbsp;:&nbsp;《Spring Cloud之Sleuth链路追踪》
+		
+	</p>
+
+	<!-- Nav trigger for navigation-H-->
+	<a class="nav-trigger"><span></span></a>
+</div>
+
+<!-- Navigation in div(id="navigation-H") -->
+<nav class="nav-container" id="cd-nav">
+	<div class="nav-header">
+		<h3>Navigation</h3>
+		<a href="javascript:;" class="nav-close"></a>
+	</div>
+	<div class="nav-body">
+		<ul>
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home">主页</a>
+		</li>
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive">归档</a>
+		</li>
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories">分类</a>
+		</li>
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags">标签</a>
+		</li>
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about">关于</a>
+		</li>
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery">相册</a>
+		</li>
+	
+
+	
+		<li class="menu-search">
+			<a href="javascript:;" class="popup-trigger">搜索</a>
+		</li>
+	
+</ul>
+	</div>
+	<div class="nav-footer">
+		<ul>
+	
+		<li>
+			<a href="https://github.com/10veU" target="_blank">
+				<i class="fa fa-github"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank">
+				<i class="fa fa-weibo"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/img/wechat.jpg" target="_blank">
+				<i class="fa fa-wechat"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com" target="_blank">
+				<i class="fa fa-qq"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="mailto:xiaojie_wangxj@163.com" target="_blank">
+				<i class="fa fa-envelope"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<i class="fa fa-rss"></i>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+</nav>
+			
+		<!--main-->
+		<main>
+			<!--
+	时间：2018-11-17
+	描述：
+		插件名称：katelog.min.js
+		插件作者：KELEN
+		插件来源: https://github.com/KELEN/katelog
+-->
+
+	
+		<div class="layout-toc">
+			<div id="layout-toc">
+				<div class="k-catelog-list" id="catelog-list" data-title="文章目录"></div>
+			</div>
+		</div>
+
+		
+		<script src="/plugin/toc/katelog.min.js"></script>
+
+		
+	 
+
+<div class="layout-post">
+	<div id="layout-post">
+	<div class="article-title">
+		<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+		
+	<a href="/2022/06/09/Spring-Cloud之Sleuth链路追踪/" itemprop="url">
+		Spring Cloud之Sleuth链路追踪
+	</a>
+
+	</div>
+
+	<div class="article-meta">
+		<span>
+			<i class="fa fa-calendar"></i>
+			
+
+
+	发布于
+
+	<a href="/2022/06/09/Spring-Cloud之Sleuth链路追踪/" itemprop="url">
+		<time datetime="2022-06-09T22:04:55.000Z" itemprop="datePublished">
+	  		2022-06-09
+	  </time>
+	</a>
+	&nbsp;
+
+
+
+
+
+			
+
+
+
+
+	更新于
+
+	<a href="/2022/06/09/Spring-Cloud之Sleuth链路追踪/" itemprop="url">
+		<time datetime="2022-06-09T22:04:55.000Z" itemprop="dateUpdated">
+	  		2022-06-09
+	  </time>
+	</a> 
+
+
+
+		</span>
+		<span>
+			<i class="fa fa-tags"></i>
+			
+	
+		<a href="/tags/微服务/" class=" ">
+			微服务
+		</a>
+	
+		<a href="/tags/Spring-Cloud/" class=" ">
+			Spring Cloud
+		</a>
+	
+		<a href="/tags/链路追踪/" class=" ">
+			链路追踪
+		</a>
+	
+		
+		</span>
+		
+		
+
+	
+    <span class="leancloud_visitors" id="/2022/06/09/Spring-Cloud之Sleuth链路追踪/_visitors" data-url="/2022/06/09/Spring-Cloud之Sleuth链路追踪/" data-title="Spring Cloud之Sleuth链路追踪">
+       	<i class="fa fa-eye"></i>
+       	热度
+        <i class="leancloud_visitors_count" id="leancloud_visitors_count">0</i>
+    </span>
+    
+
+
+
+	
+    <span class="leancloud_likes" id="/2022/06/09/Spring-Cloud之Sleuth链路追踪/_likes" data-url="/2022/06/09/Spring-Cloud之Sleuth链路追踪/" data-title="Spring Cloud之Sleuth链路追踪" rel="unlike">
+        <i class="fa fa-heart"></i>
+        喜欢
+        <i class="leancloud_likes_count" id="leancloud_likes_count">0</i>
+    </span>
+
+	</div>
+
+	<div class="article-content" id="article-content">
+		<h1 id="Spring-Cloud之Sleuth链路追踪"><a href="#Spring-Cloud之Sleuth链路追踪" class="headerlink" title="Spring Cloud之Sleuth链路追踪"></a>Spring Cloud之Sleuth链路追踪</h1><h2 id="1-问题"><a href="#1-问题" class="headerlink" title="1. 问题"></a>1. 问题</h2><p>随着微服务架构的流行，<strong>服务按照不同的维度进行拆分</strong>，一次请求往往需要涉及到多个服务。<strong>互联网应用构建在不同的软件模块集上</strong>，这些软件模块，<strong>有可能是由不同的团队开发、可能使用不同的编程语言来实现、有可能布在了几千台服务器，横跨多个不同的数据中心</strong>。因此，就需要一些可以帮助理解系统行为、用于分析性能问题的工具，以便发生故障的时候，能够快速定位和解决问题。<strong>在复杂的微服务架构系统中，几乎每一个前端请求都会形成一个复杂的分布式服务调用链路</strong>。一个请求完整调用链可能如下图所示：</p>
+<p><img src="%E4%B8%80%E4%B8%AA%E5%AE%8C%E6%95%B4%E7%9A%84%E8%AF%B7%E6%B1%82%E9%93%BE.png" alt></p>
+<p>随着服务的越来越多，对调用链的分析会越来越复杂。它们之间的调用关系也许如下：</p>
+<p><img src="%E5%BE%AE%E6%9C%8D%E5%8A%A1.png" alt>  </p>
+<p>在业务规模不断增大、服务不断增多以及频繁变更的情况下，面对复杂的调用链路就带来一系列问题：</p>
+<ul>
+<li>如何快速发现问题？</li>
+<li>如何判断故障的影响范围？</li>
+<li>如何梳理服务依赖以及依赖的合理性？</li>
+<li>如何分析链路性能问题以及实时容量规划？</li>
+</ul>
+<p>而链路追踪的出现正是为了解决这种问题，它可以在复杂的服务调用中定位问题，还可以在新人加入后台团队之后，让其清楚地知道自己所负责的服务在哪一环。</p>
+<p>除此之外，如果某个接口突然耗时增加，也不必再逐个服务查询耗时情况，我们可以直观地分析出服务的性能瓶颈，方便在流量激增的情况下精准合理地扩容。</p>
+<h2 id="2-什么是链路追踪？"><a href="#2-什么是链路追踪？" class="headerlink" title="2. 什么是链路追踪？"></a>2. 什么是链路追踪？</h2><p><code>链路追踪</code>一词是在<code>2010</code>年提出的，当时谷歌发布了一篇<a href="https://research.google/pubs/pub36356/" target="_blank" rel="noopener">Dapper, a Large-Scale Distributed Systems Tracing Infrastructure – Google Research</a>论文，介绍了谷歌自研的分布式链路追踪的实现原理，还介绍了他们是怎么低成本实现对应用透明的。</p>
+<p>其实<code>Dapper</code>一开始只是一个独立的调用链路追踪系统，后来逐渐演化成了监控平台，并且基于监控平台孕育出了很多工具，比如实时预警、过载保护、指标数据查询等。</p>
+<p>除了谷歌的<code>Dapper</code>，还有一些其他比较有名的产品，比如阿里的鹰眼、大众点评的<code>CAT</code>、<code>Twitter</code>的<code>Zipkin</code>、<code>Naver</code>（著名社交软件<code>LINE</code>的母公司）的<code>pinpoint</code>以及国产开源的<code>skywalking</code>等。</p>
+<h2 id="3-什么是Sleuth"><a href="#3-什么是Sleuth" class="headerlink" title="3. 什么是Sleuth?"></a>3. 什么是Sleuth?</h2><p><code>Spring Cloud Sleuth</code> 为 <code>Spring Cloud</code> 实现了分布式跟踪解决方案。兼容 <code>Zipkin</code>，<code>HTrace</code> 和其他基于日志的追踪系统，例如 <code>ELK（Elasticsearch 、Logstash、 Kibana）</code>。</p>
+<p><code>Spring Cloud Sleuth</code> 提供了以下功能：</p>
+<ul>
+<li><code>链路追踪</code>：通过 <code>Sleuth</code> 可以很清楚的看出一个请求都经过了那些服务，可以很方便的理清服务间的调用关系等。</li>
+<li><code>性能分析</code>：通过 <code>Sleuth</code> 可以很方便的看出每个采样请求的耗时，分析哪些服务调用比较耗时，当服务调用的耗时随着请求量的增大而增大时， 可以对服务的扩容提供一定的提醒。</li>
+<li><code>数据分析，优化链路</code>：对于频繁调用一个服务，或并行调用等，可以针对业务做一些优化措施。</li>
+<li><code>可视化错误</code>：对于程序未捕获的异常，可以配合 <code>Zipkin</code> 查看。</li>
+</ul>
+<h2 id="4-专业术语"><a href="#4-专业术语" class="headerlink" title="4. 专业术语"></a>4. 专业术语</h2><p>Spring Cloud Sleuth采用了<a href="https://research.google/pubs/pub36356/" target="_blank" rel="noopener">Dapper</a>的术语。</p>
+<h3 id="Span"><a href="#Span" class="headerlink" title="Span"></a>Span</h3><p><strong>基本工作单元</strong>，一次链路调用（可以是RPC，DB等没有特定的限制）创建一个<code>span</code>，通过一个64位<code>ID</code>标识它，<code>uuid</code>较为方便，<code>span</code>中还有其他的数据，例如<strong>描述信息</strong>，<strong>时间戳</strong>，<code>key-value</code>对的（<code>Annotation</code>）<code>tag</code>信息，<code>parent_id</code>等,其中<code>parent-id</code>可以表示<code>span</code>调用链路来源。</p>
+<p><img src="span.png" alt> </p>
+<p>上图说明了span在一次大的跟踪过程中是什么样的。<strong>Dapper记录了span名称，以及每个span的ID和父ID，以重建在一次追踪过程中不同span之间的关系</strong>。如果一个span没有父ID被称为root span。<strong>所有span都挂在一个特定的跟踪上，也共用一个跟踪id</strong>。</p>
+<p>Span数据结构</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">type Span <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    TraceID    int64 <span class="comment">// 用于标示一次完整的请求id</span></span><br><span class="line">    Name       <span class="built_in">string</span></span><br><span class="line">    ID         int64 <span class="comment">// 当前这次调用span_id</span></span><br><span class="line">    ParentID   int64 <span class="comment">// 上层服务的调用span_id  最上层服务parent_id为null</span></span><br><span class="line">    Annotation []Annotation <span class="comment">// 用于标记的时间戳</span></span><br><span class="line">    Debug      <span class="keyword">bool</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Trace"><a href="#Trace" class="headerlink" title="Trace"></a>Trace</h3><p>类似于 <strong>树结构的Span集合</strong>，一个<code>Trace</code>表示一次完整的链路跟踪，从请求到服务器开始，服务器返回<code>response</code>结束，跟踪每次<code>rpc</code>调用的耗时，存在唯一标识<code>trace_id</code>。比如：你运行的分布式大数据存储一次<code>Trace</code>就由你的一次请求组成。</p>
+<p>举个例子：客户端调用服务 A 、服务 B 、服务 C 、服务 F，而每个服务例如 C 就是一个 Span，如果在服务 C 中另起线程调用了 D，那么 D 就是 C 的子 Span，如果在服务 D 中另起线程调用了 E，那么 E 就是 D 的子 Span，这个 C -&gt; D -&gt; E 的链路就是一条 Trace。如果链路追踪系统做好了，链路数据有了，借助前端解析和渲染工具，可以达到下图中的效果：</p>
+<p><img src="trace.png" alt></p>
+<h3 id="Annotation"><a href="#Annotation" class="headerlink" title="Annotation"></a>Annotation</h3><p><strong>注解，用来记录请求特定事件相关信息（例如时间），一个span中会有多个annotation注解描述</strong>。通常包含四个注解信息：</p>
+<ul>
+<li><strong>cs</strong>：Client Start，表示客户端发起请求</li>
+<li><strong>sr</strong>：Server Receive，表示服务端收到请求</li>
+<li><strong>ss</strong>：Server Send，表示服务端完成处理，并将结果发送给客户端</li>
+<li><strong>cr</strong>：Client Received，表示客户端获取到服务端返回信息</li>
+</ul>
+<p>Annotation数据结构：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">type Annotation <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    Timestamp int64</span><br><span class="line">    Value     <span class="built_in">string</span></span><br><span class="line">    Host      Endpoint</span><br><span class="line">    Duration  int32</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-实现原理"><a href="#5-实现原理" class="headerlink" title="5. 实现原理"></a>5. 实现原理</h2><p>如果想知道一个接口在哪个环节出现了问题，就必须清楚该接口调用了哪些服务，以及调用的顺序，如果把这些服务串起来，看起来就像链条一样，我们称其为<strong>调用链</strong>。</p>
+<p><img src="%E8%B0%83%E7%94%A8%E9%93%BE.png" alt></p>
+<p>想要实现调用链，就要为每次调用做个标识，然后将服务按标识大小排列，可以更清晰地看出调用顺序，我们暂且将该标识命名为<code>spanid</code>。</p>
+<p><img src="spanid.png" alt></p>
+<p>实际场景中，我们需要知道某次请求调用的情况，所以只有 <code>spanid</code> 还不够，得为每次请求做个唯一标识，这样才能根据标识查出本次请求调用的所有服务，而这个标识我们命名为 <code>traceid</code>。</p>
+<p><img src="traceid.png" alt></p>
+<p>现在根据 <code>spanid</code> 可以轻易地知道被调用服务的先后顺序，但无法体现调用的层级关系，正如下图所示，多个服务可能是逐级调用的链条，也可能是同时被同一个服务调用。</p>
+<p><img src="%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8.png" alt></p>
+<p>所以应该每次都记录下是谁调用的，我们用 <code>parentid</code> 作为这个标识的名字。</p>
+<p><img src="parentid.png" alt></p>
+<p>到现在，已经知道调用顺序和层级关系了，但是接口出现问题后，还是不能找到出问题的环节，如果某个服务有问题，那个被调用执行的服务一定耗时很长，要想计算出耗时，上述的三个标识还不够，还需要加上时间戳，时间戳可以更精细一点，精确到微秒级。</p>
+<p><img src="%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA.png" alt></p>
+<p>只记录发起调用时的时间戳还算不出耗时，要记录下服务返回时的时间戳，有始有终才能算出时间差，既然返回的也记了，就把上述的三个标识都记一下吧，不然区分不出是谁的时间戳。</p>
+<p><img src="%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA1.png" alt></p>
+<p>虽然能计算出从服务调用到服务返回的总耗时，但是这个时间包含了服务的执行时间和网络延迟，有时候我们需要区分出这两类时间以方便做针对性优化。那如何计算网络延迟呢？我们可以把调用和返回的过程分为以下四个事件。</p>
+<ul>
+<li><code>Client Sent</code> 简称 <code>cs</code>，客户端发起调用请求到服务端。</li>
+<li><code>Server Received</code> 简称 <code>sr</code>，指服务端接收到了客户端的调用请求。</li>
+<li><code>Server Sent</code> 简称 <code>ss</code>，指服务端完成了处理，准备将信息返给客户端。</li>
+<li><code>Client Received</code> 简称 <code>cr</code>，指客户端接收到了服务端的返回信息。</li>
+</ul>
+<p><img src="%E4%BA%8B%E4%BB%B6.png" alt></p>
+<p>假如在这四个事件发生时记录下时间戳，就可以轻松计算出耗时，比如 <code>sr</code> 减去 <code>cs</code> 就是<strong>调用时的网络延迟</strong>，<code>ss</code> 减去 <code>sr</code> 就是<strong>服务执行时间</strong>，<code>cr</code> 减去 <code>ss</code> 就是<strong>服务响应的延迟</strong>，<code>cr</code> 减 <code>cs</code> 就是<strong>整个服务调用执行的时间</strong>。</p>
+<p><img src="%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4.png" alt></p>
+<p>其实 <code>span</code> 内除了记录这几个参数之外，还可以记录一些其他信息，比如发起调用服务名称、被调服务名称、返回结果、<code>IP</code>、调用服务的名称等，最后，我们再把相同 <code>parentid</code> 的 <code>span</code> 信息合成一个大的 <code>span</code> 块，就完成了一个完整的调用链。</p>
+<p><img src="%E5%AE%8C%E6%95%B4%E8%B0%83%E7%94%A8%E9%93%BE.png" alt></p>
+<h2 id="6-环境准备"><a href="#6-环境准备" class="headerlink" title="6. 环境准备"></a>6. 环境准备</h2><ul>
+<li><code>spring-cloud-demo-eureka-server01</code></li>
+<li><code>spring-cloud-demo-eureka-server02</code></li>
+<li><code>spring-cloud-demo-gateway</code></li>
+<li><code>spring-cloud-demo-service-provider01</code>服务提供者<br> 根据id查询商品 <a href="http://localhost:7071/product/1" target="_blank" rel="noopener">http://localhost:7071/product/1</a><br> 获取商品列表<a href="http://localhost:7071/product/list" target="_blank" rel="noopener">http://localhost:7071/product/list</a>  </li>
+<li><code>spring-cloud-demo-service-consumer</code><br> 提供了根据主键查询订单接口 <a href="http://localhost:9090/order/1" target="_blank" rel="noopener">http://localhost:9090/order/1</a> 且订单服务调用商品服务。</li>
+</ul>
+<h2 id="7-入门案例"><a href="#7-入门案例" class="headerlink" title="7. 入门案例"></a>7. 入门案例</h2><h3 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h3><p>在需要进行链路追踪的项目中（服务网关、商品服务、订单服务）添加 <code>spring-cloud-starter-sleuth</code> 依赖。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- spring cloud sleuth 依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-sleuth<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="日志记录"><a href="#日志记录" class="headerlink" title="日志记录"></a>日志记录</h3><p>在需要链路追踪的项目中添加 <code>logback.xml</code> 日志文件，内容如下（logback 日志的输出级别需要是 DEBUG 级别）：</p>
+<p>注意修改 <code>&lt;property name=&quot;log.path&quot; value=&quot;${catalina.base}/gateway-server/logs&quot;/&gt;</code> 中项目名称。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 日志级别从低到高分为TRACE &lt; DEBUG &lt; INFO &lt; WARN &lt; ERROR &lt; FATAL，如果设置为WARN，则低于WARN的信息都不会输出 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- scan: 当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- scanPeriod: 设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- de<span class="doctag">bug:</span> 当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span> <span class="attr">scan</span>=<span class="string">"true"</span> <span class="attr">scanPeriod</span>=<span class="string">"10 seconds"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 日志上下文名称 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">contextName</span>&gt;</span>my_logback<span class="tag">&lt;/<span class="name">contextName</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- name的值是变量的名称，value的值是变量定义的值。通过定义的值会被插入到logger上下文中。定义变量后，可以使“$&#123;&#125;”来使用变量。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"log.path"</span> <span class="attr">value</span>=<span class="string">"$&#123;catalina.base&#125;/gateway-server/logs"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 加载 Spring 配置文件信息 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">springProperty</span> <span class="attr">scope</span>=<span class="string">"context"</span> <span class="attr">name</span>=<span class="string">"applicationName"</span> <span class="attr">source</span>=<span class="string">"spring.application.name"</span> <span class="attr">defaultValue</span>=<span class="string">"localhost"</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 日志输出格式 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"LOG_PATTERN"</span> <span class="attr">value</span>=<span class="string">"%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [$&#123;applicationName&#125;,%X&#123;X-B3-TraceId:-&#125;,%X&#123;X-B3-SpanId:-&#125;] [%thread] %-5level %logger&#123;50&#125; - %msg%n"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--输出到控制台--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"CONSOLE"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.ConsoleAppender"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.ThresholdFilter"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">level</span>&gt;</span>DEBUG<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;LOG_PATTERN&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 设置字符集 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">charset</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">charset</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 输出到文件 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 时间滚动输出 level为 DEBUG 日志 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"DEBUG_FILE"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 正在记录的日志文件的路径及文件名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.path&#125;/log_debug.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--日志文件输出格式--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;LOG_PATTERN&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">charset</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">charset</span>&gt;</span> <span class="comment">&lt;!-- 设置字符集 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 日志记录器的滚动策略，按日期，按大小记录 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 日志归档 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.path&#125;/debug/log-debug-%d&#123;yyyy-MM-dd&#125;.%i.log<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">timeBasedFileNamingAndTriggeringPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">maxFileSize</span>&gt;</span>100MB<span class="tag">&lt;/<span class="name">maxFileSize</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">timeBasedFileNamingAndTriggeringPolicy</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--日志文件保留天数--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>15<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 此日志文件只记录debug级别的 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">level</span>&gt;</span>DEBUG<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 时间滚动输出 level为 INFO 日志 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"INFO_FILE"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 正在记录的日志文件的路径及文件名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.path&#125;/log_info.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--日志文件输出格式--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;LOG_PATTERN&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">charset</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">charset</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 日志记录器的滚动策略，按日期，按大小记录 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 每天日志归档路径以及格式 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.path&#125;/info/log-info-%d&#123;yyyy-MM-dd&#125;.%i.log<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">timeBasedFileNamingAndTriggeringPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">maxFileSize</span>&gt;</span>100MB<span class="tag">&lt;/<span class="name">maxFileSize</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">timeBasedFileNamingAndTriggeringPolicy</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--日志文件保留天数--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>15<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 此日志文件只记录info级别的 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">level</span>&gt;</span>INFO<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 时间滚动输出 level为 WARN 日志 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"WARN_FILE"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 正在记录的日志文件的路径及文件名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.path&#125;/log_warn.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--日志文件输出格式--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;LOG_PATTERN&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">charset</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">charset</span>&gt;</span> <span class="comment">&lt;!-- 此处设置字符集 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 日志记录器的滚动策略，按日期，按大小记录 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.path&#125;/warn/log-warn-%d&#123;yyyy-MM-dd&#125;.%i.log<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 每个日志文件最大100MB --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">timeBasedFileNamingAndTriggeringPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">maxFileSize</span>&gt;</span>100MB<span class="tag">&lt;/<span class="name">maxFileSize</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">timeBasedFileNamingAndTriggeringPolicy</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--日志文件保留天数--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>15<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 此日志文件只记录warn级别的 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">level</span>&gt;</span>WARN<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 时间滚动输出 level为 ERROR 日志 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"ERROR_FILE"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 正在记录的日志文件的路径及文件名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">file</span>&gt;</span>$&#123;log.path&#125;/log_error.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--日志文件输出格式--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>$&#123;LOG_PATTERN&#125;<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">charset</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">charset</span>&gt;</span> <span class="comment">&lt;!-- 此处设置字符集 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 日志记录器的滚动策略，按日期，按大小记录 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;log.path&#125;/error/log-error-%d&#123;yyyy-MM-dd&#125;.%i.log<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">timeBasedFileNamingAndTriggeringPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">maxFileSize</span>&gt;</span>100MB<span class="tag">&lt;/<span class="name">maxFileSize</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">timeBasedFileNamingAndTriggeringPolicy</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--日志文件保留天数--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>15<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 日志量最大 10 GB --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">totalSizeCap</span>&gt;</span>10GB<span class="tag">&lt;/<span class="name">totalSizeCap</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 此日志文件只记录ERROR级别的 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filter</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.filter.LevelFilter"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">level</span>&gt;</span>ERROR<span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">onMatch</span>&gt;</span>ACCEPT<span class="tag">&lt;/<span class="name">onMatch</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">onMismatch</span>&gt;</span>DENY<span class="tag">&lt;/<span class="name">onMismatch</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 对于类路径以 com.example.logback 开头的Logger,输出级别设置为warn,并且只输出到控制台 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 这个logger没有指定appender，它会继承root节点中定义的那些appender --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- &lt;logger name="com.example.logback" level="warn"/&gt; --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--通过 LoggerFactory.getLogger("myLog") 可以获取到这个logger--&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--由于这个logger自动继承了root的appender，root中已经有stdout的appender了，自己这边又引入了stdout的appender--&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--如果没有设置 additivity="false" ,就会导致一条日志在控制台输出两次的情况--&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--additivity表示要不要使用rootLogger配置的appender进行输出--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"myLog"</span> <span class="attr">level</span>=<span class="string">"INFO"</span> <span class="attr">additivity</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"CONSOLE"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 日志输出级别及方式 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">"DEBUG"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"CONSOLE"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"DEBUG_FILE"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"INFO_FILE"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"WARN_FILE"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"ERROR_FILE"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>日志核心配置：<code>%d{yyyy-MM-dd HH:mm:ss.SSS} [${applicationName},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] [%thread] %-5level %logger{50} - %msg%n</code></p>
+<h3 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h3><p>访问：<a href="http://localhost:9000/SERVICE-PROVIDER/product/list?token=123" target="_blank" rel="noopener">localhost:9000/SERVICE-PROVIDER/product/list?token=123</a>，结果如下：</p>
+<p>服务网关打印日志如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">2022-06-01 10:52:50.611 [gateway-server,,] [reactor-http-nio-5] DEBUG reactor.netty.http.client.HttpClientOperations - [id: 0x52172b4f, L:/172.20.10.12:54892 - R:DESKTOP-634RU6I/172.20.10.12:9090] Received last HTTP packet</span><br><span class="line">2022-06-01 10:52:50.611 [gateway-server,5b66a3dd70bc0beb,5b66a3dd70bc0beb] [reactor-http-nio-5] DEBUG o.s.cloud.sleuth.instrument.web.TraceWebFilter - Handled send of RealSpan(5b66a3dd70bc0beb/5b66a3dd70bc0beb)</span><br><span class="line">2022-06-01 10:52:50.611 [gateway-server,5b66a3dd70bc0beb,5b66a3dd70bc0beb] [reactor-http-nio-5] DEBUG o.s.web.server.adapter.HttpWebHandlerAdapter - [71542345-46] Completed 200 OK</span><br><span class="line">2022-06-01 10:52:50.611 [gateway-server,5b66a3dd70bc0beb,5b66a3dd70bc0beb] [reactor-http-nio-5] DEBUG reactor.netty.http.server.HttpServerOperations - [id: 0x71542345, L:/0:0:0:0:0:0:0:1:9000 - R:/0:0:0:0:0:0:0:1:64205] Last HTTP response frame</span><br><span class="line">2022-06-01 10:52:50.611 [gateway-server,5b66a3dd70bc0beb,5b66a3dd70bc0beb] [reactor-http-nio-5] DEBUG reactor.netty.http.server.HttpServerOperations - [id: 0x71542345, L:/0:0:0:0:0:0:0:1:9000 - R:/0:0:0:0:0:0:0:1:64205] Decreasing pending responses, now 0</span><br><span class="line">2022-06-01 10:52:50.611 [gateway-server,5b66a3dd70bc0beb,5b66a3dd70bc0beb] [reactor-http-nio-5] DEBUG reactor.netty.http.server.HttpServerOperations - [id: 0x71542345, L:/0:0:0:0:0:0:0:1:9000 - R:/0:0:0:0:0:0:0:1:64205] Last HTTP packet was sent, terminating the channel</span><br></pre></td></tr></table></figure>
+
+<p>商品服务打印日志信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">2022-06-01 10:52:50.606 [service-provider,5b66a3dd70bc0beb,0a2d3a907c88100f] [http-nio-7071-exec-7] DEBUG org.springframework.web.servlet.DispatcherServlet - GET "/product/list", parameters=&#123;&#125;</span><br><span class="line">2022-06-01 10:52:50.606 [service-provider,5b66a3dd70bc0beb,0a2d3a907c88100f] [http-nio-7071-exec-7] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to com.springcloud.demo.controller.ProductController#selectProductList()</span><br><span class="line">selectProductList</span><br><span class="line">2022-06-01 10:52:50.607 [service-provider,5b66a3dd70bc0beb,0a2d3a907c88100f] [http-nio-7071-exec-7] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json', given [application/json, application/*+json] and supported [application/json, application/*+json, application/json, application/*+json]</span><br><span class="line">2022-06-01 10:52:50.607 [service-provider,5b66a3dd70bc0beb,0a2d3a907c88100f] [http-nio-7071-exec-7] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [[Product(id=1, productName=华为手机, productNum=2, productPrice=5888.0), Product(id=2, productName=联想笔记本 (truncated)...]</span><br><span class="line">2022-06-01 10:52:50.607 [service-provider,5b66a3dd70bc0beb,0a2d3a907c88100f] [http-nio-7071-exec-7] DEBUG org.springframework.web.servlet.DispatcherServlet - Completed 200 OK</span><br></pre></td></tr></table></figure>
+
+<p>订单服务打印日志信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2022-06-01 10:52:50.609 [service-consumer,5b66a3dd70bc0beb,c827a26bc012f1af] [http-nio-9090-exec-1] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json;q=0.8', given [text/html, application/xhtml+xml, image/webp, image/apng, application/xml;q=0.9, application/signed-exchange;v=b3;q=0.9, */*;q=0.8] and supported [application/json, application/*+json, application/json, application/*+json]</span><br><span class="line">2022-06-01 10:52:50.609 [service-consumer,5b66a3dd70bc0beb,c827a26bc012f1af] [http-nio-9090-exec-1] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [Order(id=1, orderNo=order-003, orderAddress=中国-China, totalPrice=31996.0, productList=[Product(id=1, (truncated)...]</span><br><span class="line">2022-06-01 10:52:50.610 [service-consumer,5b66a3dd70bc0beb,c827a26bc012f1af] [http-nio-9090-exec-1] DEBUG org.springframework.web.servlet.DispatcherServlet - Completed 200 OK</span><br></pre></td></tr></table></figure>
+
+<p>通过打印信息可以得知，整个链路的 <code>traceId</code> 为：<code>5b66a3dd70bc0beb</code>，<code>spanId</code> 为：<code>0a2d3a907c88100f</code> 和 <code>c827a26bc012f1af</code>。</p>
+<p>查看日志文件并不是一个很好的方法，当微服务越来越多日志文件也会越来越多，查询工作会变得越来越麻烦，<code>Spring</code> 官方推荐使用 <code>Zipkin</code> 进行链路跟踪。<code>Zipkin</code> 可以将日志聚合，并进行可视化展示和全文检索。</p>
+<h2 id="8-使用Zipkin进行链路追踪"><a href="#8-使用Zipkin进行链路追踪" class="headerlink" title="8. 使用Zipkin进行链路追踪"></a>8. 使用Zipkin进行链路追踪</h2><h3 id="什么是Zipkin"><a href="#什么是Zipkin" class="headerlink" title="什么是Zipkin"></a>什么是Zipkin</h3><p><img src="Zipkin.png" alt></p>
+<p>　<a href="https://zipkin.io/" target="_blank" rel="noopener">Zipkin</a> 是 Twitter 公司开发贡献的一款开源的分布式实时数据追踪系统（<code>Distributed Tracking System</code>），基于 <code>Google Dapper</code> 的论文设计而来，其主要功能是聚集各个异构系统的实时监控数据。</p>
+<p>　　它可以收集各个服务器上请求链路的跟踪数据，并通过 <code>Rest API</code> 接口来辅助我们查询跟踪数据，实现对分布式系统的实时监控，及时发现系统中出现的延迟升高问题并找出系统性能瓶颈的根源。除了面向开发的 <code>API</code> 接口之外，它还提供了方便的 <code>UI</code> 组件，每个服务向 <code>Zipkin</code> 报告计时数据，<code>Zipkin</code> 会根据调用关系生成依赖关系图，帮助我们直观的搜索跟踪信息和分析请求链路明细。<code>Zipkin</code> 提供了可插拔数据存储方式：<code>In-Memory</code>、<code>MySql</code>、<code>Cassandra</code> 以及 <code>Elasticsearch</code>。</p>
+<p>　　分布式跟踪系统还有其他比较成熟的实现，例如：<code>Naver</code> 的 <code>PinPoint</code>、<code>Apache</code> 的 <code>HTrace</code>、阿里的鹰眼 <code>Tracing</code>、京东的 <code>Hydra</code>、新浪的 <code>Watchman</code>，美团点评的 <code>CAT</code>，Apache 的 <code>SkyWalking</code> 等。</p>
+<p><img src="zipkin%E7%9A%84span%E6%A8%A1%E5%9E%8B.png" alt>  </p>
+<h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p><img src="zipkin%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.jpg" alt></p>
+<p><code>Zipkin</code>的基础架构，它主要有4个核心组件构成：</p>
+<ul>
+<li><strong>Collector</strong>：收集器组件，它主要用于处理从外部系统发送过来的跟踪信息，将这些信息转换为<code>Zipkin</code>内部处理的<code>Span</code>格式，以支持后续的存储、分析、展示等功能。</li>
+<li><strong>Storage</strong>：存储组件，它主要对处理收集器接收到的跟踪信息，默认会将这些信息存储在内存中，我们也可以修改此存储策略，通过使用其他存储组件将跟踪信息存储到 数据库 中。</li>
+<li><strong>RESTful API</strong>：<code>API</code>组件，它主要用来提供外部访问接口。比如给客户端展示跟踪信息，或是外接系统访问以实现监控等。</li>
+<li><strong>Web UI</strong>：<code>UI</code>组件，基于API组件实现的上层应用。通过UI组件用户可以方便而有直观地查询和分析跟踪信息。</li>
+</ul>
+<p><code>Zipkin</code>示例结构图：</p>
+<p><img src="zipkin%E7%BB%93%E6%9E%84.png" alt></p>
+<p>Zipkin链路跟踪</p>
+<p>工程下有3个模块：</p>
+<ul>
+<li>注册中心</li>
+<li>服务提供者</li>
+<li><code>Zipkin</code>(<code>server</code>端和<code>client</code>端)<ul>
+<li><code>server</code>端，收集数据并展示</li>
+<li><code>client</code>，把调用数据发送给<code>server</code>端</li>
+</ul>
+</li>
+</ul>
+<h3 id="服务端部署"><a href="#服务端部署" class="headerlink" title="服务端部署"></a>服务端部署</h3><p>服务端是一个独立的可执行的 <code>jar</code> 包官方下载地址：<a href="https://search.maven.org/remote_content?g=io.zipkin&amp;a=zipkin-server&amp;v=LATEST&amp;c=exec，使用" target="_blank" rel="noopener">https://search.maven.org/remote_content?g=io.zipkin&amp;a=zipkin-server&amp;v=LATEST&amp;c=exec，使用</a> <code>java -jar zipkin.jar</code> 命令启动，端口默认为 <code>9411</code>。我们下载的 jar 包为：<code>zipkin-server-2.23.16-exec.jar</code>，启动命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar zipkin-server-2.23.16-exec.jar</span><br></pre></td></tr></table></figure>
+
+<p>访问：<a href="http://localhost:9411/" target="_blank" rel="noopener">http://localhost:9411/</a> 结果如下：</p>
+<p>目前最新版界面。</p>
+<p><img src="zipkin_server.png" alt></p>
+<p>之前旧版本界面</p>
+<p><img src="zipkin_server%E8%80%81%E7%89%88.png" alt></p>
+<h3 id="客户端部署"><a href="#客户端部署" class="headerlink" title="客户端部署"></a>客户端部署</h3><h4 id="添加依赖-1"><a href="#添加依赖-1" class="headerlink" title="添加依赖"></a>添加依赖</h4><p>在需要进行链路追踪的项目中（服务网关、商品服务、订单服务）添加 <code>spring-cloud-starter-zipkin</code> 依赖。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- spring cloud zipkin 依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-zipkin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><p>在需要进行链路追踪的项目中（服务网关、商品服务、订单服务）配置 <code>Zipkin</code> 服务端地址及数据传输方式。默认即如下配置。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  zipkin:</span></span><br><span class="line"><span class="attr">    base-url:</span> <span class="attr">http://localhost:9411/</span> <span class="comment"># 服务端地址</span></span><br><span class="line"><span class="attr">    sender:</span></span><br><span class="line"><span class="attr">      type:</span> <span class="string">web</span>                      <span class="comment"># 数据传输方式，web 表示以 HTTP 报文的形式向服务端发送数据</span></span><br><span class="line"><span class="attr">  sleuth:</span></span><br><span class="line"><span class="attr">    sampler:</span></span><br><span class="line"><span class="attr">      probability:</span> <span class="number">1.0</span>               <span class="comment"># 收集数据百分比，默认 0.1（10%）</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="访问-1"><a href="#访问-1" class="headerlink" title="访问"></a>访问</h4><p>访问：<a href="http://localhost:9000/SERVICE-CONSUMER/order/1?token=123" target="_blank" rel="noopener">http://localhost:9000/SERVICE-CONSUMER/order/1?token=123</a> 结果如下：</p>
+<p><img src="%E6%8E%A5%E5%8F%A3%E5%93%8D%E5%BA%94.png" alt></p>
+<p>访问：<a href="http://localhost:9411/" target="_blank" rel="noopener">http://localhost:9411/</a> 根据时间过滤点击<code>搜索</code>结果如下：</p>
+<p><img src="zipkin%E9%93%BE%E8%B7%AF%E6%97%B6%E9%97%B4%E8%BF%87%E6%BB%A4.png" alt></p>
+<p>点击对应的追踪信息可查看请求链路详细信息。</p>
+<p><img src="zipkin%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA%E8%AF%A6%E6%83%85.png" alt></p>
+<p>通过依赖可以查看链路中服务的依赖关系。</p>
+<p><img src="zipkin%E4%BE%9D%E8%B5%96%E4%BF%A1%E6%81%AF.png" alt></p>
+<h3 id="存储追踪数据"><a href="#存储追踪数据" class="headerlink" title="存储追踪数据"></a>存储追踪数据</h3><p><code>Zipkin Server</code> <strong>默认存储追踪数据至内存中</strong>，这种方式并不适合生产环境，一旦 <code>Server</code> 关闭重启或者服务崩溃，就会导致历史数据消失。<code>Zipkin</code> 支持修改存储策略使用其他存储组件，支持 <code>MySQL</code>，<code>Elasticsearch</code> 等。</p>
+<h4 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h4><h5 id="数据库脚本"><a href="#数据库脚本" class="headerlink" title="数据库脚本"></a>数据库脚本</h5><p>打开MySQL数据库，创建<code>zipkin</code>库，执行以下<code>SQL</code>脚本。</p>
+<blockquote>
+<p><a href="https://github.com/openzipkin/zipkin/blob/master/zipkin-storage/mysql-v1/src/main/resources/mysql.sql" target="_blank" rel="noopener">zipkin/mysql.sql at master · openzipkin/zipkin (github.com)</a></p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- Copyright 2015-2019 The OpenZipkin Authors</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except</span></span><br><span class="line"><span class="comment">-- in compliance with the License. You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- Unless required by applicable law or agreed to in writing, software distributed under the License</span></span><br><span class="line"><span class="comment">-- is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express</span></span><br><span class="line"><span class="comment">-- or implied. See the License for the specific language governing permissions and limitations under</span></span><br><span class="line"><span class="comment">-- the License.</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> zipkin_spans (</span><br><span class="line">  <span class="string">`trace_id_high`</span> <span class="built_in">BIGINT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="number">0</span> <span class="keyword">COMMENT</span> <span class="string">'If non zero, this means the trace uses 128 bit traceIds instead of 64 bit'</span>,</span><br><span class="line">  <span class="string">`trace_id`</span> <span class="built_in">BIGINT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">BIGINT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`remote_service_name`</span> <span class="built_in">VARCHAR</span>(<span class="number">255</span>),</span><br><span class="line">  <span class="string">`parent_id`</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">  <span class="string">`debug`</span> <span class="built_in">BIT</span>(<span class="number">1</span>),</span><br><span class="line">  <span class="string">`start_ts`</span> <span class="built_in">BIGINT</span> <span class="keyword">COMMENT</span> <span class="string">'Span.timestamp(): epoch micros used for endTs query and to implement TTL'</span>,</span><br><span class="line">  <span class="string">`duration`</span> <span class="built_in">BIGINT</span> <span class="keyword">COMMENT</span> <span class="string">'Span.duration(): micros used for minDuration and maxDuration query'</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`trace_id_high`</span>, <span class="string">`trace_id`</span>, <span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> ROW_FORMAT=COMPRESSED <span class="built_in">CHARACTER</span> <span class="keyword">SET</span>=utf8 <span class="keyword">COLLATE</span> utf8_general_ci;</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> zipkin_spans <span class="keyword">ADD</span> <span class="keyword">INDEX</span>(<span class="string">`trace_id_high`</span>, <span class="string">`trace_id`</span>) <span class="keyword">COMMENT</span> <span class="string">'for getTracesByIds'</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> zipkin_spans <span class="keyword">ADD</span> <span class="keyword">INDEX</span>(<span class="string">`name`</span>) <span class="keyword">COMMENT</span> <span class="string">'for getTraces and getSpanNames'</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> zipkin_spans <span class="keyword">ADD</span> <span class="keyword">INDEX</span>(<span class="string">`remote_service_name`</span>) <span class="keyword">COMMENT</span> <span class="string">'for getTraces and getRemoteServiceNames'</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> zipkin_spans <span class="keyword">ADD</span> <span class="keyword">INDEX</span>(<span class="string">`start_ts`</span>) <span class="keyword">COMMENT</span> <span class="string">'for getTraces ordering and range'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> zipkin_annotations (</span><br><span class="line">  <span class="string">`trace_id_high`</span> <span class="built_in">BIGINT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="number">0</span> <span class="keyword">COMMENT</span> <span class="string">'If non zero, this means the trace uses 128 bit traceIds instead of 64 bit'</span>,</span><br><span class="line">  <span class="string">`trace_id`</span> <span class="built_in">BIGINT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'coincides with zipkin_spans.trace_id'</span>,</span><br><span class="line">  <span class="string">`span_id`</span> <span class="built_in">BIGINT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'coincides with zipkin_spans.id'</span>,</span><br><span class="line">  <span class="string">`a_key`</span> <span class="built_in">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'BinaryAnnotation.key or Annotation.value if type == -1'</span>,</span><br><span class="line">  <span class="string">`a_value`</span> <span class="built_in">BLOB</span> <span class="keyword">COMMENT</span> <span class="string">'BinaryAnnotation.value(), which must be smaller than 64KB'</span>,</span><br><span class="line">  <span class="string">`a_type`</span> <span class="built_in">INT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">'BinaryAnnotation.type() or -1 if Annotation'</span>,</span><br><span class="line">  <span class="string">`a_timestamp`</span> <span class="built_in">BIGINT</span> <span class="keyword">COMMENT</span> <span class="string">'Used to implement TTL; Annotation.timestamp or zipkin_spans.timestamp'</span>,</span><br><span class="line">  <span class="string">`endpoint_ipv4`</span> <span class="built_in">INT</span> <span class="keyword">COMMENT</span> <span class="string">'Null when Binary/Annotation.endpoint is null'</span>,</span><br><span class="line">  <span class="string">`endpoint_ipv6`</span> <span class="built_in">BINARY</span>(<span class="number">16</span>) <span class="keyword">COMMENT</span> <span class="string">'Null when Binary/Annotation.endpoint is null, or no IPv6 address'</span>,</span><br><span class="line">  <span class="string">`endpoint_port`</span> <span class="built_in">SMALLINT</span> <span class="keyword">COMMENT</span> <span class="string">'Null when Binary/Annotation.endpoint is null'</span>,</span><br><span class="line">  <span class="string">`endpoint_service_name`</span> <span class="built_in">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">COMMENT</span> <span class="string">'Null when Binary/Annotation.endpoint is null'</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> ROW_FORMAT=COMPRESSED <span class="built_in">CHARACTER</span> <span class="keyword">SET</span>=utf8 <span class="keyword">COLLATE</span> utf8_general_ci;</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> zipkin_annotations <span class="keyword">ADD</span> <span class="keyword">UNIQUE</span> <span class="keyword">KEY</span>(<span class="string">`trace_id_high`</span>, <span class="string">`trace_id`</span>, <span class="string">`span_id`</span>, <span class="string">`a_key`</span>, <span class="string">`a_timestamp`</span>) <span class="keyword">COMMENT</span> <span class="string">'Ignore insert on duplicate'</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> zipkin_annotations <span class="keyword">ADD</span> <span class="keyword">INDEX</span>(<span class="string">`trace_id_high`</span>, <span class="string">`trace_id`</span>, <span class="string">`span_id`</span>) <span class="keyword">COMMENT</span> <span class="string">'for joining with zipkin_spans'</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> zipkin_annotations <span class="keyword">ADD</span> <span class="keyword">INDEX</span>(<span class="string">`trace_id_high`</span>, <span class="string">`trace_id`</span>) <span class="keyword">COMMENT</span> <span class="string">'for getTraces/ByIds'</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> zipkin_annotations <span class="keyword">ADD</span> <span class="keyword">INDEX</span>(<span class="string">`endpoint_service_name`</span>) <span class="keyword">COMMENT</span> <span class="string">'for getTraces and getServiceNames'</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> zipkin_annotations <span class="keyword">ADD</span> <span class="keyword">INDEX</span>(<span class="string">`a_type`</span>) <span class="keyword">COMMENT</span> <span class="string">'for getTraces and autocomplete values'</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> zipkin_annotations <span class="keyword">ADD</span> <span class="keyword">INDEX</span>(<span class="string">`a_key`</span>) <span class="keyword">COMMENT</span> <span class="string">'for getTraces and autocomplete values'</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> zipkin_annotations <span class="keyword">ADD</span> <span class="keyword">INDEX</span>(<span class="string">`trace_id`</span>, <span class="string">`span_id`</span>, <span class="string">`a_key`</span>) <span class="keyword">COMMENT</span> <span class="string">'for dependencies job'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> zipkin_dependencies (</span><br><span class="line">  <span class="string">`day`</span> <span class="built_in">DATE</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`parent`</span> <span class="built_in">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`child`</span> <span class="built_in">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`call_count`</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">  <span class="string">`error_count`</span> <span class="built_in">BIGINT</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`day`</span>, <span class="string">`parent`</span>, <span class="string">`child`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> ROW_FORMAT=COMPRESSED <span class="built_in">CHARACTER</span> <span class="keyword">SET</span>=utf8 <span class="keyword">COLLATE</span> utf8_general_ci;</span><br></pre></td></tr></table></figure>
+
+<h5 id="部署Zipkin服务端"><a href="#部署Zipkin服务端" class="headerlink" title="部署Zipkin服务端"></a>部署Zipkin服务端</h5><p>添加启动参数，重新部署服务端</p>
+<blockquote>
+<p><a href="https://github.com/openzipkin/zipkin/blob/master/zipkin-server/src/main/resources/zipkin-server-shared.yml" target="_blank" rel="noopener">zipkin/zipkin-server-shared.yml at master · openzipkin/zipkin (github.com)</a></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar zipkin-server-2.23.16-exec.jar --STORAGE_TYPE=mysql --MYSQL_HOST=113.142.151.219 --MYSQL_TCP_PORT=60000 --MYSQL_USER=root --MYSQL_PASS=root --MYSQL_DB=zipkin</span><br></pre></td></tr></table></figure>
+
+<h5 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h5><p>访问<a href="http://localhost:9000/SERVICE-CONSUMER/order/1?token=admin" target="_blank" rel="noopener">http://localhost:9000/SERVICE-CONSUMER/order/1?token=admin</a>查看数据库结果如下：</p>
+<p><img src="zipkin_storge_mysql.png" alt></p>
+<p>在 MySQL 模式下，每次启动服务端时，服务端会从数据库加载链路信息展示至 Web 界面。</p>
+<h4 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h4><p>使用以下命令启动<code>RabbitMQ</code>服务端</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management</span><br></pre></td></tr></table></figure>
+
+<p>使用默认用户名和密码(<code>guest</code>)登录<code>RabbitMQ</code>的<code>web</code>控制台，查看<code>Queues</code>选项，查看队列信息。</p>
+<p><img src="RabbitMQ_Queues.png" alt></p>
+<p>此时，无任何队列！</p>
+<h5 id="部署-Zipkin-服务端"><a href="#部署-Zipkin-服务端" class="headerlink" title="部署 Zipkin 服务端"></a>部署 Zipkin 服务端</h5><p>添加启动参数，重新部署服务端。</p>
+<blockquote>
+<p><a href="https://github.com/openzipkin/zipkin/blob/master/zipkin-server/src/main/resources/zipkin-server-shared.yml" target="_blank" rel="noopener">zipkin/zipkin-server-shared.yml at master · openzipkin/zipkin (github.com)</a></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar zipkin-server-2.23.16-exec.jar --STORAGE_TYPE=mysql --MYSQL_HOST=113.142.151.219 --MYSQL_TCP_PORT=60000 --MYSQL_USER=root --MYSQL_PASS=root --MYSQL_DB=zipkin --RABBIT_ADDRESSES=192.168.56.56:5672 --RABBIT_USER=guest --RABBIT_PASSWORD=guest --RABBIT_VIRTUAL_HOST=/ --RABBIT_QUEUE=zipkin</span><br></pre></td></tr></table></figure>
+
+<p>启动参数中包含 MySQL 和 RabbitMQ 的配置，实现<strong>基于 MQ 并存储链路信息至 MySQL</strong>，如下图：</p>
+<p><img src="zipkin_rabbitmq_mysql.png" alt></p>
+<h5 id="查看队列"><a href="#查看队列" class="headerlink" title="查看队列"></a>查看队列</h5><p>访问：<a href="http://192.168.56.56:15672/#/queues" target="_blank" rel="noopener">http://192.168.56.56:15672/#/queues</a> 可以看到已经创建好了 <code>zipkin</code> 队列。</p>
+<p><img src="rabbitmq_queues1.png" alt></p>
+<h5 id="客户端添加依赖"><a href="#客户端添加依赖" class="headerlink" title="客户端添加依赖"></a>客户端添加依赖</h5><p><a href="https://docs.spring.io/spring-cloud-sleuth/docs/2.2.8.RELEASE/reference/html/#sleuth-with-zipkin-over-rabbitmq-or-kafka" target="_blank" rel="noopener">Spring Cloud Sleuth</a></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- spring cloud zipkin 依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-zipkin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 消息队列通用依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.amqp<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-rabbit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="客户端配置文件"><a href="#客户端配置文件" class="headerlink" title="客户端配置文件"></a>客户端配置文件</h5><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  zipkin:</span></span><br><span class="line"><span class="attr">    base-url:</span> <span class="attr">http://localhost:9411/</span> <span class="comment"># 服务端地址</span></span><br><span class="line"><span class="attr">    sender:</span></span><br><span class="line"><span class="attr">      type:</span> <span class="string">rabbit</span></span><br><span class="line"><span class="attr">    rabbitmq:</span></span><br><span class="line"><span class="attr">      queue:</span> <span class="string">zipkin</span>                  <span class="comment"># 队列名称</span></span><br><span class="line"><span class="attr">  rabbitmq:</span></span><br><span class="line"><span class="attr">    host:</span> <span class="number">192.168</span><span class="number">.56</span><span class="number">.56</span>             <span class="comment"># 服务器 IP</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">5672</span>                       <span class="comment"># 服务器端口</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">guest</span>                  <span class="comment"># 用户名</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">guest</span>                  <span class="comment"># 密码</span></span><br><span class="line"><span class="attr">    virtual-host:</span> <span class="string">/</span>                  <span class="comment"># 虚拟主机地址</span></span><br><span class="line"><span class="attr">    listener:</span></span><br><span class="line"><span class="attr">      direct:</span></span><br><span class="line"><span class="attr">        retry:</span></span><br><span class="line"><span class="attr">          enabled:</span> <span class="literal">true</span>              <span class="comment"># 是否开启发布重试</span></span><br><span class="line"><span class="attr">          max-attempts:</span> <span class="number">5</span>            <span class="comment"># 最大重试次数</span></span><br><span class="line"><span class="attr">          initial-interval:</span> <span class="number">5000</span>     <span class="comment"># 重试间隔时间（单位毫秒）</span></span><br><span class="line"><span class="attr">      simple:</span></span><br><span class="line"><span class="attr">        retry:</span></span><br><span class="line"><span class="attr">          enabled:</span> <span class="literal">true</span>              <span class="comment"># 是否开启消费者重试</span></span><br><span class="line"><span class="attr">          max-attempts:</span> <span class="number">5</span>            <span class="comment"># 最大重试次数</span></span><br><span class="line"><span class="attr">          initial-interval:</span> <span class="number">5000</span>     <span class="comment"># 重试间隔时间（单位毫秒）</span></span><br><span class="line"><span class="attr">  sleuth:</span></span><br><span class="line"><span class="attr">    sampler:</span></span><br><span class="line"><span class="attr">      probability:</span> <span class="number">1.0</span>               <span class="comment"># 收集数据百分比，默认 0.1（10%）</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h5><p>先关闭 Zipkin 服务端，访问：<a href="http://localhost:9000/SERVICE-CONSUMER/order/1?token=admin客户端已将链路追踪数据写入队列当中：" target="_blank" rel="noopener">http://localhost:9000/SERVICE-CONSUMER/order/1?token=admin客户端已将链路追踪数据写入队列当中：</a></p>
+<p><img src="rabbitmq_queues2.png" alt></p>
+<p>启动 <code>Zipkin</code> 服务端后，队列中消息被消费。</p>
+<p><img src="rabbitmq_queues3.png" alt></p>
+<p>链路追踪数据被存储至 MySQL。</p>
+<p><img src="zipkin_mysql.png" alt></p>
+<h4 id="Elasticsearch"><a href="#Elasticsearch" class="headerlink" title="Elasticsearch"></a>Elasticsearch</h4><p><img src="Elasticsearch_version.png" alt></p>
+<h5 id="安装启动Elasticsearch"><a href="#安装启动Elasticsearch" class="headerlink" title="安装启动Elasticsearch"></a>安装启动Elasticsearch</h5><blockquote>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/8.2/docker.html" target="_blank" rel="noopener">使用 Docker | 安装 Elasticsearch弹性搜索指南 [8.2] |弹性的</a></p>
+</blockquote>
+<h6 id="Elasticsearch-8"><a href="#Elasticsearch-8" class="headerlink" title="Elasticsearch 8"></a>Elasticsearch 8</h6><blockquote>
+<p>启动Elasticsearch报错，如下图所示</p>
+</blockquote>
+<p><img src="elasticsearch_error.png" alt></p>
+<blockquote>
+<p>解决方案  </p>
+</blockquote>
+<ul>
+<li>临时修改</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysctl -w vm.max_map_count=262144</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>永久修改</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo vm.max_map_count=262144&gt;&gt; /etc/sysctl.conf sysctl -p</span><br></pre></td></tr></table></figure>
+
+<p>由于<code>Elasticsearch</code>从<code>8</code>开始启用了安全证书机制，为了简单使用，也可以将使用认证的开关关掉。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost vagrant]# docker exec -it es01 /bin/bash</span><br><span class="line">elasticsearch@c10329b170d8:~$ ll</span><br><span class="line">total 884</span><br><span class="line">drwxrwxr-x.  1 root          root     58 Jun  3 17:53 ./</span><br><span class="line">drwxr-xr-x.  1 root          root     27 May 25 19:06 ../</span><br><span class="line">-rw-r--r--.  1 root          root    220 May 25 19:06 .bash_logout</span><br><span class="line">-rw-r--r--.  1 root          root   3771 May 25 19:06 .bashrc</span><br><span class="line">drwxrwxr-x.  3 elasticsearch root     17 Jun  3 17:53 .cache/</span><br><span class="line">-rw-r--r--.  1 root          root    807 May 25 19:06 .profile</span><br><span class="line">-r--r--r--.  1 root          root   3860 May 25 15:46 LICENSE.txt</span><br><span class="line">-r--r--r--.  1 root          root 873453 May 25 15:51 NOTICE.txt</span><br><span class="line">-r--r--r--.  1 root          root   2710 May 25 15:46 README.asciidoc</span><br><span class="line">drwxrwxr-x.  1 elasticsearch root      6 May 25 19:05 bin/</span><br><span class="line">drwxrwxr-x.  1 elasticsearch root     74 Jun  3 17:53 config/</span><br><span class="line">drwxrwxr-x.  1 elasticsearch root     87 Jun  3 18:22 data/</span><br><span class="line">dr-xr-xr-x.  1 root          root     17 May 25 15:53 jdk/</span><br><span class="line">dr-xr-xr-x.  4 root          root   4096 May 25 15:53 lib/</span><br><span class="line">drwxrwxr-x.  1 elasticsearch root     54 Jun  3 17:53 logs/</span><br><span class="line">dr-xr-xr-x. 65 root          root   4096 May 25 15:54 modules/</span><br><span class="line">drwxrwxr-x.  1 elasticsearch root      6 May 25 15:51 plugins/</span><br></pre></td></tr></table></figure>
+
+<p>修改<code>config/</code>下的<code>elasticsearch.yml</code>中的安全配置项为关闭状态。如下图所示：</p>
+<p><img src="elasticsearch%E9%85%8D%E7%BD%AE.png" alt></p>
+<p>重启<code>elasticsearch</code>服务，访问<a href="http://192.168.56.56:9200/" target="_blank" rel="noopener">http://192.168.56.56:9200/</a></p>
+<p><img src="elasticsearch.png" alt></p>
+<h6 id="Elasticsearch-7集群（推荐）"><a href="#Elasticsearch-7集群（推荐）" class="headerlink" title="Elasticsearch 7集群（推荐）"></a>Elasticsearch 7集群（推荐）</h6><ul>
+<li><code>docker-compose.yml</code></li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2.2'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  es01:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">elasticsearch:7.17.4</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">es01</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">node.name=es01</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">cluster.name=es-docker-cluster</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">discovery.seed_hosts=es02,es03</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">cluster.initial_master_nodes=es01,es02,es03</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">bootstrap.memory_lock=true</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"ES_JAVA_OPTS=-Xms256m -Xmx256m"</span></span><br><span class="line"><span class="attr">    ulimits:</span></span><br><span class="line"><span class="attr">      memlock:</span></span><br><span class="line"><span class="attr">        soft:</span> <span class="bullet">-1</span></span><br><span class="line"><span class="attr">        hard:</span> <span class="bullet">-1</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="attr">      - data01:</span><span class="string">/usr/share/elasticsearch/data</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="number">9200</span><span class="string">:9200</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">elastic</span></span><br><span class="line"><span class="attr">  es02:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">elasticsearch:7.17.4</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">es02</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">node.name=es02</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">cluster.name=es-docker-cluster</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">discovery.seed_hosts=es01,es03</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">cluster.initial_master_nodes=es01,es02,es03</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">bootstrap.memory_lock=true</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"ES_JAVA_OPTS=-Xms256m -Xmx256m"</span></span><br><span class="line"><span class="attr">    ulimits:</span></span><br><span class="line"><span class="attr">      memlock:</span></span><br><span class="line"><span class="attr">        soft:</span> <span class="bullet">-1</span></span><br><span class="line"><span class="attr">        hard:</span> <span class="bullet">-1</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="attr">      - data02:</span><span class="string">/usr/share/elasticsearch/data</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">elastic</span></span><br><span class="line"><span class="attr">  es03:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">elasticsearch:7.17.4</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">es03</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">node.name=es03</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">cluster.name=es-docker-cluster</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">discovery.seed_hosts=es01,es02</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">cluster.initial_master_nodes=es01,es02,es03</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">bootstrap.memory_lock=true</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"ES_JAVA_OPTS=-Xms256m -Xmx256m"</span></span><br><span class="line"><span class="attr">    ulimits:</span></span><br><span class="line"><span class="attr">      memlock:</span></span><br><span class="line"><span class="attr">        soft:</span> <span class="bullet">-1</span></span><br><span class="line"><span class="attr">        hard:</span> <span class="bullet">-1</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="attr">      - data03:</span><span class="string">/usr/share/elasticsearch/data</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">elastic</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line"><span class="attr">  data01:</span></span><br><span class="line"><span class="attr">    driver:</span> <span class="string">local</span></span><br><span class="line"><span class="attr">  data02:</span></span><br><span class="line"><span class="attr">    driver:</span> <span class="string">local</span></span><br><span class="line"><span class="attr">  data03:</span></span><br><span class="line"><span class="attr">    driver:</span> <span class="string">local</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"><span class="attr">  elastic:</span></span><br><span class="line"><span class="attr">    driver:</span> <span class="string">bridge</span></span><br></pre></td></tr></table></figure>
+
+<p>启动集群，访问：<a href="http://192.168.56.56:9200/_cluster/health?pretty" target="_blank" rel="noopener">http://192.168.56.56:9200/_cluster/health?pretty</a> 结果如下：</p>
+<blockquote>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.17/cluster-health.html" target="_blank" rel="noopener">Cluster health API | Elasticsearch Guide [7.17] | Elastic</a></p>
+</blockquote>
+<p><img src="elasticsearch_cluster.png" alt></p>
+<h5 id="安装elasticsearch-head"><a href="#安装elasticsearch-head" class="headerlink" title="安装elasticsearch-head"></a>安装elasticsearch-head</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>拉取镜像</span><br><span class="line">docker pull mobz/elasticsearch-head:5</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>创建容器</span><br><span class="line">docker create --name elasticsearch-head -p 9100:9100 mobz/elasticsearch-head:5</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>启动容器</span><br><span class="line">docker start elasticsearch-head</span><br><span class="line">or</span><br><span class="line">docker start 容器id （docker ps -a 查看容器id ）</span><br></pre></td></tr></table></figure>
+
+<p>浏览器打开: <a href="http://IP:9100" target="_blank" rel="noopener">http://IP:9100</a></p>
+<p><img src="elasticsearch-head.png" alt></p>
+<p>我们会发现<code>easticsearch</code>未连接，这是由于前后端分离开发，所以会存在跨域问题，需要在服务端做<code>CORS</code>的配置。</p>
+<p>修改<code>Docker</code>中<code>elasticsearch</code>的<code>elasticsearch.yml</code>文件，在文件的最后添加如下代码：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">http.cors.enabled:</span> <span class="literal">true</span> </span><br><span class="line"><span class="string">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br></pre></td></tr></table></figure>
+
+<p>重启服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost tmp]# docker restart es01</span><br><span class="line">es01</span><br><span class="line">[root@localhost tmp]# docker ps -a</span><br><span class="line">CONTAINER ID   IMAGE                                                 COMMAND                  CREATED          STATUS                      PORTS</span><br><span class="line">                                                 NAMES</span><br><span class="line">da41dcf02dce   mobz/elasticsearch-head:5                             "/bin/sh -c 'grunt s…"   18 minutes ago   Up 17 minutes               0.0.0.0:9100-&gt;9100/tcp, :::9100-&gt;9100/tcp</span><br><span class="line">                                                 elasticsearch-head</span><br><span class="line">c10329b170d8   docker.elastic.co/elasticsearch/elasticsearch:8.2.2   "/bin/tini -- /usr/l…"   6 hours ago      Up 34 seconds               0.0.0.0:9200-&gt;9200/tcp, :::9200-&gt;9200/tcp, 0.0.0.0:9300-&gt;9300/tcp, :::9300-&gt;9300/tcp</span><br><span class="line">                                                 es01</span><br></pre></td></tr></table></figure>
+
+<p>再次访问<a href="http://IP:9100，便会出现以下结果" target="_blank" rel="noopener">http://IP:9100，便会出现以下结果</a></p>
+<p><img src="elasticsearch_header.png" alt></p>
+<h5 id="部署Zipkin服务端-1"><a href="#部署Zipkin服务端-1" class="headerlink" title="部署Zipkin服务端"></a>部署Zipkin服务端</h5><p>添加启动参数，重新部署服务端。</p>
+<blockquote>
+<p><a href="https://github.com/openzipkin/zipkin/blob/master/zipkin-server/src/main/resources/zipkin-server-shared.yml" target="_blank" rel="noopener">zipkin/zipkin-server-shared.yml at master · openzipkin/zipkin (github.com)</a></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar zipkin-server-<span class="number">2.23</span>.16-exec.jar --STORAGE_TYPE=elasticsearch --ES_HOSTS=http:<span class="comment">//192.168.56.56:9200/ --RABBIT_ADDRESSES=192.168.56.56:5672 --RABBIT_USER=guest --RABBIT_PASSWORD=guest --RABBIT_QUEUE=zipkin</span></span><br></pre></td></tr></table></figure>
+
+<p>启动参数中包含 <code>Elasticsearch</code> 和 <code>RabbitMQ</code> 的配置，实现<strong>基于 MQ 并存储链路信息至 <code>Elasticsearch</code></strong>。</p>
+<h5 id="查看索引库"><a href="#查看索引库" class="headerlink" title="查看索引库"></a>查看索引库</h5><p>访问：<a href="http://192.168.56.56:9100" target="_blank" rel="noopener">http://192.168.56.56:9100</a> 可以看到已经创建好了 <code>zipkin</code> 索引库。</p>
+<p><img src="elasticsearch_index.png" alt></p>
+<h5 id="客户端添加依赖-1"><a href="#客户端添加依赖-1" class="headerlink" title="客户端添加依赖"></a>客户端添加依赖</h5><p><a href="https://docs.spring.io/spring-cloud-sleuth/docs/2.2.8.RELEASE/reference/html/#sleuth-with-zipkin-over-rabbitmq-or-kafka" target="_blank" rel="noopener">Spring Cloud Sleuth</a></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- spring cloud zipkin 依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-zipkin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 消息队列通用依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.amqp<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-rabbit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="客户端配置文件-1"><a href="#客户端配置文件-1" class="headerlink" title="客户端配置文件"></a>客户端配置文件</h5><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  zipkin:</span></span><br><span class="line"><span class="attr">    base-url:</span> <span class="attr">http://localhost:9411/</span> <span class="comment"># 服务端地址</span></span><br><span class="line"><span class="attr">    sender:</span></span><br><span class="line"><span class="attr">      type:</span> <span class="string">rabbit</span></span><br><span class="line"><span class="attr">    rabbitmq:</span></span><br><span class="line"><span class="attr">      queue:</span> <span class="string">zipkin</span>                  <span class="comment"># 队列名称</span></span><br><span class="line"><span class="attr">  rabbitmq:</span></span><br><span class="line"><span class="attr">    host:</span> <span class="number">192.16856</span><span class="number">.56</span>             <span class="comment"># 服务器 IP</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">5672</span>                       <span class="comment"># 服务器端口</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">guest</span>                  <span class="comment"># 用户名</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">guest</span>                  <span class="comment"># 密码</span></span><br><span class="line"><span class="attr">    virtual-host:</span> <span class="string">/</span>                  <span class="comment"># 虚拟主机地址</span></span><br><span class="line"><span class="attr">    listener:</span></span><br><span class="line"><span class="attr">      direct:</span></span><br><span class="line"><span class="attr">        retry:</span></span><br><span class="line"><span class="attr">          enabled:</span> <span class="literal">true</span>              <span class="comment"># 是否开启发布重试</span></span><br><span class="line"><span class="attr">          max-attempts:</span> <span class="number">5</span>            <span class="comment"># 最大重试次数</span></span><br><span class="line"><span class="attr">          initial-interval:</span> <span class="number">5000</span>     <span class="comment"># 重试间隔时间（单位毫秒）</span></span><br><span class="line"><span class="attr">      simple:</span></span><br><span class="line"><span class="attr">        retry:</span></span><br><span class="line"><span class="attr">          enabled:</span> <span class="literal">true</span>              <span class="comment"># 是否开启消费者重试</span></span><br><span class="line"><span class="attr">          max-attempts:</span> <span class="number">5</span>            <span class="comment"># 最大重试次数</span></span><br><span class="line"><span class="attr">          initial-interval:</span> <span class="number">5000</span>     <span class="comment"># 重试间隔时间（单位毫秒）</span></span><br><span class="line"><span class="attr">  sleuth:</span></span><br><span class="line"><span class="attr">    sampler:</span></span><br><span class="line"><span class="attr">      probability:</span> <span class="number">1.0</span>               <span class="comment"># 收集数据百分比，默认 0.1（10%）</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="测试-2"><a href="#测试-2" class="headerlink" title="测试"></a>测试</h5><p>访问：<a href="http://localhost:9000/SERVICE-CONSUMER/order/1?token=admin查看索引库结果如下：" target="_blank" rel="noopener">http://localhost:9000/SERVICE-CONSUMER/order/1?token=admin查看索引库结果如下：</a></p>
+<blockquote>
+<p>Linux vi模式下显示行号<code>:set number</code></p>
+<p><a href="https://www.cnblogs.com/killer21/p/12061388.html" target="_blank" rel="noopener">ElasticSearch-head 操作时，报 406错误码 - killer21 - 博客园 (cnblogs.com)</a></p>
+</blockquote>
+<p><img src="elasticsearch_data.png" alt></p>
+<h2 id="9-使用-ELK-分析追踪数据"><a href="#9-使用-ELK-分析追踪数据" class="headerlink" title="9. 使用 ELK 分析追踪数据"></a>9. 使用 ELK 分析追踪数据</h2><p><strong>ELK</strong> 是 elastic 公司提供的<strong>一套完整的日志收集以及展示的解决方案</strong>，是三个产品的首字母缩写，分别是 <code>Elasticsearch</code>、<code>Logstash</code> 和<code>Kibana</code>。</p>
+<p><code>Elasticsearch</code> 是一个分布式、<code>RESTful</code> 风格的搜索和数据分析引擎，能够解决不断涌现出的各种用例。 作为 Elastic Stack 的核心，它集中存储您的数据，帮助您发现意料之中以及意料之外的情况。 </p>
+<ul>
+<li><strong>Elasticsearch 简称 ES</strong>：实时的分布式搜索和分析引擎，它可以用于全文搜索，结构化搜索以及分析。建立在全文搜索引擎 <code>Apache Lucene</code> 基础上的搜索引擎，使用 <code>Java</code> 语言编写。  </li>
+<li><strong>Logstash</strong>：具有实时传输能力的数据收集引擎，将各种各样的数据进行收集、解析，并发送给 <code>ES</code>。使用 <code>Ruby</code> 语言编写。  </li>
+<li><strong>Kibana</strong>：为 <code>Elasticsearch</code> 提供了分析和可视化的 <code>Web</code> 平台。它可以在 <code>Elasticsearch</code> 的索引中查找，交互数据，并生成各种维度表格、图形。</li>
+<li><strong>Beats</strong>：一组轻量级采集程序的统称，使用 Go 语言编写。以下是 elastic 官方支持的 5 种 beats，事实上，伟大的开源力量早已创造出大大小小几十甚至上百种 beats，只有你没想到的，没有 beats 做不到的：</li>
+</ul>
+<ul>
+<li>Filebeat：进行文件和目录采集，主要用于收集日志数据。</li>
+<li>Winlogbeat：专门针对 Windows 的 event log 进行的数据采集。</li>
+<li>Metricbeat：进行指标采集，指标可以是系统的，也可以是众多中间件产品的，主要用于监控系统和软件的性能。</li>
+<li>Packetbeat：通过网络抓包、协议分析，对一些请求响应式的系统通信进行监控和数据收集，可以收集到很多常规方式无法收集到的信息。</li>
+<li>Heartbeat：系统间连通性检测，比如 icmp，tcp，http 等系统的连通性监控。</li>
+</ul>
+<p>  <img src="Beats.png" alt></p>
+<p>  <img src="elk.png" alt></p>
+<blockquote>
+<p><a href="https://www.elastic.co/guide/en/logstash/7.17/deploying-and-scaling.html" target="_blank" rel="noopener">Deploying and Scaling Logstash | Logstash Reference 7.17| Elastic</a></p>
+</blockquote>
+<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
+<li><code>ElasticSearch</code>集群（已搭建）<br>  <code>192.168.56.56:9200</code></li>
+</ul>
+<ul>
+<li><code>Logstash</code><br>  <code>Logstash</code>配置<br>  <a href="https://www.elastic.co/guide/en/logstash/7.17/configuration.html" target="_blank" rel="noopener">Configuring Logstash | Logstash Reference 7.17 | Elastic</a><br>  <code>Logstash</code> 运行时指定的配置文件 <code>log-to-es.conf</code>内容如下：</li>
+</ul>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"># 数据入口</span><br><span class="line">input &#123;</span><br><span class="line">	tcp &#123;</span><br><span class="line">		mode =&gt; &quot;server&quot;</span><br><span class="line">		host =&gt; &quot;192.168.56.56&quot;</span><br><span class="line">		port =&gt; 5044</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"># 处理数据</span><br><span class="line">filter &#123;</span><br><span class="line">	# 获取 @timestamp 的值并加上 8*60*60（北京时间比 logstash 中@timestamp 晚了 8 小时），然后赋值给变量 timestamp。</span><br><span class="line">	ruby &#123; </span><br><span class="line">		code =&gt; &quot;event.set(&apos;timestamp&apos;, event.get(&apos;@timestamp&apos;).time.localtime + 8*60*60)&quot; </span><br><span class="line">	&#125;</span><br><span class="line">	# 将 timestamp 值重新赋值给 @timestamp</span><br><span class="line">	ruby &#123;</span><br><span class="line">		code =&gt; &quot;event.set(&apos;@timestamp&apos;, event.get(&apos;timestamp&apos;))&quot;</span><br><span class="line">	&#125;</span><br><span class="line">	# 删除变量 timestamp</span><br><span class="line">	mutate &#123;</span><br><span class="line">		remove_field =&gt; [&quot;timestamp&quot;]</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"># 数据出口</span><br><span class="line">output &#123;</span><br><span class="line">	elasticsearch &#123;</span><br><span class="line">		hosts =&gt; [&quot;192.168.56.56:9200&quot;]</span><br><span class="line">		index =&gt; &quot;applog&quot;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">	tcp &#123;</span><br><span class="line">		mode =&gt; &quot;server&quot;</span><br><span class="line">		host =&gt; &quot;192.168.56.56&quot;</span><br><span class="line">		port =&gt; 5044</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">filter &#123;</span><br><span class="line">	ruby &#123; </span><br><span class="line">		code =&gt; &quot;event.set(&apos;timestamp&apos;, event.get(&apos;@timestamp&apos;).time.localtime + 8*60*60)&quot; </span><br><span class="line">	&#125;</span><br><span class="line">	ruby &#123;</span><br><span class="line">		code =&gt; &quot;event.set(&apos;@timestamp&apos;, event.get(&apos;timestamp&apos;))&quot;</span><br><span class="line">	&#125;</span><br><span class="line">	mutate &#123;</span><br><span class="line">		remove_field =&gt; [&quot;timestamp&quot;]</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">	elasticsearch &#123;</span><br><span class="line">		hosts =&gt; [&quot;192.168.56.56:9200&quot;]</span><br><span class="line">		index =&gt; &quot;applog&quot;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --rm -it  -v /opt/log-to-es.conf:/usr/share/logstash/pipeline/logstash.conf -e "xpack.monitoring.elasticsearch.hosts=http://192.168.56.56:9200" --net host logstash:7.17.4</span><br></pre></td></tr></table></figure>
+
+&gt; 这里使用host模式启动`Logstash`,`bridge`模式下启动有`Cannot assign requested address `报错
+
+`192.168.56.56:5044`</code></pre><ul>
+<li><code>Kibana</code><br>  <code>192.168.56.56:5601</code></li>
+</ul>
+<pre><code><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name kib01-test --net elastic -p 5601:5601 -e "ELASTICSEARCH_HOSTS=http://192.168.56.56:9200" kibana:7.17.4</span><br></pre></td></tr></table></figure></code></pre><h3 id="添加依赖-2"><a href="#添加依赖-2" class="headerlink" title="添加依赖"></a>添加依赖</h3><p>在需要进行链路追踪的项目中（服务网关、商品服务、订单服务）添加 <code>logstash-logback-encoder</code> 依赖。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- logstash 编码依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>net.logstash.logback<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logstash-logback-encoder<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>7.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="日志配置"><a href="#日志配置" class="headerlink" title="日志配置"></a>日志配置</h3><p>在需要进行链路追踪的项目中（服务网关、商品服务、订单服务）添加 <code>logstash 输出 JSON 格式数据</code>。</p>
+<ul>
+<li><code>logback.xml</code></li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">&lt;!-- 为 Logstash 输出 JSON 格式数据 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"LOGSTASH_PATTERN"</span> <span class="attr">class</span>=<span class="string">"net.logstash.logback.appender.LogstashTcpSocketAppender"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 数据输出目的地 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">destination</span>&gt;</span>192.168.56.56:5044<span class="tag">&lt;/<span class="name">destination</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 日志输出编码 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span> <span class="attr">class</span>=<span class="string">"net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">providers</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">pattern</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">pattern</span>&gt;</span></span><br><span class="line">                        &#123;</span><br><span class="line">                        "severity": "%level",</span><br><span class="line">                        "service": "$&#123;springAppName:-&#125;",</span><br><span class="line">                        "trace": "%X&#123;X-B3-TraceId:-&#125;",</span><br><span class="line">                        "span": "%X&#123;X-B3-SpanId:-&#125;",</span><br><span class="line">                        "exportable": "%X&#123;X-Span-Export:-&#125;",</span><br><span class="line">                        "pid": "$&#123;PID:-&#125;",</span><br><span class="line">                        "thread": "%thread",</span><br><span class="line">                        "class": "%logger&#123;40&#125;",</span><br><span class="line">                        "rest": "%message"</span><br><span class="line">                        &#125;</span><br><span class="line">                    <span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">providers</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 日志输出级别及方式 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">"DEBUG"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"LOGSTASH_PATTERN"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"CONSOLE"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"DEBUG_FILE"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"INFO_FILE"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"WARN_FILE"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"ERROR_FILE"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看索引库-1"><a href="#查看索引库-1" class="headerlink" title="查看索引库"></a>查看索引库</h3><p>重启项目后，访问：<a href="http://192.168.56.56:9100" target="_blank" rel="noopener">http://192.168.56.56:9100</a> 可以看到已经创建好了 <code>applog</code> 索引库。</p>
+<p><img src="applog.png" alt></p>
+<h3 id="测试-3"><a href="#测试-3" class="headerlink" title="测试"></a>测试</h3><p>访问：<a href="http://localhost:9000/SERVICE-CONSUMER/order/1?token=admin查看索引库结果如下：" target="_blank" rel="noopener">http://localhost:9000/SERVICE-CONSUMER/order/1?token=admin查看索引库结果如下：</a></p>
+<p><img src="applog_ndex.png" alt></p>
+<p>访问：<a href="http://192.168.56.56:5601/" target="_blank" rel="noopener">http://192.168.56.56:5601/</a> <code>Kibana</code> 首页。</p>
+<p><img src="Kibana_home.png" alt></p>
+<p>查看<code>applog</code>索引库</p>
+<p><img src="Kibana_Index_Management.png" alt></p>
+<p>添加<code>applog</code> <code>Index Pattern</code></p>
+<p><img src="Kibana_Index_pattern.png" alt></p>
+<p>不使用时间过滤器。</p>
+<p><img src="Kibana_Index_Pattern_filter.png" alt></p>
+<p>搜索调用<code>selectProductList</code>相关接口日志</p>
+<p><img src="Kibana_Analytics_Discover.png" alt></p>
+<p><img src="Kibana_Analytics_selectProductList.png" alt></p>
+<p>至此 Sleuth 链路追踪所有的知识点就学习结束了。</p>
+<hr>
+<p>参考：</p>
+<p><a href="https://mrhelloworld.com/sleuth/" target="_blank" rel="noopener">Spring Cloud 系列之 Sleuth 链路追踪 - 哈喽沃德先生 (mrhelloworld.com)</a></p>
+<p><a href="https://www.jianshu.com/p/92a12de11f18" target="_blank" rel="noopener">☆全链路监控（一）：方案概述与比较 - 简书 (jianshu.com)</a></p>
+<p><a href="https://www.cnblogs.com/pingyeaa/p/10987438.html" target="_blank" rel="noopener">微服务链路追踪原理 - 平也 - 博客园 (cnblogs.com)</a></p>
+<p><a href="https://www.iteye.com/blog/manzhizhen-2347153" target="_blank" rel="noopener">分布式跟踪系统（二）：Zipkin的Span模型 - 大步流星 - ITeye博客</a></p>
+<p><a href="https://sq.sf.163.com/blog/article/227552384930988032" target="_blank" rel="noopener">zipkin-社区博客-网易数帆 (163.com)</a></p>
+<p><a href="https://www.jianshu.com/p/75e9b3f62e1e" target="_blank" rel="noopener">SpringCloud–Zipkin链路跟踪(十四) - 简书 (jianshu.com)</a></p>
+<p><a href="https://blog.csdn.net/redrose2100/article/details/124874713" target="_blank" rel="noopener">ElasticStack—-使用Docker方式安装单节点的8.1.3版本的ElasticSearch_redrose2100的博客-CSDN博客_docker elasticserch</a></p>
+<p><a href="https://blog.csdn.net/zhiyikeji/article/details/123232198" target="_blank" rel="noopener">docker安装elasticsearch_ZNineSun的博客-CSDN博客_docker安装elasticsearch</a></p>
+<p><a href="https://www.cnblogs.com/killer21/p/12061388.html" target="_blank" rel="noopener">ElasticSearch-head 操作时，报 406错误码 - killer21 - 博客园 (cnblogs.com)</a></p>
+<p><strong>Description:</strong><br>Why not provide examples of docker run for Logstash, for example ElasticSearch and Kibana have examples for docker run.</p>
+<p><strong>URL:</strong><br><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html" target="_blank" rel="noopener">Install Elasticsearch with Docker</a><br><a href="https://www.elastic.co/guide/en/logstash/current/docker.html" target="_blank" rel="noopener">Install Logstash with Docker</a><br><a href="https://www.elastic.co/guide/en/kibana/current/docker.html" target="_blank" rel="noopener">Install Kibana with Docker</a></p>
+	
+	</div>
+	
+	<div id="current-post-cover" data-scr="/img/post_cover/spring-cloud-sleuth.jpg"></div>
+
+	<!-- relate post, comment...-->
+	<div class="investment-container">
+		<div class="investment-header">
+			<div class="investment-title-1">
+				<div class="on">相关文章</div>
+				<div>评论</div>
+				<div>分享</div>
+			</div>
+			<div class="investment-title-2">	            
+				
+	<span>
+		<a href="javascript: window.scrollTo(0, 0);">返回顶部</a>
+		
+		
+			<a href="/2022/06/09/hello-world/" title="Hello World" rel="next">
+				下一篇&raquo;
+			</a>
+			
+	</span>
+
+
+      		
+			</div>	
+		</div>
+		
+		<div class="investment-content">
+			<div class="investment-content-list">
+				
+
+<div class="relate-post">
+	
+		<ul>
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/03/Spring-Cloud之Netflix-Zuul服务网关/" title="Spring Cloud之Netflix Zuul服务网关">
+								Spring Cloud之Netflix Zuul服务网关			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 3日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Netflix Zuul服务网关1. 什么是服务网关?API Gateway（API GW / API 网关），顾名思义，是出现在系统边界上的一个面向 API 的、串行集中式的强管控服务，这里的边界是企业 I...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/03/Spring-Cloud之Netflix-Zuul服务网关/" title="Spring Cloud之Netflix Zuul服务网关">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/cover_zuul.jpg" alt="Spring Cloud之Netflix Zuul服务网关"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/01/Spring-Cloud之Consul-服务注册中心/" title="Spring Cloud之Consul 服务注册中心">
+								Spring Cloud之Consul 服务注册中心			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 1日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Consul 服务注册中心1.什么是Consul?Consul 是 HashiCorp 公司推出的开源产品，是一种服务网格(Service Mesh)解决方案。用于实现分布式系统的服务发现、服务隔离、服务配置...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/01/Spring-Cloud之Consul-服务注册中心/" title="Spring Cloud之Consul 服务注册中心">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/cover_consul.jpg" alt="Spring Cloud之Consul 服务注册中心"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/09/hello-world/" title="Hello World">
+								Hello World			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 9日, 2022				
+							</p>
+							<p class="relate-post-content">
+								一切始于Hello World!
+
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/09/hello-world/" title="Hello World">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/HelloWorld.jpeg" alt="Hello World"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/05/31/Java并发编程（二）-共享模型之管程/" title="Java并发编程（二） 共享模型之管程">
+								Java并发编程（二） 共享模型之管程			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								五月 31日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Java并发编程（二） 共享模型之管程1. 线程安全问题
+两个线程对初始值为 0 的静态变量一个做自增，一个做自减，各做 5000 次，结果是 0 吗？  
+
+1234567891011121314151617181920212223...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/05/31/Java并发编程（二）-共享模型之管程/" title="Java并发编程（二） 共享模型之管程">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency02.jpg" alt="Java并发编程（二） 共享模型之管程"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/12/01/Java并发编程（一）-基础篇/" title="Java并发编程（一） 基础篇">
+								Java并发编程（一） 基础篇			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十二月 1日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Java并发编程（一） 基础篇1. 进程和线程1.1 什么是进程（Process）进程是操作系统进行资源分配的最小单位。因为现在的操作系统都是多任务的操作系统，多任务操作系统是允许多个进程在一个cpu上运行的。对于每一个进程而言，都有...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/12/01/Java并发编程（一）-基础篇/" title="Java并发编程（一） 基础篇">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency.jpg" alt="Java并发编程（一） 基础篇"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/11/26/Java-NIO/" title="Java NIO">
+								Java NIO			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十一月 26日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Java NIO1. Java NIO概述Java NIO(New IO Non Blocking IO)是从java1.4版本开始引入的一个新的IO API,可以替代标准的Java IO API。NIO与原来的IO有同样的作用和目的...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/11/26/Java-NIO/" title="Java NIO">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/NIO.jpg" alt="Java NIO"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/11/Java IO流/" title="Java IO流">
+								Java IO流			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 11日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Java IO流1. 什么是文件？从编程的角度看，文件就是保存数据的载体。可以是文字，图片，音频，视频…
+2. 文件流文件再程序中以流的形式来操作。流数据在文件（数据源）和程序（内存）之间经历的路径。输入流数据从文件（数据源）到程序（...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/11/Java IO流/" title="Java IO流">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/IO.jpg" alt="Java IO流"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/08/Docker学习（二）获取Docker/" title="Docker学习（二）获取Docker">
+								Docker学习（二）获取Docker			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 8日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Docker学习（二）获取Docker您可以在多个平台(Mac/Windows/Linux)上下载并安装 Docker。
+1. 在Windows上安装Docker Desktop前置条件对于仍在微软服务时间表内的 Windows 10...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/08/Docker学习（二）获取Docker/" title="Docker学习（二）获取Docker">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/Docker_02.jpg" alt="Docker学习（二）获取Docker"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/08/Docker学习（一）概述/" title="Docker学习（一）概述">
+								Docker学习（一）概述			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 8日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Docker学习（一）概述Docker 是一个用于开发、发布和运行应用程序的开放平台。Docker 使您能够将应用程序与基础结构分离开来，从而可以快速交付软件。使用 Docker，您可以像管理应用程序一样管理基础结构。通过利用 Doc...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/08/Docker学习（一）概述/" title="Docker学习（一）概述">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/Docker_01.png" alt="Docker学习（一）概述"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/07/云计算概览/" title="云计算概览">
+								云计算概览			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 7日, 2021				
+							</p>
+							<p class="relate-post-content">
+								云计算概览1. 云计算定义云计算（CloudComputing）在维基百科的定义是：一种基于互联网的计算方式，通过这种方式，共享的软硬件资源和信息可以按需求提供给计算机终端和其他设备。                         ...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/07/云计算概览/" title="云计算概览">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/cloud computing_01.jpg" alt="云计算概览"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+		</ul>
+	
+</div>	
+			</div>
+			<div class="investment-content-list">
+				<div class="layout-comment">
+
+	
+
+		
+
+			<!-- gitalk comment -->
+			<!-- show gitalk comment -->
+<div id="gitalk-container"></div>
+
+<!-- gitalk`s css & js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<link rel="stylesheet" href="/css/comment.css">
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+	//Thanks O-R
+	//https://github.com/gitalk/gitalk/issues/102#issuecomment-382970552
+	//去除尾部匹配正则数组的字符串  
+	//Remove redundant characters
+	String.prototype.trimEnd = function(regStr) {
+		var result = this;
+		if(regStr == undefined || regStr == null || regStr == "") {
+			return result;
+		}
+		var array = regStr.split(',');
+
+		if(array.length > 0) {
+
+			var c = array.shift();
+			var str = this;
+			var i = str.length;
+			var rg = new RegExp(c);
+			var matchArr = str.match(rg);
+
+			if(matchArr != undefined && matchArr != null && matchArr.length > 0) {
+				var matchStr = matchArr[0].replace(/\\/g, "\\\\").replace(/\*/g, "\\*")
+					.replace(/\+/g, "\\+").replace(/\|/g, "\\|")
+					.replace(/\{/g, "\\{").replace(/\}/g, "\\}")
+					.replace(/\(/g, "\\(").replace(/\)/g, "\\)")
+					.replace(/\^/g, "\\^").replace(/\$/g, "\\$")
+					.replace(/\[/g, "\\[").replace(/\]/g, "\\]")
+					.replace(/\?/g, "\\?").replace(/\,/g, "\\,")
+					.replace(/\./g, "\\.").replace(/\&/g, "\\&");
+				matchStr = matchStr + '$';
+				result = str.replace(new RegExp(matchStr), "");
+			}
+
+			if(array.length > 0) {
+				return result.trimEnd(array.join())
+			} else {
+				return result;
+			}
+		}
+	};
+
+	//Create gitalk
+	var gitalk = new Gitalk({
+		clientID: '36a5ea1eb92d0cdb0a6b',
+		clientSecret: '6e1940c0dcd00e3b9216f008368995a1988bd3fd',
+		//id: window.location.pathname,
+		//id: decodeURI(window.location.pathname),
+		//id: (window.location.pathname).split("/").pop().substring(0, 49),
+		id: decodeURI( md5( location.href.trimEnd('#.*$,\\?.*$,index.html$') ) ),
+		repo: 'Blog-Comment-Repo',
+		owner: '10veU',
+		admin: '10veU',
+		distractionFreeMode: 'true',
+	})
+	gitalk.render('gitalk-container');
+</script>
+
+		
+		
+	
+
+</div>
+			</div>
+			<div class="investment-content-list">
+				<div class="layout-share">
+	
+	
+
+		
+			
+			<!-- socialShare share -->
+			<div class="social-share"></div>
+
+<!--  css & js -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+			
+		
+		
+	
+</div>
+
+
+			</div>
+		</div>	
+	</div>
+	</div>
+</div>
+
+
+
+	<!-- leancloud -->
+	<!--
+	时间：2018-11-27
+	描述：
+		文章访问量：visitors
+		文章喜欢量：likes	
+		文章排行榜：topNPost
+		其他得说明：
+			01-Cookie相关的函数 
+				https://blog.csdn.net/somehow1002/article/details/78511541（Author：somehow1002）
+			02-visitors相关的函数 
+				https://blog.csdn.net/u013553529/article/details/63357382（Author：爱博客大伯）
+				https://notes.doublemine.me/2015-10-21-为NexT主题添加文章阅读量统计功能.html（Author：夏末）
+			03-topNPost相关的函数
+				https://hoxis.github.io/hexo-next-read-rank.html（Author：hoxis）
+			04-likes相关的函数，
+				参考了01 & 02进行简单的设计与实现
+-->
+
+
+
+	<script>
+		var appid = 'xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI',
+            appkey = 'Tkq82uGKwAFYHPeTF3Q6MVDp';	  
+        AnnieLeancloud(appid, appkey);         
+	</script>
+    
+
+	
+
+
+<!-- show math formula -->
+
+
+
+	 
+	<script src="/plugin/clipboard/clipboard.js"></script>
+	<script>
+		// Copy code !
+	    function codePreprocessing() {
+	        $("#article-content .highlight").each(function() {
+
+	            $(this).wrap('<div id="post-code"></div>');
+
+	        })
+
+	        $("#article-content #post-code").each(function() {
+
+	            $(this).prepend('<nav class="copy-nav"><span><i class="code-language"></i></span></nav>');
+
+	        })
+
+	        $("#article-content .copy-nav").each(function() {
+	            var temp = $(this).next().attr('class'),
+	                language = ((temp.length > 9) && (temp != null)) ? temp.substr(10) : "none"; //why 9? Need to check language?
+
+	            $(this).find('.code-language').text(language);
+
+	            $(this).append('<span class="copy-btn"><i class="fa fa-copy" aria-hidden="true"></i></span>');
+
+	        });
+	    }
+
+		function codeCopy() {
+		    $('#article-content #post-code').each(function(i) {
+		        var codeCopyId = 'codeCopy-' + i;
+
+		        var codeNode = $(this).find('.code'),
+		            copyButton = $(this).find('.copy-btn');
+
+		        codeNode.attr('id', codeCopyId);
+		        copyButton.attr('data-clipboard-target-id', codeCopyId);
+		    })
+
+		    
+			var clipboard = new ClipboardJS('.copy-btn', {
+					target: function(trigger) {
+						return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+					}
+		      	});
+
+			//pure js
+			function showTooltip(elem, msg) {		   
+				elem.setAttribute('aria-label', msg);
+				elem.setAttribute('class', 'copy-btn copy-status');
+				setTimeout(function() {
+					elem.setAttribute('class', 'copy-btn');
+				}, 2000);
+			}
+
+			clipboard.on('success', function(e) {
+			    e.clearSelection();
+			    console.info('Action:', e.action);		   
+			    console.info('Trigger:', e.trigger);
+			    showTooltip(e.trigger, 'Copied!');
+			    
+			});
+			clipboard.on('error', function(e) {
+			    console.error('Action:', e.action);
+			    console.error('Trigger:', e.trigger);
+			});
+		
+
+		}
+
+		if ($('.layout-post').length) {
+		    codePreprocessing();
+		    codeCopy();
+		} 
+	</script>
+
+
+
+
+
+<link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+<script src="/plugin/fancybox/jquery.fancybox.js"></script>
+
+<script type="text/javascript">
+	var titleID = $('.article-title a'),
+		imageID = $('.article-content img'),
+		videoID = $('.article-content video');
+
+	var postTitle = titleID.text() ? titleID.text() : "No post title!";
+
+	imageID.each(function() {
+		var imgPath = $(this).attr('src'),
+			imgTitle = $(this).attr('alt') ? $(this).attr('alt') : "No image description!";
+
+		//给每个匹配的<img>元素打包, 即添加父元素<a>
+		$(this).wrap('<a data-fancybox="gallery" data-caption=" 《 ' + postTitle + ' 》 ' + imgTitle + ' "  href=" ' + imgPath + ' "> </a>');
+	});
+
+	videoID.each(function() {
+		var videoPath = $(this).attr('src');
+
+		//给每个匹配的<img>元素打包, 即添加父元素<a>
+		$(this).wrap('<a data-fancybox href=" ' + videoPath + ' "> </a>');
+	});
+	//TODO：支持html5 video
+
+	if($('#layout-post').length) {
+		$('[data-fancybox="gallery"]').fancybox({
+			loop: true,
+			buttons: [
+				"zoom",
+				"share",
+				"slideShow",
+				"fullScreen",
+				//"download",
+				"thumbs",
+				"close"
+			],
+			protect: false
+		});
+	}
+</script>
+		</main>
+
+		<!--footer-->
+		<footer>
+	<div class="social">
+		<ul>
+	
+		<li>
+			<a href="https://github.com/10veU" target="_blank">
+				<i class="fa fa-github"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank">
+				<i class="fa fa-weibo"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/img/wechat.jpg" target="_blank">
+				<i class="fa fa-wechat"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com" target="_blank">
+				<i class="fa fa-qq"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="mailto:xiaojie_wangxj@163.com" target="_blank">
+				<i class="fa fa-envelope"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<i class="fa fa-rss"></i>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+	<div class="copyright">
+		<p>
+			 
+				&copy;2019 - 2022, content by XiaoJie Wang. All Rights Reserved.
+			
+			
+			
+
+	<!-- busuanzi -->
+	<!-- busuanzi -->
+
+		
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+
+		<span id="busuanzi_container_page_pv">
+	  		本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+		</span>
+
+	
+
+
+
+
+		</p>
+		<p>
+			<a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> Theme <a href="https://github.com/Sariay/hexo-theme-Annie" title="Annie" target="_blank" rel="noopener">Annie</a> by Sariay.
+			<a href="javascript:zh_tran('s');" class="zh_click" id="zh_click_s">简体</a> 
+			<a href="javascript:zh_tran('t');" class="zh_click" id="zh_click_t">繁體</a>				
+		</p>
+	</div>	
+</footer>
+		
+	<!-- set '1' to show motto in all pages! -->
+
+	<script src="/plugin/motto/motto.js"></script>
+	
+	<script type="text/javascript">
+		$(".motto").html( getMingYanContent() );
+	</script>	
+
+
+
+
+	<!--
+	时间：2018-10-3
+	描述：
+		插件名称：hexo-generator-search-zip
+		插件来源: https://github.com/SuperKieran/hexo-generator-search-zip
+		代码参考：https://github.com/SuperKieran/TKL/blob/master/layout/_partial/search.ejs(Include: js & css)	
+-->
+<div class="popup search-popup local-search-popup" >
+	<div class="local-search-container">
+		<span class="popup-btn-close">
+      		ESC
+   		</span>
+		<div class="local-search-header">
+			<div class="input-prompt">				
+			</div>
+			<input autocomplete="off" placeholder="Search..." type="text" id="local-search-input">
+		</div>
+		<div class="local-search-body">
+			<div id="local-search-output"></div>
+		</div>
+		<div class="local-search-footer">
+			<div class="topN-post">				
+				
+
+   
+	<div id="topN">
+		<div class="topN-title" data-title= "热门文章"></div> 
+	</div>
+	
+    <script>
+        var appid = 'xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI',
+            appkey = 'Tkq82uGKwAFYHPeTF3Q6MVDp',
+            limitCount = 10;
+        if( $('#topN').length ){
+            AV.initialize(appid, appkey);
+            var Counter = AV.Object.extend("Counter");  
+            topNPost(Counter, limitCount);
+        }
+    </script>
+   
+								
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="/plugin/search/ziploader.js"></script>
+<script src="/plugin/search/search.js"></script>
+
+<script type="text/javascript">
+	var search_path = 'search.json',
+		zip_Path = '/search.zip',
+		version_Path = '/searchVersion.txt',
+		input_Trigger = 'auto',
+		top_N = '2';
+
+	themeLocalSearch({
+		search_path, 
+		zip_Path, 
+		version_Path, 
+		input_Trigger, 
+		top_N
+	});
+</script>
+
+
+<!-- love effect -->
+
+<!-- firework effect -->
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+	<script src="/plugin/love/fireworks.js"></script>
+
+<!--daovoice-->
+
+	<script src="/plugin/daovoice/daovoice.js"></script>
+
+<!-- back to top -->
+
+	
+	<div id="totop">
+  		<a href="javascript:;"  name="TOTOP" class="fa fa-arrow-up" ></a>
+	</div>
+
+
+
+<!-- site analysis -->
+
+
+	<!-- site-analysis -->
+	
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+		var hm = document.createElement("script");
+		hm.src = "//hm.baidu.com/hm.js?bc5394d96eab6c50c0a37cb03555fc96";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+	
+	
+	
+	
+ 
+
+<script src="/plugin/vibrant/vibrant.js"></script>
+<script src="/plugin/chinese/chinese.js"></script>
+<script src="/plugin/imgLazyLoader/yall.min.js"></script>
+<script src="/plugin/imgResize/jquery.resizeimagetoparent.min.js"></script>
+<script src="/plugin/nicescroll/jquery.nicescroll.js"></script>
+<script src="/js/resizediv.js"></script>
+<script src="/js/main.js"></script>
+	</body>	
+</html>
