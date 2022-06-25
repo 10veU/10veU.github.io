@@ -1,0 +1,1401 @@
+<!--
+	作者：Sariay
+	时间：2018-09-25
+	描述：There may be a bug, but don't worry, QiLing(器灵) says that it can work normally!
+-->
+<!DOCTYPE html>
+<html class="html-loading">
+		
+
+<head><meta name="generator" content="Hexo 3.9.0">
+	<meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <title>
+    
+      Spring Cloud之Config配置中心 | Mr.Wang-Blog
+    
+  </title>
+  <meta name="author" content="XiaoJie Wang">
+  <meta name="keywords" content>
+  <meta name="description" content>
+	<!-- favicon -->
+  <link rel="shortcut icon" href="/img/Mr-Wang-facvion.ico">
+
+  <!-- css -->
+  <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/Annie.css">
+  
+  <!-- jquery -->
+	<script src="/js/jquery.min.js"></script>
+
+  <!-- leancloud -->
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+<script src="/js/leancloud.js"></script>
+</head>
+	<body>
+		<!-- Preloader -->
+
+	<div id="preloader">
+		<div class="pre-container">
+			
+				<div class="spinner">
+					<div class="double-bounce1"></div>
+					<div class="double-bounce2"></div>
+				</div>
+						
+		</div>
+	</div>
+
+
+<!-- header -->
+<header class="fixbackground" data-img-mode="random" data-normal-src="/" data-random-max="110" data-random-src="https://10veu.github.io/Random-img/">
+	<div class="mask">
+		<!-- Logo and navigation -->
+		<div class="h-header">
+			<div id="logo">
+				<a href="/">
+						
+						<img src="/img/Mr-Wang-logo.png" alt="Logo">
+					
+				</a>
+			</div>
+			
+			<div id="navigation-show">
+				<ul>
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home">主页</a>
+		</li>
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive">归档</a>
+		</li>
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories">分类</a>
+		</li>
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags">标签</a>
+		</li>
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about">关于</a>
+		</li>
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery">相册</a>
+		</li>
+	
+
+	
+		<li class="menu-search">
+			<a href="javascript:;" class="popup-trigger">搜索</a>
+		</li>
+	
+</ul>
+			</div>				
+		</div>
+
+		<!-- motto -->
+		<div class="h-body">	
+			
+				<p class="motto"></p>
+			
+		</div>
+		
+		<!-- others: such as time... -->			
+		<div class="h-footer">
+			<a href="javascript:;" id="read-more"><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+			</a>
+
+			
+				<!-- 
+	This is only a demo, please go to "https://time.is" to set your city time! 
+-->
+<style type="text/css">
+	.header-date {
+		font-size: 1.6rem;
+		color: #fff;
+		position: absolute;
+		bottom: 5px;
+		right: 1rem;
+		writing-mode: tb-rl;
+	}	
+	
+	.header-date a {
+		border-bottom: none;
+	}
+
+	@media only screen and (max-width: 768 ) {
+		.header-date {
+			font-size: 1rem;
+		}			
+	}
+</style>
+<div class="header-date">
+	<a href="https://time.is/Beijing" id="time_is_link" rel="nofollow" ></a>
+	<span id="Beijing_z43d"></span>
+</div>
+<script src="//widget.time.is/zh.js"></script>
+<script>
+	time_is_widget.init({
+		Beijing_z43d:{
+			template:"DATE", 
+			date_format:"year年 monthname dnum日"
+		}
+	});
+</script>
+			
+		</div>
+	</div>
+</header>
+
+<div id="navigation-hide">
+	<!-- Progress bar -->
+	<div id="progress-bar"></div>
+
+	<!-- Progress percent -->
+	<div id="progress-percentage"><h1>0.0%</h1></div>
+
+	<div class="toc-switch"><span class="switch-button">目录</span></div>
+
+	<!-- Page title -->
+	<p>
+		
+			当前文章&nbsp;:&nbsp;《Spring Cloud之Config配置中心》
+		
+	</p>
+
+	<!-- Nav trigger for navigation-H-->
+	<a class="nav-trigger"><span></span></a>
+</div>
+
+<!-- Navigation in div(id="navigation-H") -->
+<nav class="nav-container" id="cd-nav">
+	<div class="nav-header">
+		<h3>Navigation</h3>
+		<a href="javascript:;" class="nav-close"></a>
+	</div>
+	<div class="nav-body">
+		<ul>
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home">主页</a>
+		</li>
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive">归档</a>
+		</li>
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories">分类</a>
+		</li>
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags">标签</a>
+		</li>
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about">关于</a>
+		</li>
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery">相册</a>
+		</li>
+	
+
+	
+		<li class="menu-search">
+			<a href="javascript:;" class="popup-trigger">搜索</a>
+		</li>
+	
+</ul>
+	</div>
+	<div class="nav-footer">
+		<ul>
+	
+		<li>
+			<a href="https://github.com/10veU" target="_blank">
+				<i class="fa fa-github"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank">
+				<i class="fa fa-weibo"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/img/wechat.jpg" target="_blank">
+				<i class="fa fa-wechat"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com" target="_blank">
+				<i class="fa fa-qq"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="mailto:xiaojie_wangxj@163.com" target="_blank">
+				<i class="fa fa-envelope"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<i class="fa fa-rss"></i>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+</nav>
+			
+		<!--main-->
+		<main>
+			<!--
+	时间：2018-11-17
+	描述：
+		插件名称：katelog.min.js
+		插件作者：KELEN
+		插件来源: https://github.com/KELEN/katelog
+-->
+
+	
+		<div class="layout-toc">
+			<div id="layout-toc">
+				<div class="k-catelog-list" id="catelog-list" data-title="文章目录"></div>
+			</div>
+		</div>
+
+		
+		<script src="/plugin/toc/katelog.min.js"></script>
+
+		
+	 
+
+<div class="layout-post">
+	<div id="layout-post">
+	<div class="article-title">
+		<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+		
+	<a href="/2022/06/25/Spring-Cloud之Config配置中心/" itemprop="url">
+		Spring Cloud之Config配置中心
+	</a>
+
+	</div>
+
+	<div class="article-meta">
+		<span>
+			<i class="fa fa-calendar"></i>
+			
+
+
+	发布于
+
+	<a href="/2022/06/25/Spring-Cloud之Config配置中心/" itemprop="url">
+		<time datetime="2022-06-25T17:58:43.000Z" itemprop="datePublished">
+	  		2022-06-25
+	  </time>
+	</a>
+	&nbsp;
+
+
+
+
+
+			
+
+
+
+
+	更新于
+
+	<a href="/2022/06/25/Spring-Cloud之Config配置中心/" itemprop="url">
+		<time datetime="2022-06-25T17:58:43.000Z" itemprop="dateUpdated">
+	  		2022-06-25
+	  </time>
+	</a> 
+
+
+
+		</span>
+		<span>
+			<i class="fa fa-tags"></i>
+			
+	
+		<a href="/tags/微服务/" class=" ">
+			微服务
+		</a>
+	
+		<a href="/tags/Spring-Cloud/" class=" ">
+			Spring Cloud
+		</a>
+	
+		<a href="/tags/配置中心/" class=" ">
+			配置中心
+		</a>
+	
+		
+		</span>
+		
+		
+
+	
+    <span class="leancloud_visitors" id="/2022/06/25/Spring-Cloud之Config配置中心/_visitors" data-url="/2022/06/25/Spring-Cloud之Config配置中心/" data-title="Spring Cloud之Config配置中心">
+       	<i class="fa fa-eye"></i>
+       	热度
+        <i class="leancloud_visitors_count" id="leancloud_visitors_count">0</i>
+    </span>
+    
+
+
+
+	
+    <span class="leancloud_likes" id="/2022/06/25/Spring-Cloud之Config配置中心/_likes" data-url="/2022/06/25/Spring-Cloud之Config配置中心/" data-title="Spring Cloud之Config配置中心" rel="unlike">
+        <i class="fa fa-heart"></i>
+        喜欢
+        <i class="leancloud_likes_count" id="leancloud_likes_count">0</i>
+    </span>
+
+	</div>
+
+	<div class="article-content" id="article-content">
+		<h1 id="Spring-Cloud之Config配置中心"><a href="#Spring-Cloud之Config配置中心" class="headerlink" title="Spring Cloud之Config配置中心"></a>Spring Cloud之Config配置中心</h1><h2 id="1-服务配置现状"><a href="#1-服务配置现状" class="headerlink" title="1. 服务配置现状"></a>1. 服务配置现状</h2><p>随着微服务系统的不断迭代，整个我服务就成为了一个<strong>网状结构</strong>，这个时候就要考虑整个微服务系统的<strong>扩展性</strong>、<strong>伸缩性</strong>、<strong>耦合性</strong>等等。其中一个重要的环节就是<strong>配置管理</strong>的问题。</p>
+<h2 id="2-常规配置管理解决方案缺点"><a href="#2-常规配置管理解决方案缺点" class="headerlink" title="2. 常规配置管理解决方案缺点"></a>2. 常规配置管理解决方案缺点</h2><ul>
+<li>硬编码（需要修改代码、繁琐、风险大）</li>
+<li>配置文件<code>properties</code>或者<code>yml</code>(集群环境下需要替换和重启)</li>
+<li>xml(需要打包和重启)</li>
+</ul>
+<h2 id="3-为什么使用Spring-Cloud-Config"><a href="#3-为什么使用Spring-Cloud-Config" class="headerlink" title="3. 为什么使用Spring Cloud Config"></a>3. 为什么使用Spring Cloud Config</h2><p><img src="1625015953411.jpg" alt><br>针对于常规配置的缺点，所以采用<code>Spirng Cloud Config</code><strong>集中式</strong>管理<strong>每个服务</strong>的配置信息。<br><code>Spring Cloud Config</code>在微服务分布式系统中，采用<code>Server</code>服务端和<code>Client</code>客户端的方式来提供可扩展的配置服务。</p>
+<ul>
+<li>服务端提供<strong>配置文件的存储</strong>，以<strong>接口的形式将配置文件的内容</strong>提供出去。</li>
+<li>客户端通过接口获取数据，并依据此数据初始化自己的应用。</li>
+</ul>
+<p><strong>配置中心负责管理所有服务的各种环境配置文件</strong>。</p>
+<h2 id="4-Spring-Cloud-Config解决来了什么问题？"><a href="#4-Spring-Cloud-Config解决来了什么问题？" class="headerlink" title="4.Spring Cloud Config解决来了什么问题？"></a>4.Spring Cloud Config解决来了什么问题？</h2><p><code>Spring Cloud Config</code>解决了微服务配置的<strong>中心化</strong>、<strong>版本控制</strong>、<strong>平台独立</strong>、<strong>语言独立</strong>等问题。其特性如下：</p>
+<ul>
+<li>提供了服务端和客户端支持</li>
+<li>集中式管理分布式环境下的应用部署</li>
+<li>属性值的加密和解密（对称加密和非对称加密）</li>
+<li>基于 <code>Spring</code>环境，无缝与<code>Spring</code>应用集成</li>
+<li>可用于任何语言开发程序</li>
+<li>默认实现基于<code>Git</code>，可以进行版本管理<h2 id="5-项目环境"><a href="#5-项目环境" class="headerlink" title="5. 项目环境"></a>5. 项目环境</h2><h3 id="5-1-配置文件"><a href="#5-1-配置文件" class="headerlink" title="5.1 配置文件"></a>5.1 配置文件</h3><img src="1625126781619.png" alt><blockquote>
+<p>配置文件的名称是有规则的。例如<code>config-client-dev.yml</code>和<code>config-client-prod.yml</code>是同一个项目的不同环境。项目名称为<code>config-client</code>，<code>dev</code>表示测试环境，<code>prod</code>表示正式环境，<code>test</code>表示测试环境。<br><code>config-client.yml</code></p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">7777</span> <span class="comment"># 端口</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">config-client</span> <span class="comment"># 服务名称</span></span><br><span class="line"><span class="comment"># 自定义配置</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">config-client-default</span></span><br></pre></td></tr></table></figure>
+
+<p> <code>config-client-dev.yml</code><br> <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr"> server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">7778</span> <span class="comment"># 端口</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">config-client</span> <span class="comment"># 服务名称</span></span><br><span class="line"><span class="comment"># 自定义配置</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">config-client-dev</span></span><br></pre></td></tr></table></figure></p>
+<p> <code>config-client-prod.yml</code><br>  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">  server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">7780</span> <span class="comment"># 端口</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">config-client</span> <span class="comment"># 服务名称</span></span><br><span class="line"><span class="comment"># 自定义配置</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">config-client-prod</span></span><br></pre></td></tr></table></figure></p>
+<p> <code>config-client-test.yml</code><br>  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">  server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">7779</span> <span class="comment"># 端口</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">config-client</span> <span class="comment"># 服务名称</span></span><br><span class="line"><span class="comment"># 自定义配置</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">config-client-test</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="6-入门案例"><a href="#6-入门案例" class="headerlink" title="6. 入门案例"></a>6. 入门案例</h2><h3 id="6-1-创建服务端"><a href="#6-1-创建服务端" class="headerlink" title="6.1 创建服务端"></a>6.1 创建服务端</h3><p>参见<code>spring-cloud-demo</code>中的<code>spring-cloud-demo-config-server</code>模块。</p>
+<ul>
+<li>访问规则<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">/&#123;application&#125;/&#123;profile&#125;[/&#123;label&#125;]</span></span><br><span class="line"><span class="string">/&#123;application&#125;-&#123;profile&#125;.yml</span></span><br><span class="line"><span class="string">/&#123;label&#125;/&#123;application&#125;-&#123;profile&#125;.yml</span></span><br><span class="line"><span class="string">/&#123;application&#125;-&#123;profile&#125;.properties</span></span><br><span class="line"><span class="string">/&#123;label&#125;/&#123;application&#125;-&#123;profile&#125;.properties</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><code>{application}</code> : 应用名称（目标服务名称）<br><code>{profile}</code>: 获取制定环境的配置。项目有测试环境，开发环境，正式环境。对应到配置文件就是application-{profile}.yml加以区分。默认值是default。<br><code>{lable}</code>: 表示<code>git</code>分支，默认是<code>master</code>分支。</p>
+<ul>
+<li>测试<br><a href="http://localhost:8888/config-client/default" target="_blank" rel="noopener">http://localhost:8888/config-client/default</a><br><a href="http://localhost:8888/config-client-dev.yml" target="_blank" rel="noopener">http://localhost:8888/config-client-dev.yml</a><br><a href="http://localhost:8888/master/config-client-prod.yml" target="_blank" rel="noopener">http://localhost:8888/master/config-client-prod.yml</a><br><a href="http://localhost:8888/master/config-client-test.properties" target="_blank" rel="noopener">http://localhost:8888/master/config-client-test.properties</a></li>
+</ul>
+<h3 id="6-2-创建客户端"><a href="#6-2-创建客户端" class="headerlink" title="6.2 创建客户端"></a>6.2 创建客户端</h3><p>参见<code>spring-cloud-demo</code>中的<code>spring-cloud-demo-config-client</code>模块。</p>
+<ul>
+<li>添加依赖</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-config-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.8.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>添加配置文件</li>
+</ul>
+<blockquote>
+<p>客户端的配置文件名称必须是<code>bootstrap.yml</code></p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">config-client</span> <span class="comment"># 配置文件名称，对应 git 仓库中配置文件前半部分</span></span><br><span class="line"><span class="attr">      uri:</span> <span class="attr">http://localhost:8888</span> <span class="comment"># config-server 服务端地址</span></span><br><span class="line"><span class="attr">      label:</span> <span class="string">master</span> <span class="comment"># git 分支</span></span><br><span class="line"><span class="attr">      profile:</span> <span class="string">default</span> <span class="comment"># 指定环境</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建启动类</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.springcloud.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: XiaoJie Wang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: Create in 14:54 2021/7/1</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringCloudConfigClientApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(SpringCloudConfigClientApplication.class,args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建测试控制层</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.springcloud.demo.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: XiaoJie Wang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: Create in 15:11 2021/7/1</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;name&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/name"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>测试</li>
+</ul>
+<p><code>default</code>: <a href="http://localhost:7777/name" target="_blank" rel="noopener">http://localhost:7777/name</a><br><code>dev</code>: <a href="http://localhost:7778/name" target="_blank" rel="noopener">http://localhost:7778/name</a><br><code>test</code>: <a href="http://localhost:7779/name" target="_blank" rel="noopener">http://localhost:7779/name</a><br><code>prod</code>: <a href="http://localhost:7780/name" target="_blank" rel="noopener">http://localhost:7780/name</a></p>
+<h2 id="7-Spring-Cloud-Config-高可用"><a href="#7-Spring-Cloud-Config-高可用" class="headerlink" title="7. Spring Cloud Config 高可用"></a>7. Spring Cloud Config 高可用</h2><p>如果我们的项目中使用了 Eureka 作为服务注册发现中心，那么 Spring Cloud Config 也应该注册到 Eureka，方便其他服务使用，并且可以注册多个配置中心服务端，实现高可用。</p>
+<h3 id="添加配置文件"><a href="#添加配置文件" class="headerlink" title="添加配置文件"></a>添加配置文件</h3><p>在远程Git仓库增加配置文件</p>
+<p><code>order-service-dev.yml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">9090</span> <span class="comment"># 端口</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">order-service</span> <span class="comment"># 应用名称</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 Eureka Server 注册中心</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line"><span class="attr">  instance:</span></span><br><span class="line"><span class="attr">    prefer-ip-address:</span> <span class="literal">true</span>       <span class="comment"># 是否使用 ip 地址注册</span></span><br><span class="line"><span class="attr">    instance-id:</span> <span class="string">$&#123;spring.cloud.client.ip-address&#125;:$&#123;server.port&#125;</span> <span class="comment"># ip:port</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    service-url:</span>                  <span class="comment"># 设置服务注册中心地址</span></span><br><span class="line"><span class="attr">      defaultZone:</span> <span class="attr">http://root:123456@localhost:8762/eureka/,http://root:123456@localhost:8763/eureka/</span></span><br><span class="line">      </span><br><span class="line"><span class="comment"># 自定义配置</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">order-service-dev</span></span><br></pre></td></tr></table></figure>
+
+<p><code>order-service-prod.yml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">9091</span> <span class="comment"># 端口</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">order-service</span> <span class="comment"># 应用名称</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 Eureka Server 注册中心</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line"><span class="attr">  instance:</span></span><br><span class="line"><span class="attr">    prefer-ip-address:</span> <span class="literal">true</span>       <span class="comment"># 是否使用 ip 地址注册</span></span><br><span class="line"><span class="attr">    instance-id:</span> <span class="string">$&#123;spring.cloud.client.ip-address&#125;:$&#123;server.port&#125;</span> <span class="comment"># ip:port</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    service-url:</span>                  <span class="comment"># 设置服务注册中心地址</span></span><br><span class="line"><span class="attr">      defaultZone:</span> <span class="attr">http://root:123456@localhost:8762/eureka/,http://root:123456@localhost:8763/eureka/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义配置</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">order-service-prod</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="整合注册中心"><a href="#整合注册中心" class="headerlink" title="整合注册中心"></a>整合注册中心</h3><h4 id="注册中心的依赖"><a href="#注册中心的依赖" class="headerlink" title="注册中心的依赖"></a>注册中心的依赖</h4><p><code>spring-cloud-demo-eureka-server01</code>和<code>spring-cloud-demo-eureka-server02</code>依赖一致</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springcloud-demo<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.springcloud.demo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-demo-eureka-server01<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-server --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-eureka-server<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- spring boot security 依赖 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-security<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><p><code>spring-cloud-demo-eureka-server01</code>的<code>application.yml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">8762</span> <span class="comment"># 端口</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">eureka-server</span> <span class="comment"># 应用名称(集群下相同)</span></span><br><span class="line">  <span class="comment"># 安全认证</span></span><br><span class="line"><span class="attr">  security:</span></span><br><span class="line"><span class="attr">    user:</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">root</span></span><br><span class="line"><span class="attr">      password:</span> <span class="number">123456</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置Eureka Server 注册中心</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line"><span class="attr">  instance:</span></span><br><span class="line"><span class="attr">    hostname:</span> <span class="string">eureka01</span>  <span class="comment"># 主机名 不配置的时候根据操作系统的主机名来获取</span></span><br><span class="line"><span class="attr">    prefer-ip-address:</span> <span class="literal">true</span> <span class="comment"># 是否使用ip地址注册</span></span><br><span class="line"><span class="attr">    instance-id:</span> <span class="string">$&#123;spring.cloud.client.ip-address&#125;:$&#123;server.port&#125;</span> <span class="comment"># ip:port</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    registerWithEureka:</span> <span class="literal">true</span>  <span class="comment"># 是否将自己注册到注册中心，默认是true</span></span><br><span class="line"><span class="attr">    fetchRegistry:</span> <span class="literal">true</span>       <span class="comment"># 是否从注册中心获取服务配置信息，默认是true</span></span><br><span class="line">    <span class="comment"># 设置服务注册中心地址，指向另一个注册中心</span></span><br><span class="line"><span class="attr">    serviceUrl:</span>                <span class="comment"># 注册中心对外暴露的注册地址</span></span><br><span class="line"><span class="attr">      defaultZone:</span> <span class="attr">http://root:123456@localhost:8763/eureka/</span></span><br><span class="line"><span class="attr">  server:</span></span><br><span class="line"><span class="attr">    enable-self-preservation:</span> <span class="literal">false</span> <span class="comment"># true：开启自我保护模式，false：关闭自我保护模式</span></span><br><span class="line"><span class="attr">    eviction-interval-timer-in-ms:</span> <span class="number">60000</span> <span class="comment"># 清理间隔（单位：毫秒，默认是 60*1000）</span></span><br></pre></td></tr></table></figure>
+
+<p><code>spring-cloud-demo-eureka-server02</code>的<code>application.yml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">8763</span> <span class="comment"># 端口</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">eureka-server</span> <span class="comment"># 应用名称(集群下相同)</span></span><br><span class="line">  <span class="comment"># 安全认证</span></span><br><span class="line"><span class="attr">  security:</span></span><br><span class="line"><span class="attr">    user:</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">root</span></span><br><span class="line"><span class="attr">      password:</span> <span class="number">123456</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置Eureka Server 注册中心</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line"><span class="attr">  instance:</span></span><br><span class="line"><span class="attr">    hostname:</span> <span class="string">eureka02</span> <span class="comment"># 主机名 不配置的时候根据操作系统的主机名来获取</span></span><br><span class="line"><span class="attr">    prefer-ip-address:</span> <span class="literal">true</span> <span class="comment"># 是否使用ip地址注册</span></span><br><span class="line"><span class="attr">    instance-id:</span> <span class="string">$&#123;spring.cloud.client.ip-address&#125;:$&#123;server.port&#125;</span> <span class="comment"># ip:port</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    registerWithEureka:</span> <span class="literal">true</span>  <span class="comment"># 是否将自己注册到注册中心，默认是true</span></span><br><span class="line"><span class="attr">    fetchRegistry:</span> <span class="literal">true</span>       <span class="comment"># 是否从注册中心获取服务配置信息，默认是true</span></span><br><span class="line">    <span class="comment"># 设置服务注册中心地址，指向另一个注册中心</span></span><br><span class="line"><span class="attr">    serviceUrl:</span>                <span class="comment"># 注册中心对外暴露的注册地址</span></span><br><span class="line"><span class="attr">      defaultZone:</span> <span class="attr">http://root:123456@localhost:8762/eureka/</span></span><br><span class="line"><span class="attr">  server:</span></span><br><span class="line"><span class="attr">    enable-self-preservation:</span> <span class="literal">false</span> <span class="comment"># true：开启自我保护模式，false：关闭自我保护模式</span></span><br><span class="line"><span class="attr">    eviction-interval-timer-in-ms:</span> <span class="number">60000</span> <span class="comment"># 清理间隔（单位：毫秒，默认是 60*1000）</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="启动类"><a href="#启动类" class="headerlink" title="启动类"></a>启动类</h4><p><code>spring-cloud-demo-eureka-server01</code>和<code>spring-cloud-demo-eureka-server02</code>启动类一致。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.springcloud.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: XiaoJie Wang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: Create in 23:22 2021/7/5</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@EnableEurekaServer</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EurekaServerApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(EurekaServerApplication.class,args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="注册中心配置类"><a href="#注册中心配置类" class="headerlink" title="注册中心配置类"></a>注册中心配置类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.springcloud.demo.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.security.config.annotation.web.builders.HttpSecurity;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;</span><br><span class="line"><span class="keyword">import</span> org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: XiaoJie Wang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: Create in 22:15 2021/7/13</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@EnableWebSecurity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebSecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.configure(http); <span class="comment">// 加这句是为了访问 eureka 控制台和 /actuator 时能做安全控制</span></span><br><span class="line">        http.csrf().ignoringAntMatchers(<span class="string">"/eureka/**"</span>); <span class="comment">// 忽略 /eureka/** 的所有请求</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Spring-Cloud-Config服务端"><a href="#Spring-Cloud-Config服务端" class="headerlink" title="Spring Cloud Config服务端"></a>Spring Cloud Config服务端</h3><p>服务端和入门案例的配置中心相比多了 Eureka 的配置，其他地方都是一样的。</p>
+<p>完成<code>spring-cloud-demo-config-server</code>的服务端构建完成以后再复刻一个<code>spring-cloud-demo-config-server</code>实现高可用。</p>
+<h4 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h4><p><code>spring-cloud-demo-config-server</code>和<code>spring-cloud-demo-config-server01</code>的依赖一致。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springcloud-demo<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.springcloud.demo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-demo-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-config-server<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- netflix eureka client 依赖 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-eureka-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="配置文件-1"><a href="#配置文件-1" class="headerlink" title="配置文件"></a>配置文件</h4><p><code>spring-cloud-demo-config-server</code>的<code>application.yml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">8888</span> <span class="comment"># 端口</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">config-server</span> <span class="comment"># 应用名称</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      server:</span></span><br><span class="line"><span class="attr">        git:</span></span><br><span class="line"><span class="attr">          uri:</span> <span class="attr">https://gitee.com/I10veU/config-repo.git</span> <span class="comment"># 配置文件远程仓库地址</span></span><br><span class="line">          <span class="comment">#username:            # Github等用户名</span></span><br><span class="line">          <span class="comment">#password:            # Github等密码</span></span><br><span class="line">          <span class="comment">#default-label:       # 配置文件分支</span></span><br><span class="line">          <span class="comment">#search-paths:        # 配置文件所在根目录</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 Eureka Server 注册中心</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line"><span class="attr">  instance:</span></span><br><span class="line"><span class="attr">    prefer-ip-address:</span> <span class="literal">true</span>       <span class="comment"># 是否使用 ip 地址注册</span></span><br><span class="line"><span class="attr">    instance-id:</span> <span class="string">$&#123;spring.cloud.client.ip-address&#125;:$&#123;server.port&#125;</span> <span class="comment"># ip:port</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    service-url:</span>                  <span class="comment"># 设置服务注册中心地址</span></span><br><span class="line"><span class="attr">      defaultZone:</span> <span class="attr">http://root:123456@localhost:8762/eureka/,http://root:123456@localhost:8763/eureka/</span></span><br></pre></td></tr></table></figure>
+
+<p><code>spring-cloud-demo-config-server01</code>的<code>application.yml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">8889</span> <span class="comment"># 端口</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">config-server</span> <span class="comment"># 应用名称</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      server:</span></span><br><span class="line"><span class="attr">        git:</span></span><br><span class="line"><span class="attr">          uri:</span> <span class="attr">https://gitee.com/I10veU/config-repo.git</span> <span class="comment"># 配置文件远程仓库地址</span></span><br><span class="line">          <span class="comment">#username:            # Github等用户名</span></span><br><span class="line">          <span class="comment">#password:            # Github等密码</span></span><br><span class="line">          <span class="comment">#default-label:       # 配置文件分支</span></span><br><span class="line">          <span class="comment">#search-paths:        # 配置文件所在根目录</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 Eureka Server 注册中心</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line"><span class="attr">  instance:</span></span><br><span class="line"><span class="attr">    prefer-ip-address:</span> <span class="literal">true</span>       <span class="comment"># 是否使用 ip 地址注册</span></span><br><span class="line"><span class="attr">    instance-id:</span> <span class="string">$&#123;spring.cloud.client.ip-address&#125;:$&#123;server.port&#125;</span> <span class="comment"># ip:port</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    service-url:</span>                  <span class="comment"># 设置服务注册中心地址</span></span><br><span class="line"><span class="attr">      defaultZone:</span> <span class="attr">http://root:123456@localhost:8762/eureka/,http://root:123456@localhost:8763/eureka/</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="启动类-1"><a href="#启动类-1" class="headerlink" title="启动类"></a>启动类</h4><p><code>spring-cloud-demo-config-server</code>和<code>spring-cloud-demo-config-server01</code>启动类一致</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.springcloud.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.cloud.config.server.EnableConfigServer;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: XiaoJie Wang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: Create in 15:11 2021/6/30</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableConfigServer</span> <span class="comment">// 配置中心服务端注解</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringCloudConfigServerApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(SpringCloudConfigServerApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Spring-Cloud-Config客户端"><a href="#Spring-Cloud-Config客户端" class="headerlink" title="Spring Cloud Config客户端"></a>Spring Cloud Config客户端</h3><p>客户端加入 Eureka 以后，就不用直接和配置中心服务端打交道了，而是通过 Eureka 来访问。</p>
+<h4 id="核心依赖"><a href="#核心依赖" class="headerlink" title="核心依赖"></a>核心依赖</h4><p><code>spring-cloud-demo-config-order</code>的<code>pom.xml</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springcloud-demo<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.springcloud.demo<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-demo-config-order<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">maven.compiler.source</span>&gt;</span>8<span class="tag">&lt;/<span class="name">maven.compiler.source</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">maven.compiler.target</span>&gt;</span>8<span class="tag">&lt;/<span class="name">maven.compiler.target</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- netflix eureka client 依赖 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-eureka-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- spring cloud starter config 依赖 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="配置文件-2"><a href="#配置文件-2" class="headerlink" title="配置文件"></a>配置文件</h4><p><code>order-service</code> 的 <code>bootstrap.yml</code>，Eureka 注册中心的配置在远程 Git 仓库的 <code>order-service-dev.yml</code> 中。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">order-service</span> <span class="comment"># 配置文件名称，对应 git 仓库中配置文件前半部分</span></span><br><span class="line"><span class="attr">      label:</span> <span class="string">master</span> <span class="comment"># git 分支</span></span><br><span class="line"><span class="attr">      profile:</span> <span class="string">dev</span> <span class="comment"># 指定环境</span></span><br><span class="line"><span class="attr">      discovery:</span></span><br><span class="line"><span class="attr">        enabled:</span> <span class="literal">true</span> <span class="comment"># 开启</span></span><br><span class="line"><span class="attr">        service-id:</span> <span class="string">config-server</span> <span class="comment"># 指定配置中心服务端的 service-id</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="控制层"><a href="#控制层" class="headerlink" title="控制层"></a>控制层</h4><p>添加一个 <code>ConfigController</code> 用于测试获取配置文件信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.springcloud.demo.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;name&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/name"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="启动类-2"><a href="#启动类-2" class="headerlink" title="启动类"></a>启动类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.springcloud.demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderServiceApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(OrderServiceApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>启动注册中心：<code>spring-cloud-demo-eureka-server01</code>和<code>spring-cloud-demo-eureka-server02</code></p>
+<p>启动配置中心服务端：<code>spring-cloud-demo-config-server</code>和<code>spring-cloud-demo-config-server01</code></p>
+<p>启动配置中心客户端：<code>spring-cloud-demo-config-order</code></p>
+<p>当前环境在 <code>Eureka UI</code> 界面中如下：</p>
+<p><img src="%E9%AB%98%E5%8F%AF%E7%94%A8%E6%B5%8B%E8%AF%95.png" alt></p>
+<p>访问：<a href="http://localhost:9090/name" target="_blank" rel="noopener">http://localhost:9090/name</a> 结果如下：</p>
+<p><img src="%E9%AB%98%E5%8F%AF%E7%94%A8%E6%B5%8B%E8%AF%95-1.png" alt></p>
+<h2 id="8-配置中心工作原理"><a href="#8-配置中心工作原理" class="headerlink" title="8. 配置中心工作原理"></a>8. 配置中心工作原理</h2><p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.jpg" alt></p>
+<p>开发人员将配置文件存储至 Git 远程仓库，或后期对 Git 远程仓库的文件进行修改。如果远程仓库发生了版本改变，Config Server 会将 Git 远程仓库中的文件同步至本地仓库中。大家仔细观察 Config Server 的控制台可以看到类似如下信息。</p>
+<p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86-1.png" alt></p>
+<p>根据控制台信息打开对应的本地目录，会发现 Git 远程仓库中的文件已同步至本地仓库中。</p>
+<p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86-2.png" alt></p>
+<blockquote>
+<p>为什么要这么做呢？因为我们要考虑网络波动的情况下，无法访问远程仓库的问题。</p>
+</blockquote>
+<h2 id="9-配置中心自动刷新"><a href="#9-配置中心自动刷新" class="headerlink" title="9. 配置中心自动刷新"></a>9. 配置中心自动刷新</h2><h3 id="问题演示"><a href="#问题演示" class="headerlink" title="问题演示"></a>问题演示</h3><p>Spring Cloud Config在项目启动时才会加载配置文件。这样在修改配置文件内容后，不会自动刷新。例如，我们上面的演示，当服务已经启动的时候，修改Gitee上的配置内容，再次刷新页面，依然显示的时旧的配置信息，新的配置信息不会主动刷新。</p>
+<p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0.png" alt></p>
+<p>访问<a href="http://localhost:9090/name" target="_blank" rel="noopener">http://localhost:9090/name</a>，依然显示之前的配置信息</p>
+<p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0-1.png" alt></p>
+<p>重启 Config Client 以后，访问：<a href="http://localhost:9090/name" target="_blank" rel="noopener">http://localhost:9090/name</a> 结果如下：</p>
+<p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0-2.png" alt></p>
+<p>但是，总不能每次修改了配置后重启服务吧。</p>
+<p>提供了一个刷新机制，但是需要我们主动触发。那就是 <code>@RefreshScope</code> 注解并结合 <code>Actuator</code>，注意要引入 <code>spring-boot-starter-actuator</code>。</p>
+<h3 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h3><p><code>spring-cloud-demo-config-order</code>中添加<code>spring-boot-starter-actuator</code> 依赖。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- spring boot actuator 依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="配置文件-3"><a href="#配置文件-3" class="headerlink" title="配置文件"></a>配置文件</h3><p>其实这里主要用到的是 refresh 这个端点。以下为 <code>spring-cloud-demo-config-order</code> 的 <code>bootstrap.yml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">order-service</span> <span class="comment"># 配置文件名称，对应 git 仓库中配置文件前半部分</span></span><br><span class="line"><span class="attr">      label:</span> <span class="string">master</span> <span class="comment"># git 分支</span></span><br><span class="line"><span class="attr">      profile:</span> <span class="string">dev</span> <span class="comment"># 指定环境</span></span><br><span class="line"><span class="attr">      discovery:</span></span><br><span class="line"><span class="attr">        enabled:</span> <span class="literal">true</span> <span class="comment"># 开启</span></span><br><span class="line"><span class="attr">        service-id:</span> <span class="string">config-server</span> <span class="comment"># 指定配置中心服务端的 service-id</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">order-service</span> <span class="comment"># 配置文件名称，对应 git 仓库中配置文件前半部分</span></span><br><span class="line"><span class="attr">      uri:</span> <span class="attr">http://localhost:8888</span> <span class="comment"># config-server 服务端地址</span></span><br><span class="line"><span class="attr">      label:</span> <span class="string">master</span> <span class="comment"># git 分支</span></span><br><span class="line"><span class="attr">      profile:</span> <span class="string">dev</span> <span class="comment"># 指定环境</span></span><br><span class="line"><span class="attr">      discovery:</span></span><br><span class="line"><span class="attr">        enabled:</span> <span class="literal">true</span> <span class="comment"># 开启</span></span><br><span class="line"><span class="attr">        service-id:</span> <span class="string">config-server</span> <span class="comment"># 指定配置中心服务端的 service-id</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 度量指标监控与健康检查</span></span><br><span class="line"><span class="attr">management:</span></span><br><span class="line"><span class="attr">  endpoints:</span></span><br><span class="line"><span class="attr">    web:</span></span><br><span class="line"><span class="attr">      base-path:</span> <span class="string">/actuator</span>    <span class="comment"># 访问端点根路径，默认为 /actuator</span></span><br><span class="line"><span class="attr">      exposure:</span></span><br><span class="line"><span class="attr">        include:</span> <span class="string">'*'</span>          <span class="comment"># 需要开启的端点，这里主要用到的是 refresh 这个端点</span></span><br><span class="line">        <span class="comment">#exclude:             # 不需要开启的端点</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="控制层-1"><a href="#控制层-1" class="headerlink" title="控制层"></a>控制层</h3><p>在需要读取配置的类上增加 <code>@RefreshScope</code> 注解。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">![配置中心自动刷新-<span class="number">3</span>](Spring Cloud Config配置中心/配置中心自动刷新-<span class="number">3</span>.png)<span class="keyword">package</span> com.springcloud.demo.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.cloud.context.config.annotation.RefreshScope;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RefreshScope</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;name&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/name"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h3><p>重启 <code>spring-cloud-demo-config-order</code>，访问：<a href="http://localhost:9090/actuator" target="_blank" rel="noopener">http://localhost:9090/actuator</a> 可以看到 <code>refresh</code> 端点已开启。</p>
+<p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0-3.png" alt></p>
+<p>修改<code>Gitee</code>上的配置文件内容并提交，访问：<a href="http://localhost:9090/name，没有反应。" target="_blank" rel="noopener">http://localhost:9090/name，没有反应。</a></p>
+<p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0-4.png" alt></p>
+<p>接下来，我们发送 POST 请求到 <a href="http://localhost:9090/actuator/refresh" target="_blank" rel="noopener">http://localhost:9090/actuator/refresh</a> 这个接口，用 Postman 之类的工具即可。</p>
+<p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0-5.png" alt></p>
+<p>再次访问：<a href="http://localhost:9090/name" target="_blank" rel="noopener">http://localhost:9090/name</a> 结果如下：</p>
+<p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0-6.png" alt></p>
+<p>还有一种办法就是使用 <code>spring-cloud-config-monitor</code>，然后调用 <code>/monitor</code> 接口完成动态刷新。</p>
+<h3 id="在Gitee中配置Webhooks"><a href="#在Gitee中配置Webhooks" class="headerlink" title="在Gitee中配置Webhooks"></a>在Gitee中配置Webhooks</h3><p>自动刷新不能每次修改配置后，就用就用 Postman 访问一下 refresh 接口，这肯定不是自动刷新。Gitee提供了一种Webhook的方式，当有代码变更的时候，会调用我们设置的地址，来实现我们想达到的目的。</p>
+<p><img src="%E9%85%8D%E7%BD%AE%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0-7.png" alt></p>
+<p>填写回调的地址，也就是上面提到的<code>actuator/refresh</code> 这个地址，但是必须保证这个地址是可以被 Gitee 访问的。如果是内网就没办法了。一般公司内的项目都会有自己的代码管理工具，例如自建的Gitlab，Gitlab 也有 Webhook 的功能，这样就可以调用到内网的地址了。</p>
+<p><img src="%E9%85%8D%E7%BD%AE%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0-8.png" alt></p>
+<p>还有一种办法就是使用 <code>spring-cloud-config-monitor</code>，然后调用 <code>/monitor</code> 接口完成动态刷新。</p>
+<blockquote>
+<p>参见官方文档，<a href="https://docs.spring.io/spring-cloud-config/docs/2.2.8.RELEASE/reference/html/#_push_notifications_and_spring_cloud_bus" target="_blank" rel="noopener">Spring Cloud Config push notifications_and_spring_cloud_bus </a></p>
+</blockquote>
+<h2 id="10-Spring-Cloud-Bus-自动刷新"><a href="#10-Spring-Cloud-Bus-自动刷新" class="headerlink" title="10. Spring Cloud Bus 自动刷新"></a>10. Spring Cloud Bus 自动刷新</h2><p><img src="Spring-Cloud-Bus-%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0.png" alt></p>
+<p>如果只有一个 <code>Spring Config Client</code> 的话，通过<code>Webhook</code>的方式还能勉强接受，但是如果客户端比较多的情况下，一个一个去手动刷新未免有点复杂。我们可以借助 <code>Spring Cloud Bus</code> 的广播功能，让 <code>Config Client</code> 都订阅配置更新事件，当配置更新时，触发其中一个端的更新事件，<code>Spring Cloud Bus</code> 就把此事件广播到其他订阅客户端，以此来达到批量更新。</p>
+<blockquote>
+<p><a href="https://docs.spring.io/spring-cloud-bus/docs/2.2.4.RELEASE/reference/html/" target="_blank" rel="noopener">Spring Cloud Bus</a></p>
+</blockquote>
+<h2 id="11-配置中心加解密"><a href="#11-配置中心加解密" class="headerlink" title="11. 配置中心加解密"></a>11. 配置中心加解密</h2><p>考虑这样一个问题：所有的配置文件都存储在 Git 远程仓库，配置文件中的一些信息（比如数据库的用户名及密码）又是比较敏感的。所以，我们需要对这些敏感信息进行加密处理。主要的加密方法分为两种：一种是共享密钥加密（对称密钥加密），一种是公开密钥加密（非对称密钥加密）。</p>
+<h3 id="对称加解密-Symmetric-encryption"><a href="#对称加解密-Symmetric-encryption" class="headerlink" title="对称加解密 Symmetric encryption"></a>对称加解密 Symmetric encryption</h3><blockquote>
+<p>对称加密是最快速、最简单的一种加密方式，加密（encryption）与解密（decryption）用的是同样的密钥（secret key）。</p>
+</blockquote>
+<h4 id="检查加密环境"><a href="#检查加密环境" class="headerlink" title="检查加密环境"></a>检查加密环境</h4><h5 id="版本问题"><a href="#版本问题" class="headerlink" title="版本问题"></a>版本问题</h5><p>访问 Spring Cloud Config Server：<a href="http://localhost:8888/encrypt/status" target="_blank" rel="noopener">http://localhost:8888/encrypt/status</a></p>
+<ul>
+<li>检查结果1</li>
+</ul>
+<p><code>{&quot;description&quot;:&quot;No key was installed for encryption service&quot;,&quot;status&quot;:&quot;NO_KEY&quot;}</code> </p>
+<blockquote>
+<p>说明没有为加密服务安装密钥，也说明你使用的是较低的 <code>JDK</code> 版本。</p>
+</blockquote>
+<p><strong>解决方案1</strong>：</p>
+<p>更换高版本 <code>JDK</code>，比如使用 <code>LTS</code> 版本 <code>JDK-11.0.6</code>。</p>
+<p><strong>解决方案2</strong>：</p>
+<p>从 <code>Oracle</code> 官网下载对应 <code>JCE</code>，下载链接：<a href="https://www.oracle.com/java/technologies/javase-jce-all-downloads.html" target="_blank" rel="noopener">https://www.oracle.com/java/technologies/javase-jce-all-downloads.html</a></p>
+<p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%8A%A0%E5%AF%86-1.png" alt></p>
+<blockquote>
+<p>图中红色框中内容已经足够说明原因：<code>JDK 9</code> 以及更高版本已附带策略文件，并在默认情况下启用。</p>
+<p>如果你的当前环境必须使用低版本<code>JDK</code>，那么请下载对应 <code>JCE</code> 压缩包，下载解压后把 <code>local_policy.jar</code> 和 <code>US_export_policy.jar</code> 文件安装到需要安装 <code>JCE</code> 机器上的 <code>JDK</code> 或 <code>JRE</code> 的 <code>security</code> 目录下即可。</p>
+</blockquote>
+<ul>
+<li>检查结果2</li>
+</ul>
+<p><code>{&quot;description&quot;:&quot;The encryption algorithm is not strong enough&quot;,&quot;status&quot;:&quot;INVALID&quot;}</code></p>
+<blockquote>
+<p>说明服务端未配置加密。</p>
+</blockquote>
+<p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%8A%A0%E5%AF%86-2.png" alt></p>
+<h5 id="配置问题"><a href="#配置问题" class="headerlink" title="配置问题"></a>配置问题</h5><p>如果出现检查结果2所示的提示，说明服务端未配置加密。</p>
+<p><code>Spring Cloud Config Server</code>服务器创建配置文件，注意必须以<code>bootstrap.yml</code>命名，配置密钥信息即可。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 密钥</span></span><br><span class="line"><span class="attr">encrypt:</span></span><br><span class="line"><span class="attr">  key:</span> <span class="string">demo</span></span><br></pre></td></tr></table></figure>
+
+<p>重启  Spring Cloud Config Server 访问：<a href="http://localhost:8888/encrypt/status" target="_blank" rel="noopener">http://localhost:8888/encrypt/status</a> 结果如下：</p>
+<p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%8A%A0%E5%AF%86-3.png" alt></p>
+<h4 id="加解密演示"><a href="#加解密演示" class="headerlink" title="加解密演示"></a>加解密演示</h4><h5 id="配置中心服务端"><a href="#配置中心服务端" class="headerlink" title="配置中心服务端"></a>配置中心服务端</h5><p>使用 <code>curl</code> 命令访问 <code>/encrypt</code> 端点对属性值 root 进行加密。反向操作 <code>/decrypt</code> 可解密。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://localhost:8888/encrypt -d root</span><br></pre></td></tr></table></figure>
+
+<p>加密结果</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Microsoft Windows [版本 10.0.19044.1766]</span><br><span class="line">(c) Microsoft Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line">C:\Users\wangxiaojie&gt;curl http://localhost:8888/encrypt -d root</span><br><span class="line">c9d615117d09a245164ed6ce938ee7de6ecdf98f5d55f15374f3537005304f1f</span><br><span class="line">C:\Users\wangxiaojie&gt;</span><br></pre></td></tr></table></figure>
+
+<p>解密</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\wangxiaojie&gt;curl http://localhost:8888/decrypt -d c9d615117d09a245164ed6ce938ee7de6ecdf98f5d55f15374f3537005304f1f</span><br><span class="line">root</span><br><span class="line">C:\Users\wangxiaojie&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Git仓库"><a href="#Git仓库" class="headerlink" title="Git仓库"></a>Git仓库</h5><p>把加密后的数据更新到<code>Git</code>远程仓库的配置文件中。值得注意的是需要在加密结果前加<code>{cipher}</code>串，如果远程属性源包含加密的内容（以开头的值<code>{cipher}</code>），则将其解密，然后再通过HTTP发送给客户端。</p>
+<p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%8A%A0%E5%AF%86-4.png" alt></p>
+<h5 id="配置中心客户端"><a href="#配置中心客户端" class="headerlink" title="配置中心客户端"></a>配置中心客户端</h5><p><code>spring-cloud-demo-config-order</code>控制层添加获取配置信息代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.springcloud.demo.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.cloud.context.config.annotation.RefreshScope;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RefreshScope</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;name&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;password&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/name"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/password"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改<code>spring-cloud-demo-config-order</code>配置文件<code>bootstrap.yml</code>，重启测试。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">order-service</span> <span class="comment"># 配置文件名称，对应 git 仓库中配置文件前半部分</span></span><br><span class="line"><span class="attr">      uri:</span> <span class="attr">http://localhost:8888</span> <span class="comment"># config-server 服务端地址</span></span><br><span class="line"><span class="attr">      label:</span> <span class="string">master</span> <span class="comment"># git 分支</span></span><br><span class="line"><span class="attr">      profile:</span> <span class="string">prod</span> <span class="comment"># 指定环境</span></span><br><span class="line"><span class="attr">      discovery:</span></span><br><span class="line"><span class="attr">        enabled:</span> <span class="literal">true</span> <span class="comment"># 开启</span></span><br><span class="line"><span class="attr">        service-id:</span> <span class="string">config-server</span> <span class="comment"># 指定配置中心服务端的 service-id</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 度量指标监控与健康检查</span></span><br><span class="line"><span class="attr">management:</span></span><br><span class="line"><span class="attr">  endpoints:</span></span><br><span class="line"><span class="attr">    web:</span></span><br><span class="line"><span class="attr">      base-path:</span> <span class="string">/actuator</span>    <span class="comment"># 访问端点根路径，默认为 /actuator</span></span><br><span class="line"><span class="attr">      exposure:</span></span><br><span class="line"><span class="attr">        include:</span> <span class="string">'*'</span>          <span class="comment"># 需要开启的端点，这里主要用到的是 refresh 这个端点</span></span><br><span class="line">        <span class="comment">#exclude:             # 不需要开启的端点</span></span><br></pre></td></tr></table></figure>
+
+<p>访问：<a href="http://localhost:9091/password" target="_blank" rel="noopener">http://localhost:9091/password</a> 返回解密后的结果。</p>
+<p><img src="%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%8A%A0%E5%AF%86-5.png" alt></p>
+<h3 id="非对称加解密-Asymmetric-encryption"><a href="#非对称加解密-Asymmetric-encryption" class="headerlink" title="非对称加解密 Asymmetric encryption"></a>非对称加解密 Asymmetric encryption</h3><h4 id="对称加密和非对称加密的区别"><a href="#对称加密和非对称加密的区别" class="headerlink" title="对称加密和非对称加密的区别"></a>对称加密和非对称加密的区别</h4><p>对称加密算法在加密和解密时使用的是同一个密钥。只要拿到密钥，任何人都能破解。</p>
+<p><img src="%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86.png" alt></p>
+<p>非对称加密算法需要两个密钥来进行加密和解密，这两个密钥分别是公开密钥（public key 简称公钥）和私有密钥（private key 简称私钥）。在传输过程中，即使攻击者截获了传输的密文，并得到了公钥，也无法破解密文，因为使用专用密钥才能破解密文。</p>
+<p><img src="%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86.png" alt></p>
+<blockquote>
+<p>图片来自《图解HTTP》</p>
+</blockquote>
+<h4 id="Java-keytool-使用说明"><a href="#Java-keytool-使用说明" class="headerlink" title="Java-keytool 使用说明"></a>Java-keytool 使用说明</h4><p><code>Keytool</code> 用来管理私钥仓库(<code>keystore</code>)和与之相关的<code>X.509</code>证书链（用以验证与私钥对应的公钥），也可以用来管理其他信任实体。</p>
+<p>默认大家都配置了 Java 的环境变量，打开 <code>CMD</code> 窗口运行以下命令。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 生成名为 config.keystore 的 keystore 文件，别名为 config，加密算法类型使用 RSA，密钥库口令和密钥口令均为：config</span><br><span class="line">keytool -genkeypair -keystore config.keystore -alias config -keyalg RSA -keypass config -storepass config</span><br></pre></td></tr></table></figure>
+
+<p><img src="%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86-01.png" alt></p>
+<p>此时在对应的目录下会生成一个 <code>config.keystore</code> 文件。</p>
+<p><img src="%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86-2.png" alt></p>
+<h4 id="加解密演示-1"><a href="#加解密演示-1" class="headerlink" title="加解密演示"></a>加解密演示</h4><h5 id="配置中心服务端-1"><a href="#配置中心服务端-1" class="headerlink" title="配置中心服务端"></a>配置中心服务端</h5><p>将 <code>config.keystore</code> 文件添加至 <code>spring-cloud-demo-config-server01</code> 项目 <code>resources</code> 目录中。</p>
+<p><img src="%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%863.png" alt></p>
+<p>创建 <code>bootstrap.yml</code> 添加非对称加解密配置。注意：值要跟 <code>CMD</code> 里输入的值对应不然会出错。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 非对称加解密</span></span><br><span class="line"><span class="attr">encrypt:</span></span><br><span class="line"><span class="attr">  key-store:</span></span><br><span class="line"><span class="attr">    location:</span> <span class="attr">classpath:config.keystore</span> <span class="comment"># keystore 文件存储路径</span></span><br><span class="line"><span class="attr">    alias:</span> <span class="string">config</span> <span class="comment"># 密钥对别名</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">config</span> <span class="comment"># storepass 密钥仓库</span></span><br><span class="line"><span class="attr">    secret:</span> <span class="string">config</span> <span class="comment"># keypass 用来保护所生成密钥对中的私钥</span></span><br></pre></td></tr></table></figure>
+
+<p><code>pom.xml</code> 添加避免 <code>maven</code> 过滤文件的配置。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- build标签 常用于添加插件及编译配置 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 读取配置文件 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/resources<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span>&gt;</span>src/main/java<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">includes</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.xml<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.properties<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.tld<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*.keystore<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">filtering</span>&gt;</span>false<span class="tag">&lt;/<span class="name">filtering</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>检查加密环境，访问：<a href="http://localhost:8889/encrypt/status" target="_blank" rel="noopener">http://localhost:8889/encrypt/status</a> 结果如下：</p>
+<p><img src="%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86-4.png" alt></p>
+<p>使用 <code>curl</code> 命令访问 <code>/encrypt</code> 端点对属性值 root 进行加密。反向操作 <code>/decrypt</code> 可解密。</p>
+<p><strong>加密</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://localhost:8889/encrypt -d root</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">D:\&gt;curl http://localhost:8889/encrypt -d root</span><br><span class="line">AQB1Ty71sHBjQfLq7tGW/HoaL7k2Z+5arwCO0sWg7mQ/EQ7jpz1s1Ubak1gNcpIcxPcwUGAsYE0PKeV4JfD6yezD7D/LDq+q2BIJkMVqvbgh0LCcqPf7jc9s5Ky0hYB4NZqTlWW0BStFLw9EX2yC/OWfqCAUB65lWNc5KXCCXpHVSoBlXI+xkPLr1eYxo3rex/0KY/hF0cEZ/fmcgac9gEgjg5GGfiK2Z7/ug9r6bDnzW4CoOYbVHYYfzxfvqu0HKze5WCEZbG0xHUAUkOj3PnY3kQGoOTe9+AMLxtnTKOof3GAJX/XKLTHMmDjaMQzDWQEFxLhUTzNAzJ5anh5tINS0OsLnKUywJltkLouSPlICXgMx4XnKX91DSsFNzzyqBSg=</span><br></pre></td></tr></table></figure>
+
+<p><strong>解密</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://localhost:8889/decrypt -d AQB1Ty71sHBjQfLq7tGW/HoaL7k2Z+5arwCO0sWg7mQ/EQ7jpz1s1Ubak1gNcpIcxPcwUGAsYE0PKeV4JfD6yezD7D/LDq+q2BIJkMVqvbgh0LCcqPf7jc9s5Ky0hYB4NZqTlWW0BStFLw9EX2yC/OWfqCAUB65lWNc5KXCCXpHVSoBlXI+xkPLr1eYxo3rex/0KY/hF0cEZ/fmcgac9gEgjg5GGfiK2Z7/ug9r6bDnzW4CoOYbVHYYfzxfvqu0HKze5WCEZbG0xHUAUkOj3PnY3kQGoOTe9+AMLxtnTKOof3GAJX/XKLTHMmDjaMQzDWQEFxLhUTzNAzJ5anh5tINS0OsLnKUywJltkLouSPlICXgMx4XnKX91DSsFNzzyqBSg=</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">D:\&gt;curl http://localhost:8889/decrypt -d AQB1Ty71sHBjQfLq7tGW/HoaL7k2Z+5arwCO0sWg7mQ/EQ7jpz1s1Ubak1gNcpIcxPcwUGAsYE0PKeV4JfD6yezD7D/LDq+q2BIJkMVqvbgh0LCcqPf7jc9s5Ky0hYB4NZqTlWW0BStFLw9EX2yC/OWfqCAUB65lWNc5KXCCXpHVSoBlXI+xkPLr1eYxo3rex/0KY/hF0cEZ/fmcgac9gEgjg5GGfiK2Z7/ug9r6bDnzW4CoOYbVHYYfzxfvqu0HKze5WCEZbG0xHUAUkOj3PnY3kQGoOTe9+AMLxtnTKOof3GAJX/XKLTHMmDjaMQzDWQEFxLhUTzNAzJ5anh5tINS0OsLnKUywJltkLouSPlICXgMx4XnKX91DSsFNzzyqBSg=</span><br><span class="line">root</span><br><span class="line">D:\&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Git仓库-1"><a href="#Git仓库-1" class="headerlink" title="Git仓库"></a>Git仓库</h5><p>把加密后的数据更新到 Git 远程仓库的配置文件中。值得注意的是需要在加密结果前添加 <code>{cipher}</code> 串，如果远程属性源包含加密的内容（以开头的值<code>{cipher}</code>），则将其解密，然后再通过HTTP发送给客户端。</p>
+<p><img src="%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86-5.png" alt></p>
+<h5 id="配置中心客户端-1"><a href="#配置中心客户端-1" class="headerlink" title="配置中心客户端"></a>配置中心客户端</h5><p><code>spring-cloud-demo-config-order</code>配置文件<code>bootstrap.yml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">order-service</span> <span class="comment"># 配置文件名称，对应 git 仓库中配置文件前半部分</span></span><br><span class="line"><span class="attr">      label:</span> <span class="string">master</span> <span class="comment"># git 分支</span></span><br><span class="line"><span class="attr">      profile:</span> <span class="string">prod</span> <span class="comment"># 指定环境</span></span><br><span class="line"><span class="attr">      discovery:</span></span><br><span class="line"><span class="attr">        enabled:</span> <span class="literal">true</span> <span class="comment"># 开启</span></span><br><span class="line"><span class="attr">        service-id:</span> <span class="string">config-server</span> <span class="comment"># 指定配置中心服务端的 service-id</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 度量指标监控与健康检查</span></span><br><span class="line"><span class="attr">management:</span></span><br><span class="line"><span class="attr">  endpoints:</span></span><br><span class="line"><span class="attr">    web:</span></span><br><span class="line"><span class="attr">      base-path:</span> <span class="string">/actuator</span>    <span class="comment"># 访问端点根路径，默认为 /actuator</span></span><br><span class="line"><span class="attr">      exposure:</span></span><br><span class="line"><span class="attr">        include:</span> <span class="string">'*'</span>          <span class="comment"># 需要开启的端点，这里主要用到的是 refresh 这个端点</span></span><br><span class="line">        <span class="comment">#exclude:             # 不需要开启的端点</span></span><br></pre></td></tr></table></figure>
+
+<p>访问：<a href="http://localhost:9091/password" target="_blank" rel="noopener">http://localhost:9091/password</a> 返回解密后的结果。</p>
+<p><img src="%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86-6.png" alt></p>
+<h2 id="12-配置中心用户安全认证"><a href="#12-配置中心用户安全认证" class="headerlink" title="12. 配置中心用户安全认证"></a>12. 配置中心用户安全认证</h2><p><code>Spring Cloud Config Server</code>服务器的配置文件之前访问是不受任何约束的，而且直接通过 <code>Config Server</code> 访问配置文件信息，加密的内容就会解密后直接显示在浏览器中，这样加密就没有意义。当然不是，我们只需要添加用户安全认证即可。</p>
+<p><img src="%E5%AE%89%E5%85%A8%E8%AE%A4%E8%AF%81-1.png" alt></p>
+<h3 id="添加依赖-1"><a href="#添加依赖-1" class="headerlink" title="添加依赖"></a>添加依赖</h3><p><code>spring-cloud-demo-config-server01</code>的<code>pom.xml</code>中添加依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- spring boot security 依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-security<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="配置文件-4"><a href="#配置文件-4" class="headerlink" title="配置文件"></a>配置文件</h3><p><code>spring-cloud-demo-config-server01</code>的<code>application.yml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="comment"># 安全认证</span></span><br><span class="line"><span class="attr">  security:</span></span><br><span class="line"><span class="attr">    user:</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">user</span></span><br><span class="line"><span class="attr">      password:</span> <span class="number">123456</span></span><br></pre></td></tr></table></figure>
+
+<p><code>spring-cloud-demo-config-order</code>的<code>bootstrap.yml</code>添加安全认证配置。</p>
+<pre><code class="yaml"></code></pre>
+<h3 id="测试-2"><a href="#测试-2" class="headerlink" title="测试"></a>测试</h3><h4 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h4><p>访问：<a href="http://localhost:8889/order-service-prod.yml" target="_blank" rel="noopener">http://localhost:8889/order-service-prod.yml</a> 被重定向至登录页。</p>
+<p><img src="%E5%AE%89%E5%85%A8%E8%AE%A4%E8%AF%81-2.png" alt></p>
+<p>输入用户名和密码后，结果如下：</p>
+<p><img src="%E5%AE%89%E5%85%A8%E8%AE%A4%E8%AF%81-3.png" alt></p>
+<h4 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h4><p>访问：<a href="http://localhost:9091/password" target="_blank" rel="noopener">http://localhost:9091/password</a> 结果如下：</p>
+<p><img src="%E5%AE%89%E5%85%A8%E8%AE%A4%E8%AF%81-4.png" alt></p>
+<p>Config 配置中心所有的知识点就学习结束了。</p>
+	
+	</div>
+	
+	<div id="current-post-cover" data-scr="/img/post_cover/spring-cloud-config.jpg"></div>
+
+	<!-- relate post, comment...-->
+	<div class="investment-container">
+		<div class="investment-header">
+			<div class="investment-title-1">
+				<div class="on">相关文章</div>
+				<div>评论</div>
+				<div>分享</div>
+			</div>
+			<div class="investment-title-2">	            
+				
+	<span>
+		<a href="javascript: window.scrollTo(0, 0);">返回顶部</a>
+		
+		
+			<a href="/2022/06/25/hello-world/" title="Hello World" rel="next">
+				下一篇&raquo;
+			</a>
+			
+	</span>
+
+
+      		
+			</div>	
+		</div>
+		
+		<div class="investment-content">
+			<div class="investment-content-list">
+				
+
+<div class="relate-post">
+	
+		<ul>
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/21/Spring-Cloud之Stream消息驱动/" title="Spring Cloud之Stream消息驱动">
+								Spring Cloud之Stream消息驱动			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 21日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Stream消息驱动在实际的企业开发中，消息中间件是至关重要的组件之一。消息中间件主要解决应用解耦，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构。
+不同的中间件其实现方式，内部结构是不...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/21/Spring-Cloud之Stream消息驱动/" title="Spring Cloud之Stream消息驱动">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/spring-cloud-stream.jpg" alt="Spring Cloud之Stream消息驱动"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/09/Spring-Cloud之Sleuth链路追踪/" title="Spring Cloud之Sleuth链路追踪">
+								Spring Cloud之Sleuth链路追踪			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 9日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Sleuth链路追踪1. 问题随着微服务架构的流行，服务按照不同的维度进行拆分，一次请求往往需要涉及到多个服务。互联网应用构建在不同的软件模块集上，这些软件模块，有可能是由不同的团队开发、可能使用不同的编程语...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/09/Spring-Cloud之Sleuth链路追踪/" title="Spring Cloud之Sleuth链路追踪">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/spring-cloud-sleuth.jpg" alt="Spring Cloud之Sleuth链路追踪"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/03/Spring-Cloud之Netflix-Zuul服务网关/" title="Spring Cloud之Netflix Zuul服务网关">
+								Spring Cloud之Netflix Zuul服务网关			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 3日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Netflix Zuul服务网关1. 什么是服务网关?API Gateway（API GW / API 网关），顾名思义，是出现在系统边界上的一个面向 API 的、串行集中式的强管控服务，这里的边界是企业 I...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/03/Spring-Cloud之Netflix-Zuul服务网关/" title="Spring Cloud之Netflix Zuul服务网关">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/cover_zuul.jpg" alt="Spring Cloud之Netflix Zuul服务网关"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/01/Spring-Cloud之Consul-服务注册中心/" title="Spring Cloud之Consul 服务注册中心">
+								Spring Cloud之Consul 服务注册中心			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 1日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Consul 服务注册中心1.什么是Consul?Consul 是 HashiCorp 公司推出的开源产品，是一种服务网格(Service Mesh)解决方案。用于实现分布式系统的服务发现、服务隔离、服务配置...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/01/Spring-Cloud之Consul-服务注册中心/" title="Spring Cloud之Consul 服务注册中心">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/cover_consul.jpg" alt="Spring Cloud之Consul 服务注册中心"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/25/hello-world/" title="Hello World">
+								Hello World			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 25日, 2022				
+							</p>
+							<p class="relate-post-content">
+								一切始于Hello World!
+
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/25/hello-world/" title="Hello World">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/HelloWorld.jpeg" alt="Hello World"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/17/Java并发编程（三）-共享模型之内存/" title="Java并发编程（三） 共享模型之内存">
+								Java并发编程（三） 共享模型之内存			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 17日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Java并发编程（三） 共享模型之内存1. Java 内存模型在Java SE 5 (JSR133)中定义的JMM（Java Memory Model）是为了确保当编写并发代码的时候能够提供Java定义和语义，使多线程程序不仅正确，而...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/17/Java并发编程（三）-共享模型之内存/" title="Java并发编程（三） 共享模型之内存">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency03.jpg" alt="Java并发编程（三） 共享模型之内存"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/05/31/Java并发编程（二）-共享模型之管程/" title="Java并发编程（二） 共享模型之管程">
+								Java并发编程（二） 共享模型之管程			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								五月 31日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Java并发编程（二） 共享模型之管程1. 线程安全问题
+两个线程对初始值为 0 的静态变量一个做自增，一个做自减，各做 5000 次，结果是 0 吗？  
+
+1234567891011121314151617181920212223...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/05/31/Java并发编程（二）-共享模型之管程/" title="Java并发编程（二） 共享模型之管程">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency02.jpg" alt="Java并发编程（二） 共享模型之管程"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/12/01/Java并发编程（一）-基础篇/" title="Java并发编程（一） 基础篇">
+								Java并发编程（一） 基础篇			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十二月 1日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Java并发编程（一） 基础篇1. 进程和线程1.1 什么是进程（Process）进程是操作系统进行资源分配的最小单位。因为现在的操作系统都是多任务的操作系统，多任务操作系统是允许多个进程在一个cpu上运行的。对于每一个进程而言，都有...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/12/01/Java并发编程（一）-基础篇/" title="Java并发编程（一） 基础篇">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency.jpg" alt="Java并发编程（一） 基础篇"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/11/26/Java-NIO/" title="Java NIO">
+								Java NIO			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十一月 26日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Java NIO1. Java NIO概述Java NIO(New IO Non Blocking IO)是从java1.4版本开始引入的一个新的IO API,可以替代标准的Java IO API。NIO与原来的IO有同样的作用和目的...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/11/26/Java-NIO/" title="Java NIO">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/NIO.jpg" alt="Java NIO"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/11/Java IO流/" title="Java IO流">
+								Java IO流			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 11日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Java IO流1. 什么是文件？从编程的角度看，文件就是保存数据的载体。可以是文字，图片，音频，视频…
+2. 文件流文件再程序中以流的形式来操作。流数据在文件（数据源）和程序（内存）之间经历的路径。输入流数据从文件（数据源）到程序（...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/11/Java IO流/" title="Java IO流">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/IO.jpg" alt="Java IO流"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+		</ul>
+	
+</div>	
+			</div>
+			<div class="investment-content-list">
+				<div class="layout-comment">
+
+	
+
+		
+
+			<!-- gitalk comment -->
+			<!-- show gitalk comment -->
+<div id="gitalk-container"></div>
+
+<!-- gitalk`s css & js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<link rel="stylesheet" href="/css/comment.css">
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+	//Thanks O-R
+	//https://github.com/gitalk/gitalk/issues/102#issuecomment-382970552
+	//去除尾部匹配正则数组的字符串  
+	//Remove redundant characters
+	String.prototype.trimEnd = function(regStr) {
+		var result = this;
+		if(regStr == undefined || regStr == null || regStr == "") {
+			return result;
+		}
+		var array = regStr.split(',');
+
+		if(array.length > 0) {
+
+			var c = array.shift();
+			var str = this;
+			var i = str.length;
+			var rg = new RegExp(c);
+			var matchArr = str.match(rg);
+
+			if(matchArr != undefined && matchArr != null && matchArr.length > 0) {
+				var matchStr = matchArr[0].replace(/\\/g, "\\\\").replace(/\*/g, "\\*")
+					.replace(/\+/g, "\\+").replace(/\|/g, "\\|")
+					.replace(/\{/g, "\\{").replace(/\}/g, "\\}")
+					.replace(/\(/g, "\\(").replace(/\)/g, "\\)")
+					.replace(/\^/g, "\\^").replace(/\$/g, "\\$")
+					.replace(/\[/g, "\\[").replace(/\]/g, "\\]")
+					.replace(/\?/g, "\\?").replace(/\,/g, "\\,")
+					.replace(/\./g, "\\.").replace(/\&/g, "\\&");
+				matchStr = matchStr + '$';
+				result = str.replace(new RegExp(matchStr), "");
+			}
+
+			if(array.length > 0) {
+				return result.trimEnd(array.join())
+			} else {
+				return result;
+			}
+		}
+	};
+
+	//Create gitalk
+	var gitalk = new Gitalk({
+		clientID: '36a5ea1eb92d0cdb0a6b',
+		clientSecret: '6e1940c0dcd00e3b9216f008368995a1988bd3fd',
+		//id: window.location.pathname,
+		//id: decodeURI(window.location.pathname),
+		//id: (window.location.pathname).split("/").pop().substring(0, 49),
+		id: decodeURI( md5( location.href.trimEnd('#.*$,\\?.*$,index.html$') ) ),
+		repo: 'Blog-Comment-Repo',
+		owner: '10veU',
+		admin: '10veU',
+		distractionFreeMode: 'true',
+	})
+	gitalk.render('gitalk-container');
+</script>
+
+		
+		
+	
+
+</div>
+			</div>
+			<div class="investment-content-list">
+				<div class="layout-share">
+	
+	
+
+		
+			
+			<!-- socialShare share -->
+			<div class="social-share"></div>
+
+<!--  css & js -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+			
+		
+		
+	
+</div>
+
+
+			</div>
+		</div>	
+	</div>
+	</div>
+</div>
+
+
+
+	<!-- leancloud -->
+	<!--
+	时间：2018-11-27
+	描述：
+		文章访问量：visitors
+		文章喜欢量：likes	
+		文章排行榜：topNPost
+		其他得说明：
+			01-Cookie相关的函数 
+				https://blog.csdn.net/somehow1002/article/details/78511541（Author：somehow1002）
+			02-visitors相关的函数 
+				https://blog.csdn.net/u013553529/article/details/63357382（Author：爱博客大伯）
+				https://notes.doublemine.me/2015-10-21-为NexT主题添加文章阅读量统计功能.html（Author：夏末）
+			03-topNPost相关的函数
+				https://hoxis.github.io/hexo-next-read-rank.html（Author：hoxis）
+			04-likes相关的函数，
+				参考了01 & 02进行简单的设计与实现
+-->
+
+
+
+	<script>
+		var appid = 'xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI',
+            appkey = 'Tkq82uGKwAFYHPeTF3Q6MVDp';	  
+        AnnieLeancloud(appid, appkey);         
+	</script>
+    
+
+	
+
+
+<!-- show math formula -->
+
+
+
+	 
+	<script src="/plugin/clipboard/clipboard.js"></script>
+	<script>
+		// Copy code !
+	    function codePreprocessing() {
+	        $("#article-content .highlight").each(function() {
+
+	            $(this).wrap('<div id="post-code"></div>');
+
+	        })
+
+	        $("#article-content #post-code").each(function() {
+
+	            $(this).prepend('<nav class="copy-nav"><span><i class="code-language"></i></span></nav>');
+
+	        })
+
+	        $("#article-content .copy-nav").each(function() {
+	            var temp = $(this).next().attr('class'),
+	                language = ((temp.length > 9) && (temp != null)) ? temp.substr(10) : "none"; //why 9? Need to check language?
+
+	            $(this).find('.code-language').text(language);
+
+	            $(this).append('<span class="copy-btn"><i class="fa fa-copy" aria-hidden="true"></i></span>');
+
+	        });
+	    }
+
+		function codeCopy() {
+		    $('#article-content #post-code').each(function(i) {
+		        var codeCopyId = 'codeCopy-' + i;
+
+		        var codeNode = $(this).find('.code'),
+		            copyButton = $(this).find('.copy-btn');
+
+		        codeNode.attr('id', codeCopyId);
+		        copyButton.attr('data-clipboard-target-id', codeCopyId);
+		    })
+
+		    
+			var clipboard = new ClipboardJS('.copy-btn', {
+					target: function(trigger) {
+						return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+					}
+		      	});
+
+			//pure js
+			function showTooltip(elem, msg) {		   
+				elem.setAttribute('aria-label', msg);
+				elem.setAttribute('class', 'copy-btn copy-status');
+				setTimeout(function() {
+					elem.setAttribute('class', 'copy-btn');
+				}, 2000);
+			}
+
+			clipboard.on('success', function(e) {
+			    e.clearSelection();
+			    console.info('Action:', e.action);		   
+			    console.info('Trigger:', e.trigger);
+			    showTooltip(e.trigger, 'Copied!');
+			    
+			});
+			clipboard.on('error', function(e) {
+			    console.error('Action:', e.action);
+			    console.error('Trigger:', e.trigger);
+			});
+		
+
+		}
+
+		if ($('.layout-post').length) {
+		    codePreprocessing();
+		    codeCopy();
+		} 
+	</script>
+
+
+
+
+
+<link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+<script src="/plugin/fancybox/jquery.fancybox.js"></script>
+
+<script type="text/javascript">
+	var titleID = $('.article-title a'),
+		imageID = $('.article-content img'),
+		videoID = $('.article-content video');
+
+	var postTitle = titleID.text() ? titleID.text() : "No post title!";
+
+	imageID.each(function() {
+		var imgPath = $(this).attr('src'),
+			imgTitle = $(this).attr('alt') ? $(this).attr('alt') : "No image description!";
+
+		//给每个匹配的<img>元素打包, 即添加父元素<a>
+		$(this).wrap('<a data-fancybox="gallery" data-caption=" 《 ' + postTitle + ' 》 ' + imgTitle + ' "  href=" ' + imgPath + ' "> </a>');
+	});
+
+	videoID.each(function() {
+		var videoPath = $(this).attr('src');
+
+		//给每个匹配的<img>元素打包, 即添加父元素<a>
+		$(this).wrap('<a data-fancybox href=" ' + videoPath + ' "> </a>');
+	});
+	//TODO：支持html5 video
+
+	if($('#layout-post').length) {
+		$('[data-fancybox="gallery"]').fancybox({
+			loop: true,
+			buttons: [
+				"zoom",
+				"share",
+				"slideShow",
+				"fullScreen",
+				//"download",
+				"thumbs",
+				"close"
+			],
+			protect: false
+		});
+	}
+</script>
+		</main>
+
+		<!--footer-->
+		<footer>
+	<div class="social">
+		<ul>
+	
+		<li>
+			<a href="https://github.com/10veU" target="_blank">
+				<i class="fa fa-github"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank">
+				<i class="fa fa-weibo"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/img/wechat.jpg" target="_blank">
+				<i class="fa fa-wechat"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com" target="_blank">
+				<i class="fa fa-qq"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="mailto:xiaojie_wangxj@163.com" target="_blank">
+				<i class="fa fa-envelope"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<i class="fa fa-rss"></i>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+	<div class="copyright">
+		<p>
+			 
+				&copy;2019 - 2022, content by XiaoJie Wang. All Rights Reserved.
+			
+			
+			
+
+	<!-- busuanzi -->
+	<!-- busuanzi -->
+
+		
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+
+		<span id="busuanzi_container_page_pv">
+	  		本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+		</span>
+
+	
+
+
+
+
+		</p>
+		<p>
+			<a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> Theme <a href="https://github.com/Sariay/hexo-theme-Annie" title="Annie" target="_blank" rel="noopener">Annie</a> by Sariay.
+			<a href="javascript:zh_tran('s');" class="zh_click" id="zh_click_s">简体</a> 
+			<a href="javascript:zh_tran('t');" class="zh_click" id="zh_click_t">繁體</a>				
+		</p>
+	</div>	
+</footer>
+		
+	<!-- set '1' to show motto in all pages! -->
+
+	<script src="/plugin/motto/motto.js"></script>
+	
+	<script type="text/javascript">
+		$(".motto").html( getMingYanContent() );
+	</script>	
+
+
+
+
+	<!--
+	时间：2018-10-3
+	描述：
+		插件名称：hexo-generator-search-zip
+		插件来源: https://github.com/SuperKieran/hexo-generator-search-zip
+		代码参考：https://github.com/SuperKieran/TKL/blob/master/layout/_partial/search.ejs(Include: js & css)	
+-->
+<div class="popup search-popup local-search-popup" >
+	<div class="local-search-container">
+		<span class="popup-btn-close">
+      		ESC
+   		</span>
+		<div class="local-search-header">
+			<div class="input-prompt">				
+			</div>
+			<input autocomplete="off" placeholder="Search..." type="text" id="local-search-input">
+		</div>
+		<div class="local-search-body">
+			<div id="local-search-output"></div>
+		</div>
+		<div class="local-search-footer">
+			<div class="topN-post">				
+				
+
+   
+	<div id="topN">
+		<div class="topN-title" data-title= "热门文章"></div> 
+	</div>
+	
+    <script>
+        var appid = 'xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI',
+            appkey = 'Tkq82uGKwAFYHPeTF3Q6MVDp',
+            limitCount = 10;
+        if( $('#topN').length ){
+            AV.initialize(appid, appkey);
+            var Counter = AV.Object.extend("Counter");  
+            topNPost(Counter, limitCount);
+        }
+    </script>
+   
+								
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="/plugin/search/ziploader.js"></script>
+<script src="/plugin/search/search.js"></script>
+
+<script type="text/javascript">
+	var search_path = 'search.json',
+		zip_Path = '/search.zip',
+		version_Path = '/searchVersion.txt',
+		input_Trigger = 'auto',
+		top_N = '2';
+
+	themeLocalSearch({
+		search_path, 
+		zip_Path, 
+		version_Path, 
+		input_Trigger, 
+		top_N
+	});
+</script>
+
+
+<!-- love effect -->
+
+<!-- firework effect -->
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+	<script src="/plugin/love/fireworks.js"></script>
+
+<!--daovoice-->
+
+	<script src="/plugin/daovoice/daovoice.js"></script>
+
+<!-- back to top -->
+
+	
+	<div id="totop">
+  		<a href="javascript:;"  name="TOTOP" class="fa fa-arrow-up" ></a>
+	</div>
+
+
+
+<!-- site analysis -->
+
+
+	<!-- site-analysis -->
+	
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+		var hm = document.createElement("script");
+		hm.src = "//hm.baidu.com/hm.js?bc5394d96eab6c50c0a37cb03555fc96";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+	
+	
+	
+	
+ 
+
+<script src="/plugin/vibrant/vibrant.js"></script>
+<script src="/plugin/chinese/chinese.js"></script>
+<script src="/plugin/imgLazyLoader/yall.min.js"></script>
+<script src="/plugin/imgResize/jquery.resizeimagetoparent.min.js"></script>
+<script src="/plugin/nicescroll/jquery.nicescroll.js"></script>
+<script src="/js/resizediv.js"></script>
+<script src="/js/main.js"></script>
+	</body>	
+</html>
