@@ -1,0 +1,1244 @@
+<!--
+	作者：Sariay
+	时间：2018-09-25
+	描述：There may be a bug, but don't worry, QiLing(器灵) says that it can work normally!
+-->
+<!DOCTYPE html>
+<html class="html-loading">
+		
+
+<head><meta name="generator" content="Hexo 3.9.0">
+	<meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <title>
+    
+      Spring Cloud之Bus消息总线 | Mr.Wang-Blog
+    
+  </title>
+  <meta name="author" content="XiaoJie Wang">
+  <meta name="keywords" content>
+  <meta name="description" content>
+	<!-- favicon -->
+  <link rel="shortcut icon" href="/img/Mr-Wang-facvion.ico">
+
+  <!-- css -->
+  <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/Annie.css">
+  
+  <!-- jquery -->
+	<script src="/js/jquery.min.js"></script>
+
+  <!-- leancloud -->
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+<script src="/js/leancloud.js"></script>
+</head>
+	<body>
+		<!-- Preloader -->
+
+	<div id="preloader">
+		<div class="pre-container">
+			
+				<div class="spinner">
+					<div class="double-bounce1"></div>
+					<div class="double-bounce2"></div>
+				</div>
+						
+		</div>
+	</div>
+
+
+<!-- header -->
+<header class="fixbackground" data-img-mode="random" data-normal-src="/" data-random-max="110" data-random-src="https://10veu.github.io/Random-img/">
+	<div class="mask">
+		<!-- Logo and navigation -->
+		<div class="h-header">
+			<div id="logo">
+				<a href="/">
+						
+						<img src="/img/Mr-Wang-logo.png" alt="Logo">
+					
+				</a>
+			</div>
+			
+			<div id="navigation-show">
+				<ul>
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home">主页</a>
+		</li>
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive">归档</a>
+		</li>
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories">分类</a>
+		</li>
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags">标签</a>
+		</li>
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about">关于</a>
+		</li>
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery">相册</a>
+		</li>
+	
+
+	
+		<li class="menu-search">
+			<a href="javascript:;" class="popup-trigger">搜索</a>
+		</li>
+	
+</ul>
+			</div>				
+		</div>
+
+		<!-- motto -->
+		<div class="h-body">	
+			
+				<p class="motto"></p>
+			
+		</div>
+		
+		<!-- others: such as time... -->			
+		<div class="h-footer">
+			<a href="javascript:;" id="read-more"><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+			</a>
+
+			
+				<!-- 
+	This is only a demo, please go to "https://time.is" to set your city time! 
+-->
+<style type="text/css">
+	.header-date {
+		font-size: 1.6rem;
+		color: #fff;
+		position: absolute;
+		bottom: 5px;
+		right: 1rem;
+		writing-mode: tb-rl;
+	}	
+	
+	.header-date a {
+		border-bottom: none;
+	}
+
+	@media only screen and (max-width: 768 ) {
+		.header-date {
+			font-size: 1rem;
+		}			
+	}
+</style>
+<div class="header-date">
+	<a href="https://time.is/Beijing" id="time_is_link" rel="nofollow" ></a>
+	<span id="Beijing_z43d"></span>
+</div>
+<script src="//widget.time.is/zh.js"></script>
+<script>
+	time_is_widget.init({
+		Beijing_z43d:{
+			template:"DATE", 
+			date_format:"year年 monthname dnum日"
+		}
+	});
+</script>
+			
+		</div>
+	</div>
+</header>
+
+<div id="navigation-hide">
+	<!-- Progress bar -->
+	<div id="progress-bar"></div>
+
+	<!-- Progress percent -->
+	<div id="progress-percentage"><h1>0.0%</h1></div>
+
+	<div class="toc-switch"><span class="switch-button">目录</span></div>
+
+	<!-- Page title -->
+	<p>
+		
+			当前文章&nbsp;:&nbsp;《Spring Cloud之Bus消息总线》
+		
+	</p>
+
+	<!-- Nav trigger for navigation-H-->
+	<a class="nav-trigger"><span></span></a>
+</div>
+
+<!-- Navigation in div(id="navigation-H") -->
+<nav class="nav-container" id="cd-nav">
+	<div class="nav-header">
+		<h3>Navigation</h3>
+		<a href="javascript:;" class="nav-close"></a>
+	</div>
+	<div class="nav-body">
+		<ul>
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home">主页</a>
+		</li>
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive">归档</a>
+		</li>
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories">分类</a>
+		</li>
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags">标签</a>
+		</li>
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about">关于</a>
+		</li>
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery">相册</a>
+		</li>
+	
+
+	
+		<li class="menu-search">
+			<a href="javascript:;" class="popup-trigger">搜索</a>
+		</li>
+	
+</ul>
+	</div>
+	<div class="nav-footer">
+		<ul>
+	
+		<li>
+			<a href="https://github.com/10veU" target="_blank">
+				<i class="fa fa-github"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank">
+				<i class="fa fa-weibo"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/img/wechat.jpg" target="_blank">
+				<i class="fa fa-wechat"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com" target="_blank">
+				<i class="fa fa-qq"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="mailto:xiaojie_wangxj@163.com" target="_blank">
+				<i class="fa fa-envelope"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<i class="fa fa-rss"></i>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+</nav>
+			
+		<!--main-->
+		<main>
+			<!--
+	时间：2018-11-17
+	描述：
+		插件名称：katelog.min.js
+		插件作者：KELEN
+		插件来源: https://github.com/KELEN/katelog
+-->
+
+	
+		<div class="layout-toc">
+			<div id="layout-toc">
+				<div class="k-catelog-list" id="catelog-list" data-title="文章目录"></div>
+			</div>
+		</div>
+
+		
+		<script src="/plugin/toc/katelog.min.js"></script>
+
+		
+	 
+
+<div class="layout-post">
+	<div id="layout-post">
+	<div class="article-title">
+		<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+		
+	<a href="/2022/06/28/Spring-Cloud之Bus消息总线/" itemprop="url">
+		Spring Cloud之Bus消息总线
+	</a>
+
+	</div>
+
+	<div class="article-meta">
+		<span>
+			<i class="fa fa-calendar"></i>
+			
+
+
+	发布于
+
+	<a href="/2022/06/28/Spring-Cloud之Bus消息总线/" itemprop="url">
+		<time datetime="2022-06-28T10:55:46.000Z" itemprop="datePublished">
+	  		2022-06-28
+	  </time>
+	</a>
+	&nbsp;
+
+
+
+
+
+			
+
+
+
+
+	更新于
+
+	<a href="/2022/06/28/Spring-Cloud之Bus消息总线/" itemprop="url">
+		<time datetime="2022-06-28T10:55:46.000Z" itemprop="dateUpdated">
+	  		2022-06-28
+	  </time>
+	</a> 
+
+
+
+		</span>
+		<span>
+			<i class="fa fa-tags"></i>
+			
+	
+		<a href="/tags/微服务/" class=" ">
+			微服务
+		</a>
+	
+		<a href="/tags/Spring-Cloud/" class=" ">
+			Spring Cloud
+		</a>
+	
+		<a href="/tags/消息总线/" class=" ">
+			消息总线
+		</a>
+	
+		
+		</span>
+		
+		
+
+	
+    <span class="leancloud_visitors" id="/2022/06/28/Spring-Cloud之Bus消息总线/_visitors" data-url="/2022/06/28/Spring-Cloud之Bus消息总线/" data-title="Spring Cloud之Bus消息总线">
+       	<i class="fa fa-eye"></i>
+       	热度
+        <i class="leancloud_visitors_count" id="leancloud_visitors_count">0</i>
+    </span>
+    
+
+
+
+	
+    <span class="leancloud_likes" id="/2022/06/28/Spring-Cloud之Bus消息总线/_likes" data-url="/2022/06/28/Spring-Cloud之Bus消息总线/" data-title="Spring Cloud之Bus消息总线" rel="unlike">
+        <i class="fa fa-heart"></i>
+        喜欢
+        <i class="leancloud_likes_count" id="leancloud_likes_count">0</i>
+    </span>
+
+	</div>
+
+	<div class="article-content" id="article-content">
+		<h1 id="Spring-Cloud之Bus消息总线"><a href="#Spring-Cloud之Bus消息总线" class="headerlink" title="Spring Cloud之Bus消息总线"></a>Spring Cloud之Bus消息总线</h1><h2 id="1-消息代理"><a href="#1-消息代理" class="headerlink" title="1. 消息代理"></a>1. 消息代理</h2><p>消息代理(<code>Message Broker</code>)是一种消息验证、传输、路由的架构模式。它在应用程序之间起到通信调度并最小化应用之间的依赖的作用，使得应用程序可以高效地解耦通信过程。消息代理是一个中间件产品，它的核心是一个消息的路由程序，用来实现接收和分发消息， 并根据设定好的消息处理流来转发给正确的应用。 它包括独立的通信和消息传递协议，能够实现组织内部和组织间的网络通信。设计代理的目的就是为了能够从应用程序中传入消息，并执行一些特别的操作，下面这些是在企业应用中，我们经常需要使用消息代理的场景：</p>
+<ul>
+<li>将消息路由到一个或多个目的地。</li>
+<li>消息转化为其他的表现方式。</li>
+<li>执行消息的聚集、消息的分解，并将结果发送到它们的目的地，然后重新组合响应返回给消息用户。</li>
+<li>调用<code>Web</code>服务来检索数据。</li>
+<li>响应事件或错误。</li>
+<li>使用<code>发布－订阅</code>模式来提供内容或基千主题的消息路由。</li>
+</ul>
+<h2 id="2-什么是Spring-Cloud-Bus"><a href="#2-什么是Spring-Cloud-Bus" class="headerlink" title="2. 什么是Spring Cloud Bus"></a>2. 什么是Spring Cloud Bus</h2><p>Spring Cloud Bus 使用轻量级消息代理链接分布式系统的节点。可以通过消息代理广播<strong>配置文件的更改</strong>，或<strong>服务之间的通讯</strong>，也可以<strong>用于监控</strong>。解决了微服务数据变更，及时同步的问题。</p>
+<h2 id="3-什么时候选用Spring-Cloud-Bus"><a href="#3-什么时候选用Spring-Cloud-Bus" class="headerlink" title="3. 什么时候选用Spring Cloud Bus"></a>3. 什么时候选用Spring Cloud Bus</h2><p>微服务一般都做了集群方式部署，很多台服务器，而且在高并发下经常发生服务的扩容、缩容、上线、下线。这样，后端服务器的数量、<code>IP</code>就会变来变去，如果我们想进行一些线上的管理和维护工作，就需要维护服务器的<code>IP</code>。</p>
+<p>比如我们需要更新配置、比如我们需要同时失效所有服务器上的某个缓存，都需要向所有的相关服务器发送命令，也就是调用一个接口。</p>
+<p>你可能会说，我们一般会采用<code>zookeeper</code>的方式，统一存储服务器的<code>IP</code>地址，需要的时候，向对应服务器发送命令。这是一个方案，但是他的解耦性、灵活性、实时性相比消息总线都差那么一点。</p>
+<p>总的来说，就是在我们需要把一个操作散发到所有后端相关服务器的时候，就可以选择使用 <code>Spring Cloud Bus</code> 了。</p>
+<h2 id="4-环境准备"><a href="#4-环境准备" class="headerlink" title="4. 环境准备"></a>4. 环境准备</h2><blockquote>
+<p>消息队列</p>
+</blockquote>
+<ul>
+<li><code>RabbitMQ</code></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注册中心</p>
+</blockquote>
+<ul>
+<li><code>spring-clud-demo-eureka-server01</code>和<code>spring-cloud-demo-eureka-server02</code></li>
+</ul>
+<blockquote>
+<p>配置中心</p>
+</blockquote>
+<ul>
+<li><code>spring-cloud-demo-config-server</code>和<code>spring-cloud-demo-config-server01</code></li>
+</ul>
+<blockquote>
+<p>订单服务（配置中心客户端）</p>
+</blockquote>
+<ul>
+<li><code>spring-cloud-demo-config-order</code></li>
+</ul>
+<h2 id="5-Spring-Cloud-Bus实现配置文件刷新"><a href="#5-Spring-Cloud-Bus实现配置文件刷新" class="headerlink" title="5. Spring Cloud Bus实现配置文件刷新"></a>5. Spring Cloud Bus实现配置文件刷新</h2><h3 id="客户端发起通知"><a href="#客户端发起通知" class="headerlink" title="客户端发起通知"></a>客户端发起通知</h3><p>消息总线（<code>Bus</code>）的典型应用场景就是<strong>配置中心客户端刷新</strong>。</p>
+<p><code>Spring Cloud Config</code>配置中心中基于<code>Actuator</code>的配置刷新，在只有一个配置中心客户端的时候，可以使用<code>Webhook</code>，设置手动刷新也比较方便，但是生产环境中客户端大多数都是集群部署，逐个手动刷新过于复杂，所以这种方案就不太适合。使用<code>Spring-Cloud-Bus</code>则完美的解决了这个问题。</p>
+<p>借助 <code>Spring Cloud Bus</code> 的广播功能，让配置中心客户端都订阅配置更新事件，当配置更新时，触发其中一个端的更新事件，<code>Spring Cloud Bus</code> 就把此事件广播到其他订阅客户端，以此来达到批量更新。</p>
+<p><img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-1.png" alt></p>
+<ol>
+<li><code>Webhook</code> 监听被触发，给 <code>ConfigClient A</code> 发送 <code>bus-refresh</code> 请求刷新配置</li>
+<li><code>ConfigClient A</code> 读取 <code>ConfigServer</code> 中的配置，并且发送消息给 <code>Bus</code></li>
+<li><code>Bus</code> 接收消息后广播通知其他 <code>Config Client</code></li>
+<li>其他 <code>Config Client</code> 收到消息重新读取最新配置</li>
+</ol>
+<blockquote>
+<p><a href="https://docs.spring.io/spring-cloud-bus/docs/2.2.4.RELEASE/reference/html/#quick-start" target="_blank" rel="noopener">Spring Cloud Bus</a></p>
+</blockquote>
+<h4 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h4><p>配置中心客户端添加依赖。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- spring cloud starter bus amqp 依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-bus-amqp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><p>配置文件需要配置 <code>消息队列</code> 和 <code>bus-refresh</code> 自动刷新端点。<code>/actuator/bus-refresh</code> 端点会清除 <code>@RefreshScope</code> 缓存重新绑定属性。</p>
+<p>配置中心客户端的<code>bootstrap.yml</code>核心配置。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">order-service</span> <span class="comment"># 配置文件名称，对应 git 仓库中配置文件前半部分</span></span><br><span class="line"><span class="attr">      label:</span> <span class="string">master</span> <span class="comment"># git 分支</span></span><br><span class="line"><span class="attr">      profile:</span> <span class="string">prod</span> <span class="comment"># 指定环境</span></span><br><span class="line"><span class="attr">      discovery:</span></span><br><span class="line"><span class="attr">        enabled:</span> <span class="literal">true</span> <span class="comment"># 开启</span></span><br><span class="line"><span class="attr">        service-id:</span> <span class="string">config-server</span> <span class="comment"># 指定配置中心服务端的 service-id</span></span><br><span class="line">      <span class="comment"># 安全认证</span></span><br><span class="line"><span class="attr">      username:</span> <span class="string">user</span></span><br><span class="line"><span class="attr">      password:</span> <span class="number">123456</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 消息队列</span></span><br><span class="line"><span class="attr">  rabbitmq:</span></span><br><span class="line"><span class="attr">    host:</span> <span class="number">192.168</span><span class="number">.56</span><span class="number">.56</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">5672</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">guest</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">guest</span></span><br><span class="line"><span class="attr">    virtual-host:</span> <span class="string">/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 度量指标监控与健康检查</span></span><br><span class="line"><span class="attr">management:</span></span><br><span class="line"><span class="attr">  endpoints:</span></span><br><span class="line"><span class="attr">    web:</span></span><br><span class="line"><span class="attr">      base-path:</span> <span class="string">/actuator</span>   <span class="comment"># 访问端点根路径，默认为 /actuator</span></span><br><span class="line"><span class="attr">      exposure:</span></span><br><span class="line"><span class="attr">        include:</span> <span class="string">bus-refresh</span> <span class="comment"># 需要开启的端点</span></span><br><span class="line">        <span class="comment">#include: '*'          # 需要开启的端点，这里主要用到的是 refresh 这个端点</span></span><br><span class="line">        <span class="comment">#exclude:             # 不需要开启的端点</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 Eureka Server 注册中心 Config默认从eureka 8671端口获取配置服务端的信息，如果不是8671，所以需要覆盖下注册中心的默认配置信息</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line"><span class="attr">  instance:</span></span><br><span class="line"><span class="attr">    prefer-ip-address:</span> <span class="literal">true</span>       <span class="comment"># 是否使用 ip 地址注册</span></span><br><span class="line"><span class="attr">    instance-id:</span> <span class="string">$&#123;spring.cloud.client.ip-address&#125;:$&#123;server.port&#125;</span> <span class="comment"># ip:port</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    service-url:</span>                  <span class="comment"># 设置服务注册中心地址</span></span><br><span class="line"><span class="attr">      defaultZone:</span> <span class="attr">http://root:123456@localhost:8762/eureka/,http://root:123456@localhost:8763/eureka/</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><h5 id="查看端点"><a href="#查看端点" class="headerlink" title="查看端点"></a>查看端点</h5><p>访问：<a href="http://localhost:9091/actuator" target="_blank" rel="noopener">http://localhost:9091/actuator</a> 可以看到已经开启了 <code>bus-refresh</code> 自动刷新端点。</p>
+<p><img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-2.png" alt></p>
+<p>访问：<a href="http://localhost:9091/name，结果如下：" target="_blank" rel="noopener">http://localhost:9091/name，结果如下：</a></p>
+<p><img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-3.png" alt></p>
+<h5 id="修改Git仓库配置"><a href="#修改Git仓库配置" class="headerlink" title="修改Git仓库配置"></a>修改Git仓库配置</h5><p>修改远程仓库的配置信息。</p>
+<p><img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-4.png" alt></p>
+<h5 id="自动刷新"><a href="#自动刷新" class="headerlink" title="自动刷新"></a>自动刷新</h5><p>刷新页面发现结果并未改变。</p>
+<p><img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-5.png" alt></p>
+<p>通过 Post 方式调用<strong>任意客户端</strong>的自动刷新端点：<a href="http://localhost:9091/actuator/bus-refresh" target="_blank" rel="noopener">http://localhost:9091/actuator/bus-refresh</a> 再次访问结果如下：</p>
+<p><img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-6.png" alt></p>
+<h5 id="查看队列"><a href="#查看队列" class="headerlink" title="查看队列"></a>查看队列</h5><p><code>RabbitMQ</code>的控制台多了一个<code>springCloudBus</code>的交换机。</p>
+<p><img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-7.png" alt></p>
+<p>该交换机下绑定了队列对应我们的配置中心客户端。</p>
+<p><img src="%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-8.png" alt></p>
+<h4 id="客户端发起通知缺陷"><a href="#客户端发起通知缺陷" class="headerlink" title="客户端发起通知缺陷"></a>客户端发起通知缺陷</h4><ul>
+<li>打破了微服务的职责单一性。微服务本身是业务模块，它本不应该承担配置刷新的职责。</li>
+<li>破坏了微服务各节点的对等性。</li>
+<li>存在一定的局限性。例如，微服务在迁移时，它的网络地址常常会发生变化，此时如果想要做到自动刷新，就不得不修改Webhook 的配置。</li>
+</ul>
+<h3 id="服务端发起通知"><a href="#服务端发起通知" class="headerlink" title="服务端发起通知"></a>服务端发起通知</h3><p>为了解决客户端发起通知缺陷，改用服务端发起通知。</p>
+<p><img src="%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-1.png" alt></p>
+<ol>
+<li><code>Webhook</code>监听被触发，给 <code>Config Server</code> 发送 <code>bus-refresh</code> 请求刷新配置</li>
+<li><code>Config Server</code> 发送消息给 <code>Bus</code></li>
+<li><code>Bus</code> 接收消息后广播通知所有 <code>Config Client</code> </li>
+<li>各 <code>Config Client</code> 收到消息重新读取最新配置</li>
+</ol>
+<h4 id="添加依赖-1"><a href="#添加依赖-1" class="headerlink" title="添加依赖"></a>添加依赖</h4><p>配置中心服务端添加<code>spring cloud starter bus amqp</code> 依赖。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- spring cloud starter bus amqp 依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-bus-amqp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="配置文件-1"><a href="#配置文件-1" class="headerlink" title="配置文件"></a>配置文件</h4><p>配置文件需要配置<code>消息队列</code>和<code>bus-refresh</code>自动刷新端点。<code>/actuator/bus-refresh</code> 端点会清除 <code>@RefreshScope</code> 缓存重新绑定属性。</p>
+<p>配置中心服务端的<code>application.yml</code>核心配置。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">8889</span> <span class="comment"># 端口</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">config-server</span> <span class="comment"># 应用名称</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      server:</span></span><br><span class="line"><span class="attr">        git:</span></span><br><span class="line"><span class="attr">          uri:</span> <span class="attr">https://gitee.com/I10veU/config-repo.git</span> <span class="comment"># 配置文件远程仓库地址</span></span><br><span class="line">          <span class="comment">#username:            # Github等用户名</span></span><br><span class="line">          <span class="comment">#password:            # Github等密码</span></span><br><span class="line">          <span class="comment">#default-label:       # 配置文件分支</span></span><br><span class="line">          <span class="comment">#search-paths:        # 配置文件所在根目录</span></span><br><span class="line">  <span class="comment"># 安全认证</span></span><br><span class="line"><span class="attr">  security:</span></span><br><span class="line"><span class="attr">    user:</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">user</span></span><br><span class="line"><span class="attr">      password:</span> <span class="number">123456</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 消息队列</span></span><br><span class="line"><span class="attr">  rabbitmq:</span></span><br><span class="line"><span class="attr">    host:</span> <span class="number">192.168</span><span class="number">.56</span><span class="number">.56</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">5672</span></span><br><span class="line"><span class="attr">    username:</span> <span class="string">guest</span></span><br><span class="line"><span class="attr">    password:</span> <span class="string">guest</span></span><br><span class="line"><span class="attr">    virtual-host:</span> <span class="string">/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 Eureka Server 注册中心</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line"><span class="attr">  instance:</span></span><br><span class="line"><span class="attr">    prefer-ip-address:</span> <span class="literal">true</span>       <span class="comment"># 是否使用 ip 地址注册</span></span><br><span class="line"><span class="attr">    instance-id:</span> <span class="string">$&#123;spring.cloud.client.ip-address&#125;:$&#123;server.port&#125;</span> <span class="comment"># ip:port</span></span><br><span class="line"><span class="attr">  client:</span></span><br><span class="line"><span class="attr">    service-url:</span>                  <span class="comment"># 设置服务注册中心地址</span></span><br><span class="line"><span class="attr">      defaultZone:</span> <span class="attr">http://root:123456@localhost:8762/eureka/,http://root:123456@localhost:8763/eureka/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 度量指标监控与健康检查</span></span><br><span class="line"><span class="attr">management:</span></span><br><span class="line"><span class="attr">  endpoints:</span></span><br><span class="line"><span class="attr">    web:</span></span><br><span class="line"><span class="attr">      base-path:</span> <span class="string">/actuator</span>    <span class="comment"># 访问端点根路径，默认为 /actuator</span></span><br><span class="line"><span class="attr">      exposure:</span></span><br><span class="line"><span class="attr">        include:</span> <span class="string">bus-refresh</span>  <span class="comment"># 需要开启的端点</span></span><br><span class="line">        <span class="comment">#exclude:             # 不需要开启的端点</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h4><h5 id="查看端点-1"><a href="#查看端点-1" class="headerlink" title="查看端点"></a>查看端点</h5><p>访问：<a href="http://localhost:8888/actuator" target="_blank" rel="noopener">http://localhost:8888/actuator</a> 和<a href="http://localhost:8889/actuator" target="_blank" rel="noopener">http://localhost:8889/actuator</a> 可以看到已经开启了 <code>bus-refresh</code> 自动刷新端点。</p>
+<p><img src="%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-2.png" alt></p>
+<p><img src="%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-3.png" alt></p>
+<p>访问：<a href="http://localhost:9091/name" target="_blank" rel="noopener">http://localhost:9091/name</a> 结果如下：</p>
+<p><img src="%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-4.png" alt></p>
+<h5 id="修改Git配置"><a href="#修改Git配置" class="headerlink" title="修改Git配置"></a>修改Git配置</h5><p>修改Git长裤配置信息 如下：</p>
+<p><img src="%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-5.png" alt></p>
+<h5 id="自动刷新-1"><a href="#自动刷新-1" class="headerlink" title="自动刷新"></a>自动刷新</h5><p>刷新页面发现结果并未改变。</p>
+<p>通过 Post 方式调用<strong>任意服务端</strong>的自动刷新端点：<a href="http://localhost:8888/actuator/bus-refresh" target="_blank" rel="noopener">http://localhost:8888/actuator/bus-refresh</a> 再次访问结果如下：</p>
+<p><img src="%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-6.png" alt></p>
+<h5 id="查看队列-1"><a href="#查看队列-1" class="headerlink" title="查看队列"></a>查看队列</h5><p>再来观察一下消息队列的 <code>UI</code> 界面，发现多了一个 <code>springCloudBus</code> 的交换机。</p>
+<p><img src="%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%8F%91%E8%B5%B7%E9%80%9A%E7%9F%A5-7.png" alt></p>
+<h3 id="局部刷新"><a href="#局部刷新" class="headerlink" title="局部刷新"></a>局部刷新</h3><p>假设有这样一种场景，我们开发了一个新的功能，此时需要对该功能进行测试。我们只希望其中一个微服务的配置被更新，等功能测试完毕，正式部署线上时再更新至整个集群。但是由于所有微服务都受 <code>Spring Cloud Bus</code> 的控制，我们更新了其中一个微服务的配置，就会导致其他服务也被通知去更新配置。这时候局部刷新的作用就体现出来了。</p>
+<h5 id="刷新指定服务"><a href="#刷新指定服务" class="headerlink" title="刷新指定服务"></a>刷新指定服务</h5><p>修改 Git 仓库配置信息如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自定义配置</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">order-service-prod-3.0</span></span><br></pre></td></tr></table></figure>
+
+<p>通过 <code>POST</code>方式调用<strong>任意服务端</strong>的自动刷新端点：<a href="http://localhost:8888/actuator/bus-refresh/order-service:9091" target="_blank" rel="noopener">http://localhost:8888/actuator/bus-refresh/order-service:9091</a> 再次访问结果如下：</p>
+<p><code>9091</code> 端口的客户端已经更新配置。</p>
+<p><img src="%E5%B1%80%E9%83%A8%E5%88%B7%E6%96%B0-1.png" alt></p>
+<h5 id="刷新指定集群"><a href="#刷新指定集群" class="headerlink" title="刷新指定集群"></a>刷新指定集群</h5><p>假设现在功能测试完毕，需要正式部署线上更新至整个集群。但是由于 <code>Spring Cloud Bus</code> 控制着多个微服务集群（订单微服务、商品微服务等），而我们只想更新指定集群下的配置，这个时候就可以使用 <code>Bus</code> 提供的通配符更新方案。</p>
+<p>修改 Git 仓库配置信息如下:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自定义配置</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">order-service-prod-4.0</span></span><br></pre></td></tr></table></figure>
+
+<p>通过 Post 方式调用<strong>任意服务端</strong>的自动刷新端点：<code>http://localhost:8888/actuator/bus-refresh/order-service:**</code> 再次访问结果如下：</p>
+<p><img src="%E5%B1%80%E9%83%A8%E5%88%B7%E6%96%B0-2.png" alt></p>
+<p>至此 Bus 消息总线所有的知识点就学习结束了。</p>
+<hr>
+<p>参考资料：</p>
+<p><a href="https://www.cnblogs.com/duanxz/p/6678545.html" target="_blank" rel="noopener">Spring Cloud构建微服务架构（七）消息总线 - duanxz - 博客园 (cnblogs.com)</a></p>
+<p><a href="https://www.cnblogs.com/duanxz/p/11928587.html" target="_blank" rel="noopener">通过消息总线Spring Cloud Bus实现配置文件刷新（使用Kafka或RocketMQ） - duanxz - 博客园 (cnblogs.com)</a></p>
+<p><a href="https://mrhelloworld.com/bus/" target="_blank" rel="noopener">Spring Cloud 系列之 Bus 消息总线 - 哈喽沃德先生 (mrhelloworld.com)</a></p>
+	
+	</div>
+	
+	<div id="current-post-cover" data-scr="/img/post_cover/spring-cloud-bus.jpg"></div>
+
+	<!-- relate post, comment...-->
+	<div class="investment-container">
+		<div class="investment-header">
+			<div class="investment-title-1">
+				<div class="on">相关文章</div>
+				<div>评论</div>
+				<div>分享</div>
+			</div>
+			<div class="investment-title-2">	            
+				
+	<span>
+		<a href="javascript: window.scrollTo(0, 0);">返回顶部</a>
+		
+		
+			<a href="/2022/06/28/hello-world/" title="Hello World" rel="next">
+				下一篇&raquo;
+			</a>
+			
+	</span>
+
+
+      		
+			</div>	
+		</div>
+		
+		<div class="investment-content">
+			<div class="investment-content-list">
+				
+
+<div class="relate-post">
+	
+		<ul>
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/25/Spring-Cloud之Config配置中心/" title="Spring Cloud之Config配置中心">
+								Spring Cloud之Config配置中心			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 25日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Config配置中心1. 服务配置现状随着微服务系统的不断迭代，整个我服务就成为了一个网状结构，这个时候就要考虑整个微服务系统的扩展性、伸缩性、耦合性等等。其中一个重要的环节就是配置管理的问题。
+2. 常规配...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/25/Spring-Cloud之Config配置中心/" title="Spring Cloud之Config配置中心">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/spring-cloud-config.jpg" alt="Spring Cloud之Config配置中心"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/21/Spring-Cloud之Stream消息驱动/" title="Spring Cloud之Stream消息驱动">
+								Spring Cloud之Stream消息驱动			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 21日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Stream消息驱动在实际的企业开发中，消息中间件是至关重要的组件之一。消息中间件主要解决应用解耦，异步消息，流量削锋等问题，实现高性能，高可用，可伸缩和最终一致性架构。
+不同的中间件其实现方式，内部结构是不...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/21/Spring-Cloud之Stream消息驱动/" title="Spring Cloud之Stream消息驱动">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/spring-cloud-stream.jpg" alt="Spring Cloud之Stream消息驱动"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/09/Spring-Cloud之Sleuth链路追踪/" title="Spring Cloud之Sleuth链路追踪">
+								Spring Cloud之Sleuth链路追踪			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 9日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Sleuth链路追踪1. 问题随着微服务架构的流行，服务按照不同的维度进行拆分，一次请求往往需要涉及到多个服务。互联网应用构建在不同的软件模块集上，这些软件模块，有可能是由不同的团队开发、可能使用不同的编程语...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/09/Spring-Cloud之Sleuth链路追踪/" title="Spring Cloud之Sleuth链路追踪">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/spring-cloud-sleuth.jpg" alt="Spring Cloud之Sleuth链路追踪"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/03/Spring-Cloud之Netflix-Zuul服务网关/" title="Spring Cloud之Netflix Zuul服务网关">
+								Spring Cloud之Netflix Zuul服务网关			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 3日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Netflix Zuul服务网关1. 什么是服务网关?API Gateway（API GW / API 网关），顾名思义，是出现在系统边界上的一个面向 API 的、串行集中式的强管控服务，这里的边界是企业 I...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/03/Spring-Cloud之Netflix-Zuul服务网关/" title="Spring Cloud之Netflix Zuul服务网关">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/cover_zuul.jpg" alt="Spring Cloud之Netflix Zuul服务网关"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/01/Spring-Cloud之Consul-服务注册中心/" title="Spring Cloud之Consul 服务注册中心">
+								Spring Cloud之Consul 服务注册中心			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 1日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Consul 服务注册中心1.什么是Consul?Consul 是 HashiCorp 公司推出的开源产品，是一种服务网格(Service Mesh)解决方案。用于实现分布式系统的服务发现、服务隔离、服务配置...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/01/Spring-Cloud之Consul-服务注册中心/" title="Spring Cloud之Consul 服务注册中心">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/cover_consul.jpg" alt="Spring Cloud之Consul 服务注册中心"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/28/hello-world/" title="Hello World">
+								Hello World			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 28日, 2022				
+							</p>
+							<p class="relate-post-content">
+								一切始于Hello World!
+
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/28/hello-world/" title="Hello World">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/HelloWorld.jpeg" alt="Hello World"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/17/Java并发编程（三）-共享模型之内存/" title="Java并发编程（三） 共享模型之内存">
+								Java并发编程（三） 共享模型之内存			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 17日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Java并发编程（三） 共享模型之内存1. Java 内存模型在Java SE 5 (JSR133)中定义的JMM（Java Memory Model）是为了确保当编写并发代码的时候能够提供Java定义和语义，使多线程程序不仅正确，而...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/17/Java并发编程（三）-共享模型之内存/" title="Java并发编程（三） 共享模型之内存">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency03.jpg" alt="Java并发编程（三） 共享模型之内存"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/05/31/Java并发编程（二）-共享模型之管程/" title="Java并发编程（二） 共享模型之管程">
+								Java并发编程（二） 共享模型之管程			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								五月 31日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Java并发编程（二） 共享模型之管程1. 线程安全问题
+两个线程对初始值为 0 的静态变量一个做自增，一个做自减，各做 5000 次，结果是 0 吗？  
+
+1234567891011121314151617181920212223...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/05/31/Java并发编程（二）-共享模型之管程/" title="Java并发编程（二） 共享模型之管程">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency02.jpg" alt="Java并发编程（二） 共享模型之管程"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/12/01/Java并发编程（一）-基础篇/" title="Java并发编程（一） 基础篇">
+								Java并发编程（一） 基础篇			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十二月 1日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Java并发编程（一） 基础篇1. 进程和线程1.1 什么是进程（Process）进程是操作系统进行资源分配的最小单位。因为现在的操作系统都是多任务的操作系统，多任务操作系统是允许多个进程在一个cpu上运行的。对于每一个进程而言，都有...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/12/01/Java并发编程（一）-基础篇/" title="Java并发编程（一） 基础篇">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency.jpg" alt="Java并发编程（一） 基础篇"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/11/26/Java-NIO/" title="Java NIO">
+								Java NIO			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十一月 26日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Java NIO1. Java NIO概述Java NIO(New IO Non Blocking IO)是从java1.4版本开始引入的一个新的IO API,可以替代标准的Java IO API。NIO与原来的IO有同样的作用和目的...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/11/26/Java-NIO/" title="Java NIO">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/NIO.jpg" alt="Java NIO"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+		</ul>
+	
+</div>	
+			</div>
+			<div class="investment-content-list">
+				<div class="layout-comment">
+
+	
+
+		
+
+			<!-- gitalk comment -->
+			<!-- show gitalk comment -->
+<div id="gitalk-container"></div>
+
+<!-- gitalk`s css & js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<link rel="stylesheet" href="/css/comment.css">
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+	//Thanks O-R
+	//https://github.com/gitalk/gitalk/issues/102#issuecomment-382970552
+	//去除尾部匹配正则数组的字符串  
+	//Remove redundant characters
+	String.prototype.trimEnd = function(regStr) {
+		var result = this;
+		if(regStr == undefined || regStr == null || regStr == "") {
+			return result;
+		}
+		var array = regStr.split(',');
+
+		if(array.length > 0) {
+
+			var c = array.shift();
+			var str = this;
+			var i = str.length;
+			var rg = new RegExp(c);
+			var matchArr = str.match(rg);
+
+			if(matchArr != undefined && matchArr != null && matchArr.length > 0) {
+				var matchStr = matchArr[0].replace(/\\/g, "\\\\").replace(/\*/g, "\\*")
+					.replace(/\+/g, "\\+").replace(/\|/g, "\\|")
+					.replace(/\{/g, "\\{").replace(/\}/g, "\\}")
+					.replace(/\(/g, "\\(").replace(/\)/g, "\\)")
+					.replace(/\^/g, "\\^").replace(/\$/g, "\\$")
+					.replace(/\[/g, "\\[").replace(/\]/g, "\\]")
+					.replace(/\?/g, "\\?").replace(/\,/g, "\\,")
+					.replace(/\./g, "\\.").replace(/\&/g, "\\&");
+				matchStr = matchStr + '$';
+				result = str.replace(new RegExp(matchStr), "");
+			}
+
+			if(array.length > 0) {
+				return result.trimEnd(array.join())
+			} else {
+				return result;
+			}
+		}
+	};
+
+	//Create gitalk
+	var gitalk = new Gitalk({
+		clientID: '36a5ea1eb92d0cdb0a6b',
+		clientSecret: '6e1940c0dcd00e3b9216f008368995a1988bd3fd',
+		//id: window.location.pathname,
+		//id: decodeURI(window.location.pathname),
+		//id: (window.location.pathname).split("/").pop().substring(0, 49),
+		id: decodeURI( md5( location.href.trimEnd('#.*$,\\?.*$,index.html$') ) ),
+		repo: 'Blog-Comment-Repo',
+		owner: '10veU',
+		admin: '10veU',
+		distractionFreeMode: 'true',
+	})
+	gitalk.render('gitalk-container');
+</script>
+
+		
+		
+	
+
+</div>
+			</div>
+			<div class="investment-content-list">
+				<div class="layout-share">
+	
+	
+
+		
+			
+			<!-- socialShare share -->
+			<div class="social-share"></div>
+
+<!--  css & js -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+			
+		
+		
+	
+</div>
+
+
+			</div>
+		</div>	
+	</div>
+	</div>
+</div>
+
+
+
+	<!-- leancloud -->
+	<!--
+	时间：2018-11-27
+	描述：
+		文章访问量：visitors
+		文章喜欢量：likes	
+		文章排行榜：topNPost
+		其他得说明：
+			01-Cookie相关的函数 
+				https://blog.csdn.net/somehow1002/article/details/78511541（Author：somehow1002）
+			02-visitors相关的函数 
+				https://blog.csdn.net/u013553529/article/details/63357382（Author：爱博客大伯）
+				https://notes.doublemine.me/2015-10-21-为NexT主题添加文章阅读量统计功能.html（Author：夏末）
+			03-topNPost相关的函数
+				https://hoxis.github.io/hexo-next-read-rank.html（Author：hoxis）
+			04-likes相关的函数，
+				参考了01 & 02进行简单的设计与实现
+-->
+
+
+
+	<script>
+		var appid = 'xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI',
+            appkey = 'Tkq82uGKwAFYHPeTF3Q6MVDp';	  
+        AnnieLeancloud(appid, appkey);         
+	</script>
+    
+
+	
+
+
+<!-- show math formula -->
+
+
+
+	 
+	<script src="/plugin/clipboard/clipboard.js"></script>
+	<script>
+		// Copy code !
+	    function codePreprocessing() {
+	        $("#article-content .highlight").each(function() {
+
+	            $(this).wrap('<div id="post-code"></div>');
+
+	        })
+
+	        $("#article-content #post-code").each(function() {
+
+	            $(this).prepend('<nav class="copy-nav"><span><i class="code-language"></i></span></nav>');
+
+	        })
+
+	        $("#article-content .copy-nav").each(function() {
+	            var temp = $(this).next().attr('class'),
+	                language = ((temp.length > 9) && (temp != null)) ? temp.substr(10) : "none"; //why 9? Need to check language?
+
+	            $(this).find('.code-language').text(language);
+
+	            $(this).append('<span class="copy-btn"><i class="fa fa-copy" aria-hidden="true"></i></span>');
+
+	        });
+	    }
+
+		function codeCopy() {
+		    $('#article-content #post-code').each(function(i) {
+		        var codeCopyId = 'codeCopy-' + i;
+
+		        var codeNode = $(this).find('.code'),
+		            copyButton = $(this).find('.copy-btn');
+
+		        codeNode.attr('id', codeCopyId);
+		        copyButton.attr('data-clipboard-target-id', codeCopyId);
+		    })
+
+		    
+			var clipboard = new ClipboardJS('.copy-btn', {
+					target: function(trigger) {
+						return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+					}
+		      	});
+
+			//pure js
+			function showTooltip(elem, msg) {		   
+				elem.setAttribute('aria-label', msg);
+				elem.setAttribute('class', 'copy-btn copy-status');
+				setTimeout(function() {
+					elem.setAttribute('class', 'copy-btn');
+				}, 2000);
+			}
+
+			clipboard.on('success', function(e) {
+			    e.clearSelection();
+			    console.info('Action:', e.action);		   
+			    console.info('Trigger:', e.trigger);
+			    showTooltip(e.trigger, 'Copied!');
+			    
+			});
+			clipboard.on('error', function(e) {
+			    console.error('Action:', e.action);
+			    console.error('Trigger:', e.trigger);
+			});
+		
+
+		}
+
+		if ($('.layout-post').length) {
+		    codePreprocessing();
+		    codeCopy();
+		} 
+	</script>
+
+
+
+
+
+<link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+<script src="/plugin/fancybox/jquery.fancybox.js"></script>
+
+<script type="text/javascript">
+	var titleID = $('.article-title a'),
+		imageID = $('.article-content img'),
+		videoID = $('.article-content video');
+
+	var postTitle = titleID.text() ? titleID.text() : "No post title!";
+
+	imageID.each(function() {
+		var imgPath = $(this).attr('src'),
+			imgTitle = $(this).attr('alt') ? $(this).attr('alt') : "No image description!";
+
+		//给每个匹配的<img>元素打包, 即添加父元素<a>
+		$(this).wrap('<a data-fancybox="gallery" data-caption=" 《 ' + postTitle + ' 》 ' + imgTitle + ' "  href=" ' + imgPath + ' "> </a>');
+	});
+
+	videoID.each(function() {
+		var videoPath = $(this).attr('src');
+
+		//给每个匹配的<img>元素打包, 即添加父元素<a>
+		$(this).wrap('<a data-fancybox href=" ' + videoPath + ' "> </a>');
+	});
+	//TODO：支持html5 video
+
+	if($('#layout-post').length) {
+		$('[data-fancybox="gallery"]').fancybox({
+			loop: true,
+			buttons: [
+				"zoom",
+				"share",
+				"slideShow",
+				"fullScreen",
+				//"download",
+				"thumbs",
+				"close"
+			],
+			protect: false
+		});
+	}
+</script>
+		</main>
+
+		<!--footer-->
+		<footer>
+	<div class="social">
+		<ul>
+	
+		<li>
+			<a href="https://github.com/10veU" target="_blank">
+				<i class="fa fa-github"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank">
+				<i class="fa fa-weibo"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/img/wechat.jpg" target="_blank">
+				<i class="fa fa-wechat"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com" target="_blank">
+				<i class="fa fa-qq"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="mailto:xiaojie_wangxj@163.com" target="_blank">
+				<i class="fa fa-envelope"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<i class="fa fa-rss"></i>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+	<div class="copyright">
+		<p>
+			 
+				&copy;2019 - 2022, content by XiaoJie Wang. All Rights Reserved.
+			
+			
+			
+
+	<!-- busuanzi -->
+	<!-- busuanzi -->
+
+		
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+
+		<span id="busuanzi_container_page_pv">
+	  		本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+		</span>
+
+	
+
+
+
+
+		</p>
+		<p>
+			<a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> Theme <a href="https://github.com/Sariay/hexo-theme-Annie" title="Annie" target="_blank" rel="noopener">Annie</a> by Sariay.
+			<a href="javascript:zh_tran('s');" class="zh_click" id="zh_click_s">简体</a> 
+			<a href="javascript:zh_tran('t');" class="zh_click" id="zh_click_t">繁體</a>				
+		</p>
+	</div>	
+</footer>
+		
+	<!-- set '1' to show motto in all pages! -->
+
+	<script src="/plugin/motto/motto.js"></script>
+	
+	<script type="text/javascript">
+		$(".motto").html( getMingYanContent() );
+	</script>	
+
+
+
+
+	<!--
+	时间：2018-10-3
+	描述：
+		插件名称：hexo-generator-search-zip
+		插件来源: https://github.com/SuperKieran/hexo-generator-search-zip
+		代码参考：https://github.com/SuperKieran/TKL/blob/master/layout/_partial/search.ejs(Include: js & css)	
+-->
+<div class="popup search-popup local-search-popup" >
+	<div class="local-search-container">
+		<span class="popup-btn-close">
+      		ESC
+   		</span>
+		<div class="local-search-header">
+			<div class="input-prompt">				
+			</div>
+			<input autocomplete="off" placeholder="Search..." type="text" id="local-search-input">
+		</div>
+		<div class="local-search-body">
+			<div id="local-search-output"></div>
+		</div>
+		<div class="local-search-footer">
+			<div class="topN-post">				
+				
+
+   
+	<div id="topN">
+		<div class="topN-title" data-title= "热门文章"></div> 
+	</div>
+	
+    <script>
+        var appid = 'xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI',
+            appkey = 'Tkq82uGKwAFYHPeTF3Q6MVDp',
+            limitCount = 10;
+        if( $('#topN').length ){
+            AV.initialize(appid, appkey);
+            var Counter = AV.Object.extend("Counter");  
+            topNPost(Counter, limitCount);
+        }
+    </script>
+   
+								
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="/plugin/search/ziploader.js"></script>
+<script src="/plugin/search/search.js"></script>
+
+<script type="text/javascript">
+	var search_path = 'search.json',
+		zip_Path = '/search.zip',
+		version_Path = '/searchVersion.txt',
+		input_Trigger = 'auto',
+		top_N = '2';
+
+	themeLocalSearch({
+		search_path, 
+		zip_Path, 
+		version_Path, 
+		input_Trigger, 
+		top_N
+	});
+</script>
+
+
+<!-- love effect -->
+
+<!-- firework effect -->
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+	<script src="/plugin/love/fireworks.js"></script>
+
+<!--daovoice-->
+
+	<script src="/plugin/daovoice/daovoice.js"></script>
+
+<!-- back to top -->
+
+	
+	<div id="totop">
+  		<a href="javascript:;"  name="TOTOP" class="fa fa-arrow-up" ></a>
+	</div>
+
+
+
+<!-- site analysis -->
+
+
+	<!-- site-analysis -->
+	
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+		var hm = document.createElement("script");
+		hm.src = "//hm.baidu.com/hm.js?bc5394d96eab6c50c0a37cb03555fc96";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+	
+	
+	
+	
+ 
+
+<script src="/plugin/vibrant/vibrant.js"></script>
+<script src="/plugin/chinese/chinese.js"></script>
+<script src="/plugin/imgLazyLoader/yall.min.js"></script>
+<script src="/plugin/imgResize/jquery.resizeimagetoparent.min.js"></script>
+<script src="/plugin/nicescroll/jquery.nicescroll.js"></script>
+<script src="/js/resizediv.js"></script>
+<script src="/js/main.js"></script>
+	</body>	
+</html>
