@@ -1,0 +1,1369 @@
+<!--
+	作者：Sariay
+	时间：2018-09-25
+	描述：There may be a bug, but don't worry, QiLing(器灵) says that it can work normally!
+-->
+<!DOCTYPE html>
+<html class="html-loading">
+		
+
+<head><meta name="generator" content="Hexo 3.9.0">
+	<meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <title>
+    
+      Java并发编程（四）-共享模型之无锁 | Mr.Wang-Blog
+    
+  </title>
+  <meta name="author" content="XiaoJie Wang">
+  <meta name="keywords" content>
+  <meta name="description" content>
+	<!-- favicon -->
+  <link rel="shortcut icon" href="/img/Mr-Wang-facvion.ico">
+
+  <!-- css -->
+  <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/Annie.css">
+  
+  <!-- jquery -->
+	<script src="/js/jquery.min.js"></script>
+
+  <!-- leancloud -->
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+<script src="/js/leancloud.js"></script>
+</head>
+	<body>
+		<!-- Preloader -->
+
+	<div id="preloader">
+		<div class="pre-container">
+			
+				<div class="spinner">
+					<div class="double-bounce1"></div>
+					<div class="double-bounce2"></div>
+				</div>
+						
+		</div>
+	</div>
+
+
+<!-- header -->
+<header class="fixbackground" data-img-mode="random" data-normal-src="/" data-random-max="110" data-random-src="https://10veu.github.io/Random-img/">
+	<div class="mask">
+		<!-- Logo and navigation -->
+		<div class="h-header">
+			<div id="logo">
+				<a href="/">
+						
+						<img src="/img/Mr-Wang-logo.png" alt="Logo">
+					
+				</a>
+			</div>
+			
+			<div id="navigation-show">
+				<ul>
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home">主页</a>
+		</li>
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive">归档</a>
+		</li>
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories">分类</a>
+		</li>
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags">标签</a>
+		</li>
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about">关于</a>
+		</li>
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery">相册</a>
+		</li>
+	
+
+	
+		<li class="menu-search">
+			<a href="javascript:;" class="popup-trigger">搜索</a>
+		</li>
+	
+</ul>
+			</div>				
+		</div>
+
+		<!-- motto -->
+		<div class="h-body">	
+			
+				<p class="motto"></p>
+			
+		</div>
+		
+		<!-- others: such as time... -->			
+		<div class="h-footer">
+			<a href="javascript:;" id="read-more"><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+			</a>
+
+			
+				<!-- 
+	This is only a demo, please go to "https://time.is" to set your city time! 
+-->
+<style type="text/css">
+	.header-date {
+		font-size: 1.6rem;
+		color: #fff;
+		position: absolute;
+		bottom: 5px;
+		right: 1rem;
+		writing-mode: tb-rl;
+	}	
+	
+	.header-date a {
+		border-bottom: none;
+	}
+
+	@media only screen and (max-width: 768 ) {
+		.header-date {
+			font-size: 1rem;
+		}			
+	}
+</style>
+<div class="header-date">
+	<a href="https://time.is/Beijing" id="time_is_link" rel="nofollow" ></a>
+	<span id="Beijing_z43d"></span>
+</div>
+<script src="//widget.time.is/zh.js"></script>
+<script>
+	time_is_widget.init({
+		Beijing_z43d:{
+			template:"DATE", 
+			date_format:"year年 monthname dnum日"
+		}
+	});
+</script>
+			
+		</div>
+	</div>
+</header>
+
+<div id="navigation-hide">
+	<!-- Progress bar -->
+	<div id="progress-bar"></div>
+
+	<!-- Progress percent -->
+	<div id="progress-percentage"><h1>0.0%</h1></div>
+
+	<div class="toc-switch"><span class="switch-button">目录</span></div>
+
+	<!-- Page title -->
+	<p>
+		
+			当前文章&nbsp;:&nbsp;《Java并发编程（四）-共享模型之无锁》
+		
+	</p>
+
+	<!-- Nav trigger for navigation-H-->
+	<a class="nav-trigger"><span></span></a>
+</div>
+
+<!-- Navigation in div(id="navigation-H") -->
+<nav class="nav-container" id="cd-nav">
+	<div class="nav-header">
+		<h3>Navigation</h3>
+		<a href="javascript:;" class="nav-close"></a>
+	</div>
+	<div class="nav-body">
+		<ul>
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home">主页</a>
+		</li>
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive">归档</a>
+		</li>
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories">分类</a>
+		</li>
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags">标签</a>
+		</li>
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about">关于</a>
+		</li>
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery">相册</a>
+		</li>
+	
+
+	
+		<li class="menu-search">
+			<a href="javascript:;" class="popup-trigger">搜索</a>
+		</li>
+	
+</ul>
+	</div>
+	<div class="nav-footer">
+		<ul>
+	
+		<li>
+			<a href="https://github.com/10veU" target="_blank">
+				<i class="fa fa-github"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank">
+				<i class="fa fa-weibo"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/img/wechat.jpg" target="_blank">
+				<i class="fa fa-wechat"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com" target="_blank">
+				<i class="fa fa-qq"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="mailto:xiaojie_wangxj@163.com" target="_blank">
+				<i class="fa fa-envelope"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<i class="fa fa-rss"></i>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+</nav>
+			
+		<!--main-->
+		<main>
+			<!--
+	时间：2018-11-17
+	描述：
+		插件名称：katelog.min.js
+		插件作者：KELEN
+		插件来源: https://github.com/KELEN/katelog
+-->
+
+	
+		<div class="layout-toc">
+			<div id="layout-toc">
+				<div class="k-catelog-list" id="catelog-list" data-title="文章目录"></div>
+			</div>
+		</div>
+
+		
+		<script src="/plugin/toc/katelog.min.js"></script>
+
+		
+	 
+
+<div class="layout-post">
+	<div id="layout-post">
+	<div class="article-title">
+		<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+		
+	<a href="/2023/09/09/Java并发编程（四）-共享模型之无锁/" itemprop="url">
+		Java并发编程（四）-共享模型之无锁
+	</a>
+
+	</div>
+
+	<div class="article-meta">
+		<span>
+			<i class="fa fa-calendar"></i>
+			
+
+
+	发布于
+
+	<a href="/2023/09/09/Java并发编程（四）-共享模型之无锁/" itemprop="url">
+		<time datetime="2023-09-09T13:00:29.000Z" itemprop="datePublished">
+	  		2023-09-09
+	  </time>
+	</a>
+	&nbsp;
+
+
+
+
+
+			
+
+
+
+
+	更新于
+
+	<a href="/2023/09/09/Java并发编程（四）-共享模型之无锁/" itemprop="url">
+		<time datetime="2023-09-09T13:00:29.000Z" itemprop="dateUpdated">
+	  		2024-03-02
+	  </time>
+	</a> 
+
+
+
+		</span>
+		<span>
+			<i class="fa fa-tags"></i>
+			
+	
+		<a href="/tags/Java/" class=" ">
+			Java
+		</a>
+	
+		<a href="/tags/多线程/" class=" ">
+			多线程
+		</a>
+	
+		<a href="/tags/并发编程/" class=" ">
+			并发编程
+		</a>
+	
+		
+		</span>
+		
+		
+
+	
+    <span class="leancloud_visitors" id="/2023/09/09/Java并发编程（四）-共享模型之无锁/_visitors" data-url="/2023/09/09/Java并发编程（四）-共享模型之无锁/" data-title="Java并发编程（四）-共享模型之无锁">
+       	<i class="fa fa-eye"></i>
+       	热度
+        <i class="leancloud_visitors_count" id="leancloud_visitors_count">0</i>
+    </span>
+    
+
+
+
+	
+    <span class="leancloud_likes" id="/2023/09/09/Java并发编程（四）-共享模型之无锁/_likes" data-url="/2023/09/09/Java并发编程（四）-共享模型之无锁/" data-title="Java并发编程（四）-共享模型之无锁" rel="unlike">
+        <i class="fa fa-heart"></i>
+        喜欢
+        <i class="leancloud_likes_count" id="leancloud_likes_count">0</i>
+    </span>
+
+	</div>
+
+	<div class="article-content" id="article-content">
+		<p>本章内容</p>
+<ul>
+<li>CAS 与 volatile</li>
+<li>原子整数</li>
+<li>原子引用</li>
+<li>原子累加器</li>
+<li>Unsafe</li>
+</ul>
+<h2 id="1-问题提出"><a href="#1-问题提出" class="headerlink" title="1. 问题提出"></a>1. 问题提出</h2><p>有如下需求，保证 account.withdraw 取款方法的线程安全</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.problem;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取余额</span></span><br><span class="line">    <span class="function">Integer <span class="title">getBalance</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="comment">// 取款</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">withdraw</span><span class="params">(Integer amount)</span></span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 方法内会启动 1000 个线程，每个线程做 -10 元 的操作</span></span><br><span class="line"><span class="comment">     * 如果初始余额为 10000 那么正确的结果应当是 0</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">demo</span><span class="params">(Account account)</span> </span>&#123;</span><br><span class="line">        List&lt;Thread&gt; ts = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">long</span> start = System.nanoTime();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++) &#123;</span><br><span class="line">            ts.add(<span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                account.withdraw(<span class="number">10</span>);</span><br><span class="line">            &#125;));</span><br><span class="line">        &#125;</span><br><span class="line">        ts.forEach(Thread::start);</span><br><span class="line">        ts.forEach(t -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                t.join();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">long</span> end = System.nanoTime();</span><br><span class="line">        System.out.println(account.getBalance()</span><br><span class="line">                + <span class="string">" cost: "</span> + (end-start)/<span class="number">1000_000</span> + <span class="string">" ms"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原有实现并不是线程安全的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.problem;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.AllArgsConstructor;</span><br><span class="line"></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountUnsafe</span> <span class="keyword">implements</span> <span class="title">Account</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer balance;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getBalance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.balance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">withdraw</span><span class="params">(Integer amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.balance -= amount;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行测试代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Account account = <span class="keyword">new</span> AccountUnsafe(<span class="number">10000</span>);</span><br><span class="line">        Account.demo(account);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>某次的执行结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">320 cost: 164 ms</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+
+<h3 id="为什么不安全"><a href="#为什么不安全" class="headerlink" title="为什么不安全"></a>为什么不安全</h3><p><code>withdraw</code> 方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">withdraw</span><span class="params">(Integer amount)</span> </span>&#123;</span><br><span class="line"> balance -= amount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对应的字节码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ALOAD 0 // &lt;- this</span><br><span class="line">ALOAD 0</span><br><span class="line">GETFIELD cn/itcast/AccountUnsafe.balance : Ljava/lang/Integer; // &lt;- this.balance</span><br><span class="line">INVOKEVIRTUAL java/lang/Integer.intValue ()I // 拆箱</span><br><span class="line">ALOAD 1 // &lt;- amount</span><br><span class="line">INVOKEVIRTUAL java/lang/Integer.intValue ()I // 拆箱</span><br><span class="line">ISUB // 减法</span><br><span class="line">INVOKESTATIC java/lang/Integer.valueOf (I)Ljava/lang/Integer; // 结果装箱</span><br><span class="line">PUTFIELD cn/itcast/AccountUnsafe.balance : Ljava/lang/Integer; // -&gt; this.balance</span><br></pre></td></tr></table></figure>
+
+<p>多线程执行流程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">ALOAD 0 // thread-0 &lt;- this </span><br><span class="line">ALOAD 0 </span><br><span class="line">GETFIELD cn/itcast/AccountUnsafe.balance // thread-0 &lt;- this.balance </span><br><span class="line">INVOKEVIRTUAL java/lang/Integer.intValue // thread-0 拆箱</span><br><span class="line">ALOAD 1 // thread-0 &lt;- amount </span><br><span class="line">INVOKEVIRTUAL java/lang/Integer.intValue // thread-0 拆箱</span><br><span class="line">ISUB // thread-0 减法</span><br><span class="line">INVOKESTATIC java/lang/Integer.valueOf // thread-0 结果装箱</span><br><span class="line">PUTFIELD cn/itcast/AccountUnsafe.balance // thread-0 -&gt; this.balance </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">ALOAD 0 // thread-1 &lt;- this </span><br><span class="line">ALOAD 0 </span><br><span class="line">GETFIELD cn/itcast/AccountUnsafe.balance // thread-1 &lt;- this.balance </span><br><span class="line">INVOKEVIRTUAL java/lang/Integer.intValue // thread-1 拆箱</span><br><span class="line">ALOAD 1 // thread-1 &lt;- amount </span><br><span class="line">INVOKEVIRTUAL java/lang/Integer.intValue // thread-1 拆箱</span><br><span class="line">ISUB // thread-1 减法</span><br><span class="line">INVOKESTATIC java/lang/Integer.valueOf // thread-1 结果装箱</span><br><span class="line">PUTFIELD cn/itcast/AccountUnsafe.balance // thread-1 -&gt; this.balance</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>单核的指令交错</li>
+<li>多核的指令交错</li>
+</ul>
+<h3 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h3><h4 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h4><p>首先想到的是给 Account 对象加锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.problem.solution1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.java.demo.nolock.problem.Account;</span><br><span class="line"><span class="keyword">import</span> lombok.AllArgsConstructor;</span><br><span class="line"></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountSynchronized</span> <span class="keyword">implements</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer balance;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getBalance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.balance;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">withdraw</span><span class="params">(Integer amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>)&#123;</span><br><span class="line">            <span class="keyword">this</span>.balance -= amount;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>某次执行结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 cost: 250 ms</span><br></pre></td></tr></table></figure>
+
+<h4 id="无锁"><a href="#无锁" class="headerlink" title="无锁"></a>无锁</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.problem.solution2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.java.demo.nolock.problem.Account;</span><br><span class="line"><span class="keyword">import</span> lombok.AllArgsConstructor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountCas</span> <span class="keyword">implements</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> AtomicInteger balance;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getBalance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.balance.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">withdraw</span><span class="params">(Integer amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>)&#123;</span><br><span class="line">            <span class="comment">// 获取余额的最新值</span></span><br><span class="line">            <span class="keyword">int</span> prev = balance.get();</span><br><span class="line">            <span class="comment">// 要修改的余额</span></span><br><span class="line">            <span class="keyword">int</span> next = prev - amount;</span><br><span class="line">            <span class="comment">// 真正修改</span></span><br><span class="line">            <span class="keyword">if</span>(balance.compareAndSet(prev, next))&#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>某次的执行结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 cost: 172 ms</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-CAS-与-volatile"><a href="#2-CAS-与-volatile" class="headerlink" title="2. CAS 与 volatile"></a>2. CAS 与 volatile</h2><p>前面看到的 <code>AtomicInteger</code> 的解决方法，内部并没有用锁来保护共享变量的线程安全。那么它是如何实现的呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">withdraw</span><span class="params">(Integer amount)</span> </span>&#123;</span><br><span class="line">     <span class="comment">// 需要不断尝试，直到成功为止</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>)&#123;</span><br><span class="line">        <span class="comment">// 比如拿到了旧值 1000</span></span><br><span class="line">        <span class="keyword">int</span> prev = balance.get();</span><br><span class="line">        <span class="comment">// 在这个基础上 1000-10 = 990</span></span><br><span class="line">        <span class="keyword">int</span> next = prev - amount;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment"> compareAndSet 正是做这个检查，在 set 前，先比较 prev 与当前值</span></span><br><span class="line"><span class="comment"> - 不一致了，next 作废，返回 false 表示失败</span></span><br><span class="line"><span class="comment"> 比如，别的线程已经做了减法，当前值已经被减成了 990</span></span><br><span class="line"><span class="comment"> 那么本线程的这次 990 就作废了，进入 while 下次循环重试</span></span><br><span class="line"><span class="comment"> - 一致，以 next 设置为新值，返回 true 表示成功</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">        <span class="keyword">if</span>(balance.compareAndSet(prev, next))&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中的关键是 <code>compareAndSet</code>，它的简称就是 <code>CAS</code>（也有 <code>Compare And Swap</code> 的说法），它必须是<strong>原子操作</strong>。</p>
+<p><img src="CAS.png" alt="CAS"></p>
+<blockquote>
+<p>❗<strong>注意</strong>  </p>
+<ul>
+<li>其实 <code>CAS</code> 的底层是 <code>lock cmpxchg</code> 指令（<code>X86</code> 架构），在单核 <code>CPU</code> 和多核 <code>CPU</code> 下都能够保证【比较-交<br>换】的原子性。</li>
+<li>在多核状态下，某个核执行到带 lock 的指令时，CPU 会让总线锁住，当这个核把此指令执行完毕，再<br>开启总线。这个过程中不会被线程的调度机制所打断，保证了多个线程对内存操作的准确性，是原子<br>的。</li>
+</ul>
+</blockquote>
+<h3 id="慢动作分析"><a href="#慢动作分析" class="headerlink" title="慢动作分析"></a>慢动作分析</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.problem;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf</span>4j(topic = <span class="string">"c.SlowMotion"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SlowMotion</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        AtomicInteger balance = <span class="keyword">new</span> AtomicInteger(<span class="number">10000</span>);</span><br><span class="line">        <span class="keyword">int</span> mainPrev = balance.get();</span><br><span class="line">        log.debug(<span class="string">"try get &#123;&#125;"</span>, mainPrev);</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            sleep(<span class="number">1000</span>);</span><br><span class="line">            <span class="keyword">int</span> prev = balance.get();</span><br><span class="line">            balance.compareAndSet(prev, <span class="number">9000</span>);</span><br><span class="line">            log.debug(balance.toString());</span><br><span class="line">        &#125;, <span class="string">"t1"</span>).start();</span><br><span class="line">        sleep(<span class="number">2000</span>);</span><br><span class="line">        log.debug(<span class="string">"try set 8000..."</span>);</span><br><span class="line">        <span class="keyword">boolean</span> isSuccess = balance.compareAndSet(mainPrev, <span class="number">8000</span>);</span><br><span class="line">        log.debug(<span class="string">"is success ? &#123;&#125;"</span>, isSuccess);</span><br><span class="line">        <span class="keyword">if</span> (!isSuccess) &#123;</span><br><span class="line">            mainPrev = balance.get();</span><br><span class="line">            log.debug(<span class="string">"try set 8000..."</span>);</span><br><span class="line">            isSuccess = balance.compareAndSet(mainPrev, <span class="number">8000</span>);</span><br><span class="line">            log.debug(<span class="string">"is success ? &#123;&#125;"</span>, isSuccess);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">(<span class="keyword">int</span> millis)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(millis);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">10:36:44 [main] c.SlowMotion - try get 10000</span><br><span class="line">10:36:45 [t1] c.SlowMotion - 9000</span><br><span class="line">10:36:46 [main] c.SlowMotion - try set 8000...</span><br><span class="line">10:36:46 [main] c.SlowMotion - is success ? false</span><br><span class="line">10:36:46 [main] c.SlowMotion - try set 8000...</span><br><span class="line">10:36:46 [main] c.SlowMotion - is success ? true</span><br></pre></td></tr></table></figure>
+
+<h3 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h3><p>获取共享变量时，为了保证该变量的可见性，需要使用 <code>volatile</code> 修饰。<br>它可以用来修饰成员变量和静态成员变量，他可以避免线程从自己的工作缓存中查找变量的值，必须到主存中获取它的值，线程操作 <code>volatile</code> 变量都是直接操作主存。即一个线程对 <code>volatile</code> 变量的修改，对另一个线程可见。  </p>
+<blockquote>
+<p><strong>注意</strong><br><code>volatile</code> 仅仅保证了共享变量的可见性，让其它线程能够看到最新值，但不能解决指令交错问题（不能保证原子性）<code>CAS</code> 必须借助 <code>volatile</code> 才能读取到共享变量的最新值来实现<strong>比较并交换</strong>的效果</p>
+</blockquote>
+<h3 id="为什么无锁效率高"><a href="#为什么无锁效率高" class="headerlink" title="为什么无锁效率高"></a>为什么无锁效率高</h3><p>无锁情况下，即使重试失败，线程始终在高速运行，没有停歇,而 <code>synchronized</code> 会让线程在没有获得锁的时候，发生上下文切换，进入阻塞。打个比喻线程就好像高速跑道上的赛车，高速运行时，速度超快，一旦发生上下文切换，就好比赛车要减速、熄火，等被唤醒又得重新打火、启动、加速… 恢复到高速运行，代价比较大;<br>但无锁情况下，因为线程要保持运行，需要额外 <code>CPU</code> 的支持，<code>CPU</code> 在这里就好比高速跑道，没有额外的跑道，线程想高速运行也无从谈起，虽然不会进入阻塞，但由于没有分到时间片，仍然会进入可运行状态，还<br>是会导致上下文切换。  </p>
+<p><img src="%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81.png" alt>  </p>
+<h3 id="CAS-的特点"><a href="#CAS-的特点" class="headerlink" title="CAS 的特点"></a>CAS 的特点</h3><p>结合 <code>CAS</code> 和 <code>volatile</code> 可以实现无锁并发，适用于线程数少、多核 <code>CPU</code> 的场景下。</p>
+<ul>
+<li><code>CAS</code> 是基于乐观锁的思想：最乐观的估计，不怕别的线程来修改共享变量，就算改了也没关系，我吃亏点再重试呗。</li>
+<li><code>synchronized</code> 是基于悲观锁的思想：最悲观的估计，得防着其它线程来修改共享变量，我上了锁你们都别想改，我改完了解开锁，你们才有机会。</li>
+<li><code>CAS</code> 体现的是无锁并发、无阻塞并发，请仔细体会这两句话的意思<ul>
+<li>因为没有使用 <code>synchronized</code>，所以线程不会陷入阻塞，这是效率提升的因素之一</li>
+<li>但如果竞争激烈，可以想到重试必然频繁发生，反而效率会受影响<h2 id="3-原子整数"><a href="#3-原子整数" class="headerlink" title="3. 原子整数"></a>3. 原子整数</h2>J.U.C 并发包提供了：</li>
+</ul>
+</li>
+<li>AtomicBoolean</li>
+<li>AtomicInteger</li>
+<li>AtomicLong<br>以 AtomicInteger 为例    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.atomic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AtomicIntegerTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        AtomicInteger i = <span class="keyword">new</span> AtomicInteger(<span class="number">0</span>);</span><br><span class="line">        <span class="comment">// 获取并自增（i = 0, 结果 i = 1, 返回 0），类似于 i++</span></span><br><span class="line">        System.out.println(i.getAndIncrement());</span><br><span class="line">        <span class="comment">// 自增并获取（i = 1, 结果 i = 2, 返回 2），类似于 ++i</span></span><br><span class="line">        System.out.println(i.incrementAndGet());</span><br><span class="line">        <span class="comment">// 自减并获取（i = 2, 结果 i = 1, 返回 1），类似于 --i</span></span><br><span class="line">        System.out.println(i.decrementAndGet());</span><br><span class="line">        <span class="comment">// 获取并自减（i = 1, 结果 i = 0, 返回 1），类似于 i--</span></span><br><span class="line">        System.out.println(i.getAndDecrement());</span><br><span class="line">        <span class="comment">// 获取并加值（i = 0, 结果 i = 5, 返回 0）</span></span><br><span class="line">        System.out.println(i.getAndAdd(<span class="number">5</span>));</span><br><span class="line">        <span class="comment">// 加值并获取（i = 5, 结果 i = 0, 返回 0）</span></span><br><span class="line">        System.out.println(i.addAndGet(-<span class="number">5</span>));</span><br><span class="line">        <span class="comment">// 获取并更新（i = 0, p 为 i 的当前值, 结果 i = -2, 返回 0）</span></span><br><span class="line">        <span class="comment">// 其中函数中的操作能保证原子，但函数需要无副作用</span></span><br><span class="line">        System.out.println(i.getAndUpdate(p -&gt; p - <span class="number">2</span>));</span><br><span class="line">        <span class="comment">// 更新并获取（i = -2, p 为 i 的当前值, 结果 i = 0, 返回 0）</span></span><br><span class="line">        <span class="comment">// 其中函数中的操作能保证原子，但函数需要无副作用</span></span><br><span class="line">        System.out.println(i.updateAndGet(p -&gt; p + <span class="number">2</span>));</span><br><span class="line">        <span class="comment">// 获取并计算（i = 0, p 为 i 的当前值, x 为参数1, 结果 i = 10, 返回 0）</span></span><br><span class="line">        <span class="comment">// 其中函数中的操作能保证原子，但函数需要无副作用</span></span><br><span class="line">        <span class="comment">// getAndUpdate 如果在 lambda 中引用了外部的局部变量，要保证该局部变量是 final 的</span></span><br><span class="line">        <span class="comment">// getAndAccumulate 可以通过 参数1 来引用外部的局部变量，但因为其不在 lambda 中因此不必是 final</span></span><br><span class="line">        System.out.println(i.getAndAccumulate(<span class="number">10</span>, (p, x) -&gt; p + x));</span><br><span class="line">        <span class="comment">// 计算并获取（i = 10, p 为 i 的当前值, x 为参数1, 结果 i = 0, 返回 0）</span></span><br><span class="line">        <span class="comment">// 其中函数中的操作能保证原子，但函数需要无副作用</span></span><br><span class="line">        System.out.println(i.accumulateAndGet(-<span class="number">10</span>, (p, x) -&gt; p + x));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="4-原子引用"><a href="#4-原子引用" class="headerlink" title="4.原子引用"></a>4.原子引用</h2><p>为什么需要原子引用类型？</p>
+<ul>
+<li>AtomicReference</li>
+<li>AtomicMarkableReference</li>
+<li>AtomicStampedReference<h3 id="安全实现-使用-CAS"><a href="#安全实现-使用-CAS" class="headerlink" title="安全实现-使用 CAS"></a>安全实现-使用 CAS</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.problem;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.math.BigDecimal;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AccountDecimal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取余额</span></span><br><span class="line">    <span class="function">BigDecimal <span class="title">getBalance</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="comment">// 取款</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">withdraw</span><span class="params">(BigDecimal amount)</span></span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 方法内会启动 1000 个线程，每个线程做 -10 元 的操作</span></span><br><span class="line"><span class="comment">     * 如果初始余额为 10000 那么正确的结果应当是 0</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">demo</span><span class="params">(AccountDecimal account)</span> </span>&#123;</span><br><span class="line">        List&lt;Thread&gt; ts = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">long</span> start = System.nanoTime();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++) &#123;</span><br><span class="line">            ts.add(<span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                account.withdraw(<span class="keyword">new</span> BigDecimal(<span class="number">10</span>));</span><br><span class="line">            &#125;));</span><br><span class="line">        &#125;</span><br><span class="line">        ts.forEach(Thread::start);</span><br><span class="line">        ts.forEach(t -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                t.join();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">long</span> end = System.nanoTime();</span><br><span class="line">        System.out.println(account.getBalance()</span><br><span class="line">                + <span class="string">" cost: "</span> + (end-start)/<span class="number">1000_000</span> + <span class="string">" ms"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.problem.solution3;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.java.demo.nolock.problem.AccountDecimal;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.math.BigDecimal;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicReference;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountBigDecimal</span> <span class="keyword">implements</span> <span class="title">AccountDecimal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> AtomicReference&lt;BigDecimal&gt; balance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AccountBigDecimal</span><span class="params">(BigDecimal balance)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.balance = <span class="keyword">new</span> AtomicReference&lt;&gt;(balance);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> BigDecimal <span class="title">getBalance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.balance.get();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">withdraw</span><span class="params">(BigDecimal amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>)&#123;</span><br><span class="line">            BigDecimal prev = <span class="keyword">this</span>.balance.get();</span><br><span class="line">            BigDecimal next = prev.subtract(amount);</span><br><span class="line">            <span class="keyword">if</span>(balance.compareAndSet(prev,next))&#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AccountDecimal accountBigDecimal = <span class="keyword">new</span> AccountBigDecimal(<span class="keyword">new</span> BigDecimal(<span class="string">"10000"</span>));</span><br><span class="line">AccountDecimal.demo(accountBigDecimal);</span><br></pre></td></tr></table></figure>
+
+<h3 id="ABA-问题及解决"><a href="#ABA-问题及解决" class="headerlink" title="ABA 问题及解决"></a>ABA 问题及解决</h3><h4 id="ABA-问题"><a href="#ABA-问题" class="headerlink" title="ABA 问题"></a>ABA 问题</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.aba;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicReference;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> java.lang.Thread.sleep;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf</span>4j(topic = <span class="string">"c.ABATest"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ABATest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> AtomicReference&lt;String&gt; reference = <span class="keyword">new</span> AtomicReference&lt;&gt;(<span class="string">"A"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        log.debug(<span class="string">"main start..."</span>);</span><br><span class="line">        <span class="comment">// 获取值 A</span></span><br><span class="line">        <span class="comment">// 这个共享变量被它线程修改过？</span></span><br><span class="line">        String prev = reference.get();</span><br><span class="line">        other();</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 尝试改为 C</span></span><br><span class="line">        log.debug(<span class="string">"change A-&gt;C &#123;&#125;"</span>, reference.compareAndSet(prev, <span class="string">"C"</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">other</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            log.debug(<span class="string">"change A-&gt;B &#123;&#125;"</span>, reference.compareAndSet(reference.get(), <span class="string">"B"</span>));</span><br><span class="line">        &#125;, <span class="string">"t1"</span>).start();</span><br><span class="line">        sleep(<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            log.debug(<span class="string">"change B-&gt;A &#123;&#125;"</span>, reference.compareAndSet(reference.get(), <span class="string">"A"</span>));</span><br><span class="line">        &#125;, <span class="string">"t2"</span>).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">13</span>:<span class="number">20</span>:<span class="number">06</span> [main] c.ABATest - main start...</span><br><span class="line"><span class="number">13</span>:<span class="number">20</span>:<span class="number">06</span> [t1] c.ABATest - change A-&gt;B <span class="keyword">true</span></span><br><span class="line"><span class="number">13</span>:<span class="number">20</span>:<span class="number">06</span> [t2] c.ABATest - change B-&gt;A <span class="keyword">true</span></span><br><span class="line"><span class="number">13</span>:<span class="number">20</span>:<span class="number">06</span> [main] c.ABATest - change A-&gt;C <span class="keyword">true</span></span><br></pre></td></tr></table></figure>
+
+<p>主线程仅能判断出共享变量的值与最初值 A 是否相同，不能感知到这种从 A 改为 B 又 改回 A 的情况，如果主线程希望：<br>只要有其它线程【动过了】共享变量，那么自己的 cas 就算失败，这时，仅比较值是不够的，需要再加一个版本号<br><strong>AtomicStampedReference</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> AtomicStampedReference&lt;String&gt; ref = <span class="keyword">new</span> AtomicStampedReference&lt;&gt;(<span class="string">"A"</span>, <span class="number">0</span>);</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line"> log.debug(<span class="string">"main start..."</span>);</span><br><span class="line"> <span class="comment">// 获取值 A</span></span><br><span class="line"> String prev = ref.getReference();</span><br><span class="line"> <span class="comment">// 获取版本号</span></span><br><span class="line"> <span class="keyword">int</span> stamp = ref.getStamp();</span><br><span class="line"> log.debug(<span class="string">"版本 &#123;&#125;"</span>, stamp);</span><br><span class="line"> <span class="comment">// 如果中间有其它线程干扰，发生了 ABA 现象</span></span><br><span class="line"> other();</span><br><span class="line"> sleep(<span class="number">1</span>);</span><br><span class="line"> <span class="comment">// 尝试改为 C</span></span><br><span class="line"> log.debug(<span class="string">"change A-&gt;C &#123;&#125;"</span>, ref.compareAndSet(prev, <span class="string">"C"</span>, stamp, stamp + <span class="number">1</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">other</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line"> log.debug(<span class="string">"change A-&gt;B &#123;&#125;"</span>, ref.compareAndSet(ref.getReference(), <span class="string">"B"</span>, </span><br><span class="line"> ref.getStamp(), ref.getStamp() + <span class="number">1</span>));</span><br><span class="line"> log.debug(<span class="string">"更新版本为 &#123;&#125;"</span>, ref.getStamp());</span><br><span class="line"> &#125;, <span class="string">"t1"</span>).start();</span><br><span class="line"> sleep(<span class="number">0.5</span>);</span><br><span class="line"> <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line"> log.debug(<span class="string">"change B-&gt;A &#123;&#125;"</span>, ref.compareAndSet(ref.getReference(), <span class="string">"A"</span>, </span><br><span class="line"> ref.getStamp(), ref.getStamp() + <span class="number">1</span>));</span><br><span class="line"> log.debug(<span class="string">"更新版本为 &#123;&#125;"</span>, ref.getStamp());</span><br><span class="line"> &#125;, <span class="string">"t2"</span>).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">13</span>:<span class="number">40</span>:<span class="number">30</span> [main] c.AtomicStampedReferenceTest - main start...</span><br><span class="line"><span class="number">13</span>:<span class="number">40</span>:<span class="number">30</span> [main] c.AtomicStampedReferenceTest - 版本 <span class="number">0</span></span><br><span class="line"><span class="number">13</span>:<span class="number">40</span>:<span class="number">30</span> [t1] c.AtomicStampedReferenceTest - change A-&gt;B <span class="keyword">true</span></span><br><span class="line"><span class="number">13</span>:<span class="number">40</span>:<span class="number">30</span> [t1] c.AtomicStampedReferenceTest - 更新版本为 <span class="number">1</span></span><br><span class="line"><span class="number">13</span>:<span class="number">40</span>:<span class="number">30</span> [t2] c.AtomicStampedReferenceTest - change B-&gt;A <span class="keyword">true</span></span><br><span class="line"><span class="number">13</span>:<span class="number">40</span>:<span class="number">30</span> [t2] c.AtomicStampedReferenceTest - 更新版本为 <span class="number">2</span></span><br><span class="line"><span class="number">13</span>:<span class="number">40</span>:<span class="number">30</span> [main] c.AtomicStampedReferenceTest - change A-&gt;C <span class="keyword">false</span></span><br></pre></td></tr></table></figure>
+
+<p>AtomicStampedReference 可以给原子引用加上版本号，追踪原子引用整个的变化过程，如： A -&gt; B -&gt; A -&gt;<br>C ，通过AtomicStampedReference，我们可以知道，引用变量中途被更改了几次。<br>但是有时候，并不关心引用变量更改了几次，只是单纯的关心是否更改过，所以就有了<br>AtomicMarkableReference<br><img src="AtomicMarkableReference.png" alt></p>
+<p><strong>AtomicMarkableReference</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.aba.atomicmarkablereference;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.AllArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GarbageBag</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String desc;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.aba.atomicmarkablereference;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicMarkableReference;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf</span>4j(topic = <span class="string">"c.AtomicMarkableReferenceTest"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AtomicMarkableReferenceTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        GarbageBag bag = <span class="keyword">new</span> GarbageBag(<span class="string">"装满了垃圾"</span>);</span><br><span class="line">        <span class="comment">// 参数2 mark 可以看作一个标记，表示垃圾袋满了</span></span><br><span class="line">        AtomicMarkableReference&lt;GarbageBag&gt; ref = <span class="keyword">new</span> AtomicMarkableReference&lt;&gt;(bag, <span class="keyword">true</span>);</span><br><span class="line">        log.debug(<span class="string">"主线程 start..."</span>);</span><br><span class="line">        GarbageBag prev = ref.getReference();</span><br><span class="line">        log.debug(prev.toString());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            log.debug(<span class="string">"打扫卫生的线程 start..."</span>);</span><br><span class="line">            bag.setDesc(<span class="string">"空垃圾袋"</span>);</span><br><span class="line">            <span class="keyword">while</span> (!ref.compareAndSet(bag, bag, <span class="keyword">true</span>, <span class="keyword">false</span>)) &#123;&#125;</span><br><span class="line">            log.debug(bag.toString());</span><br><span class="line">        &#125;).start();</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        log.debug(<span class="string">"主线程想换一只新垃圾袋？"</span>);</span><br><span class="line">        <span class="keyword">boolean</span> success = ref.compareAndSet(prev, <span class="keyword">new</span> GarbageBag(<span class="string">"空垃圾袋"</span>), <span class="keyword">true</span>, <span class="keyword">false</span>);</span><br><span class="line">        log.debug(<span class="string">"换了么？"</span> + success);</span><br><span class="line">        log.debug(ref.getReference().toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">14:18:41 [main] c.AtomicMarkableReferenceTest - 主线程 start...</span><br><span class="line">14:18:41 [main] c.AtomicMarkableReferenceTest - GarbageBag(desc=装满了垃圾)</span><br><span class="line">14:18:41 [Thread-0] c.AtomicMarkableReferenceTest - 打扫卫生的线程 start...</span><br><span class="line">14:18:41 [Thread-0] c.AtomicMarkableReferenceTest - GarbageBag(desc=空垃圾袋)</span><br><span class="line">14:18:42 [main] c.AtomicMarkableReferenceTest - 主线程想换一只新垃圾袋？</span><br><span class="line">14:18:42 [main] c.AtomicMarkableReferenceTest - 换了么？false</span><br><span class="line">14:18:42 [main] c.AtomicMarkableReferenceTest - GarbageBag(desc=空垃圾袋)</span><br></pre></td></tr></table></figure>
+
+<p>可以注释掉打扫卫生线程代码，再观察输出。</p>
+<h2 id="5-原子数组"><a href="#5-原子数组" class="headerlink" title="5. 原子数组"></a>5. 原子数组</h2><ul>
+<li>AtomicIntegerArray</li>
+<li>AtomicLongArray</li>
+<li>AtomicReferenceArray</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.atomic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.function.BiConsumer;</span><br><span class="line"><span class="keyword">import</span> java.util.function.Consumer;</span><br><span class="line"><span class="keyword">import</span> java.util.function.Function;</span><br><span class="line"><span class="keyword">import</span> java.util.function.Supplier;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AutomicArrayTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     参数1，提供数组、可以是线程不安全数组或线程安全数组</span></span><br><span class="line"><span class="comment">     参数2，获取数组长度的方法</span></span><br><span class="line"><span class="comment">     参数3，自增方法，回传 array, index</span></span><br><span class="line"><span class="comment">     参数4，打印数组的方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"><span class="comment">// supplier 提供者 无中生有 ()-&gt;结果</span></span><br><span class="line"><span class="comment">// function 函数 一个参数一个结果 (参数)-&gt;结果 , BiFunction (参数1,参数2)-&gt;结果</span></span><br><span class="line"><span class="comment">// consumer 消费者 一个参数没结果 (参数)-&gt;void, BiConsumer (参数1,参数2)-&gt;</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">demo</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">            Supplier&lt;T&gt; arraySupplier,</span></span></span><br><span class="line"><span class="function"><span class="params">            Function&lt;T, Integer&gt; lengthFun,</span></span></span><br><span class="line"><span class="function"><span class="params">            BiConsumer&lt;T, Integer&gt; putConsumer,</span></span></span><br><span class="line"><span class="function"><span class="params">            Consumer&lt;T&gt; printConsumer )</span> </span>&#123;</span><br><span class="line">        List&lt;Thread&gt; ts = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        T array = arraySupplier.get();</span><br><span class="line">        <span class="keyword">int</span> length = lengthFun.apply(array);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">            <span class="comment">// 每个线程对数组作 10000 次操作</span></span><br><span class="line">            ts.add(<span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">10000</span>; j++) &#123;</span><br><span class="line">                    putConsumer.accept(array, j%length);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;));</span><br><span class="line">        &#125;</span><br><span class="line">        ts.forEach(t -&gt; t.start()); <span class="comment">// 启动所有线程</span></span><br><span class="line">        ts.forEach(t -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                t.join();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;); <span class="comment">// 等所有线程结束</span></span><br><span class="line">        printConsumer.accept(array);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="不安全数组"><a href="#不安全数组" class="headerlink" title="不安全数组"></a>不安全数组</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    demo(</span><br><span class="line">            ()-&gt;<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>],</span><br><span class="line">            (array)-&gt;array.length,</span><br><span class="line">            (array, index) -&gt; array[index]++,</span><br><span class="line">            array-&gt; System.out.println(Arrays.toString(array))</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">9839</span>, <span class="number">9811</span>, <span class="number">9824</span>, <span class="number">9815</span>, <span class="number">9801</span>, <span class="number">9804</span>, <span class="number">9811</span>, <span class="number">9830</span>, <span class="number">9828</span>, <span class="number">9848</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="安全数组"><a href="#安全数组" class="headerlink" title="安全数组"></a>安全数组</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">demo(</span><br><span class="line">                ()-&gt;<span class="keyword">new</span> AtomicIntegerArray(<span class="number">10</span>),</span><br><span class="line">                (array)-&gt;array.length(),</span><br><span class="line">                (array, index) -&gt; array.getAndIncrement(index),</span><br><span class="line">                array-&gt; System.out.println(array)</span><br><span class="line">        );</span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">10000</span>, <span class="number">10000</span>, <span class="number">10000</span>, <span class="number">10000</span>, <span class="number">10000</span>, <span class="number">10000</span>, <span class="number">10000</span>, <span class="number">10000</span>, <span class="number">10000</span>, <span class="number">10000</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-字段更新器"><a href="#6-字段更新器" class="headerlink" title="6. 字段更新器"></a>6. 字段更新器</h2><ul>
+<li>AtomicReferenceFieldUpdater // 域 字段</li>
+<li>AtomicIntegerFieldUpdater</li>
+<li>AtomicLongFieldUpdater  </li>
+</ul>
+<p>利用字段更新器，可以针对对象的某个域（Field）进行原子操作，只能配合 volatile 修饰的字段使用，否则会出现异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread <span class="string">"main"</span> java.lang.IllegalArgumentException: Must be <span class="keyword">volatile</span> type</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.atomic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicIntegerFieldUpdater;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicReferenceFieldUpdater;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AtomicReferenceFieldUpdaterTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Student student = <span class="keyword">new</span> Student();</span><br><span class="line">        AtomicReferenceFieldUpdater&lt;Student, String&gt; nameUpdater = AtomicReferenceFieldUpdater.newUpdater(Student.class, String.class, <span class="string">"name"</span>);</span><br><span class="line">        nameUpdater.compareAndSet(student, <span class="keyword">null</span>, <span class="string">"奥斯特洛夫斯基"</span>);</span><br><span class="line">        AtomicIntegerFieldUpdater&lt;Student&gt; ageUpdater = AtomicIntegerFieldUpdater.newUpdater(Student.class, <span class="string">"age"</span>);</span><br><span class="line">        ageUpdater.compareAndSet(student, <span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">        System.out.println(student);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">volatile</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">volatile</span> <span class="keyword">int</span> age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Student(name=奥斯特洛夫斯基, age=<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-原子累加器"><a href="#7-原子累加器" class="headerlink" title="7. 原子累加器"></a>7. 原子累加器</h2><h3 id="累加器性能比较"><a href="#累加器性能比较" class="headerlink" title="累加器性能比较"></a>累加器性能比较</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.atomic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicLong;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.LongAdder;</span><br><span class="line"><span class="keyword">import</span> java.util.function.Consumer;</span><br><span class="line"><span class="keyword">import</span> java.util.function.Supplier;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LongAdderTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            demo(() -&gt; <span class="keyword">new</span> LongAdder(), adder -&gt; adder.increment());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            demo(() -&gt; <span class="keyword">new</span> AtomicLong(), adder -&gt; adder.getAndIncrement());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">demo</span><span class="params">(Supplier&lt;T&gt; adderSupplier, Consumer&lt;T&gt; action)</span> </span>&#123;</span><br><span class="line">        T adder = adderSupplier.get();</span><br><span class="line">        <span class="keyword">long</span> start = System.nanoTime();</span><br><span class="line">        List&lt;Thread&gt; ts = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="comment">// 4 个线程，每人累加 50 万</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">40</span>; i++) &#123;</span><br><span class="line">            ts.add(<span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">500000</span>; j++) &#123;</span><br><span class="line">                    action.accept(adder);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;));</span><br><span class="line">        &#125;</span><br><span class="line">        ts.forEach(t -&gt; t.start());</span><br><span class="line">        ts.forEach(t -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                t.join();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">long</span> end = System.nanoTime();</span><br><span class="line">        System.out.println(adder + <span class="string">" cost:"</span> + (end - start)/<span class="number">1000_000</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">20000000</span> cost:<span class="number">157</span></span><br><span class="line"><span class="number">20000000</span> cost:<span class="number">107</span></span><br><span class="line"><span class="number">20000000</span> cost:<span class="number">90</span></span><br><span class="line"><span class="number">20000000</span> cost:<span class="number">87</span></span><br><span class="line"><span class="number">20000000</span> cost:<span class="number">87</span></span><br><span class="line"><span class="number">20000000</span> cost:<span class="number">405</span></span><br><span class="line"><span class="number">20000000</span> cost:<span class="number">499</span></span><br><span class="line"><span class="number">20000000</span> cost:<span class="number">523</span></span><br><span class="line"><span class="number">20000000</span> cost:<span class="number">507</span></span><br><span class="line"><span class="number">20000000</span> cost:<span class="number">570</span></span><br></pre></td></tr></table></figure>
+
+<p>性能提升的原因很简单，就是在有竞争时，设置多个累加单元，<code>Therad-0</code> 累加 <code>Cell[0]</code>，而 <code>Thread-1</code> 累加<br><code>Cell[1]...</code> 最后将结果汇总。这样它们在累加时操作的不同的 <code>Cell</code> 变量，因此减少了 <code>CAS</code> 重试失败，从而提高性能。  </p>
+<h3 id="源码之-LongAdder"><a href="#源码之-LongAdder" class="headerlink" title="源码之 LongAdder"></a>源码之 LongAdder</h3><p><code>LongAdder</code> 是并发大师 <code>@author Doug Lea</code> （大哥李）的作品，设计的非常精巧<br><code>LongAdder</code> 类有几个关键域</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 累加单元数组, 懒惰初始化</span></span><br><span class="line"><span class="keyword">transient</span> <span class="keyword">volatile</span> Cell[] cells;</span><br><span class="line"><span class="comment">// 基础值, 如果没有竞争, 则用 cas 累加这个域</span></span><br><span class="line"><span class="keyword">transient</span> <span class="keyword">volatile</span> <span class="keyword">long</span> base;</span><br><span class="line"><span class="comment">// 在 cells 创建或扩容时, 置为 1, 表示加锁</span></span><br><span class="line"><span class="keyword">transient</span> <span class="keyword">volatile</span> <span class="keyword">int</span> cellsBusy</span><br></pre></td></tr></table></figure>
+
+<h4 id="CAS-锁"><a href="#CAS-锁" class="headerlink" title="CAS 锁"></a>CAS 锁</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不要用于实践！！！</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LockCas</span> </span>&#123;</span><br><span class="line"> <span class="keyword">private</span> AtomicInteger state = <span class="keyword">new</span> AtomicInteger(<span class="number">0</span>);</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line"> <span class="keyword">if</span> (state.compareAndSet(<span class="number">0</span>, <span class="number">1</span>)) &#123;</span><br><span class="line"> <span class="keyword">break</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> log.debug(<span class="string">"unlock..."</span>);</span><br><span class="line"> state.set(<span class="number">0</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    LockCAS lock = <span class="keyword">new</span> LockCAS();</span><br><span class="line">    <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        log.debug(<span class="string">"begin..."</span>);</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            log.debug(<span class="string">"lock..."</span>);</span><br><span class="line">            sleep(<span class="number">1</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">    <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        log.debug(<span class="string">"begin..."</span>);</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            log.debug(<span class="string">"lock..."</span>);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">22</span>:<span class="number">27</span>:<span class="number">52</span> [Thread-<span class="number">1</span>] c.LockCAS - begin...</span><br><span class="line"><span class="number">22</span>:<span class="number">27</span>:<span class="number">52</span> [Thread-<span class="number">1</span>] c.LockCAS - lock...</span><br><span class="line"><span class="number">22</span>:<span class="number">27</span>:<span class="number">52</span> [Thread-<span class="number">1</span>] c.LockCAS - unlock...</span><br><span class="line"><span class="number">22</span>:<span class="number">27</span>:<span class="number">52</span> [Thread-<span class="number">0</span>] c.LockCAS - begin...</span><br><span class="line"><span class="number">22</span>:<span class="number">27</span>:<span class="number">52</span> [Thread-<span class="number">0</span>] c.LockCAS - lock...</span><br><span class="line"><span class="number">22</span>:<span class="number">27</span>:<span class="number">52</span> [Thread-<span class="number">0</span>] c.LockCAS - unlock...</span><br></pre></td></tr></table></figure>
+
+<h3 id="原理之伪共享"><a href="#原理之伪共享" class="headerlink" title="原理之伪共享"></a>原理之伪共享</h3><p>其中 <code>Cell</code> 即为累加单元  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 防止缓存行伪共享</span></span><br><span class="line"><span class="meta">@sun</span>.misc.Contended</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Cell</span> </span>&#123;</span><br><span class="line"> <span class="keyword">volatile</span> <span class="keyword">long</span> value;</span><br><span class="line"> Cell(<span class="keyword">long</span> x) &#123; value = x; &#125;</span><br><span class="line"> <span class="comment">// 最重要的方法, 用来 cas 方式进行累加, prev 表示旧值, next 表示新值</span></span><br><span class="line"> <span class="function"><span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">cas</span><span class="params">(<span class="keyword">long</span> prev, <span class="keyword">long</span> next)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">return</span> UNSAFE.compareAndSwapLong(<span class="keyword">this</span>, valueOffset, prev, next);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="comment">// 省略不重要代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>得从缓存说起<br>缓存与内存的速度比较  </p>
+<p><img src="%E4%BC%AA%E5%85%B1%E4%BA%AB.png" alt="伪共享"> </p>
+<table>
+<thead>
+<tr>
+<th>从 cpu 到</th>
+<th>大约需要的时钟周期</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>寄存器</td>
+<td>1 cycle (4GHz 的 CPU 约为0.25ns)</td>
+</tr>
+<tr>
+<td>L1</td>
+<td>3~4 cycle</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>10~20 cycle</td>
+</tr>
+<tr>
+<td>L3</td>
+<td>40~45 cycle</td>
+</tr>
+<tr>
+<td>内存</td>
+<td>120~240 cycle</td>
+</tr>
+</tbody></table>
+<p>因为 <code>CPU</code> 与 内存的速度差异很大，需要靠预读数据至缓存来提升效率。<br>而缓存以缓存行为单位，每个缓存行对应着一块内存，一般是 <code>64 byte</code>（<code>8</code> 个 <code>long</code>）<br>缓存的加入会造成数据副本的产生，即同一份数据会缓存在不同核心的缓存行中   </p>
+<p><img src="%E4%BC%AA%E5%85%B1%E4%BA%AB1.png" alt="伪共享">  </p>
+<p>因为 <code>Cell</code> 是数组形式，在内存中是连续存储的，一个 <code>Cell</code> 为 <code>24</code> 字节（<code>16</code> 字节的对象头和 <code>8</code> 字节的 <code>value</code>），因此缓存行可以存下 <code>2</code> 个的 <code>Cell</code> 对象。这样问题来了：  </p>
+<ul>
+<li><code>Core-0</code> 要修改 <code>Cell[0]</code></li>
+<li><code>Core-1</code> 要修改 <code>Cell[1]</code>  </li>
+</ul>
+<p>无论谁修改成功，都会导致对方 <code>Core</code> 的缓存行失效，比如 <code>Core-0</code> 中 <code>Cell[0]=6000</code>, <code>Cell[1]=8000</code> 要累加 <code>Cell[0]=6001</code>, <code>Cell[1]=8000</code> ，这时会让 <code>Core-1</code> 的缓存行失效<br><code>@sun.misc.Contended</code> 用来解决这个问题，它的原理是在使用此注解的对象或字段的前后各增加 <code>128</code> 字节大小的 <code>padding</code>，从而让 <code>CPU</code> 将对象预读至缓存时占用不同的缓存行，这样，不会造成对方缓存行的失效  </p>
+<p><img src="%E4%BC%AA%E5%85%B1%E4%BA%AB2.png" alt="伪共享"> </p>
+<p>累加主要调用下面的方法   </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">long</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// as 为累加单元数组</span></span><br><span class="line">    <span class="comment">// b 为基础值</span></span><br><span class="line">    <span class="comment">// x 为累加值</span></span><br><span class="line">    Cell[] as; <span class="keyword">long</span> b, v; <span class="keyword">int</span> m; Cell a;</span><br><span class="line">    <span class="comment">// 进入 if 的两个条件</span></span><br><span class="line">    <span class="comment">// 1. as 有值, 表示已经发生过竞争, 进入 if</span></span><br><span class="line">    <span class="comment">// 2. cas 给 base 累加时失败了, 表示 base 发生了竞争, 进入 if</span></span><br><span class="line">    <span class="keyword">if</span> ((as = cells) != <span class="keyword">null</span> || !casBase(b = base, b + x)) &#123;</span><br><span class="line">        <span class="comment">// uncontended 表示 cell 没有竞争</span></span><br><span class="line">        <span class="keyword">boolean</span> uncontended = <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (</span><br><span class="line">            <span class="comment">// as 还没有创建</span></span><br><span class="line">                as == <span class="keyword">null</span> || (m = as.length - <span class="number">1</span>) &lt; <span class="number">0</span> ||</span><br><span class="line">                        <span class="comment">// 当前线程对应的 cell 还没有</span></span><br><span class="line">                        (a = as[getProbe() &amp; m]) == <span class="keyword">null</span> ||</span><br><span class="line">                        <span class="comment">// cas 给当前线程的 cell 累加失败 uncontended=false ( a 为当前线程的 cell )</span></span><br><span class="line">                        !(uncontended = a.cas(v = a.value, v + x))</span><br><span class="line">        ) &#123;</span><br><span class="line">            <span class="comment">// 进入 cell 数组创建、cell 创建的流程</span></span><br><span class="line">            longAccumulate(x, <span class="keyword">null</span>, uncontended);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>add</code> 流程图  </p>
+<p><img src="add%E6%B5%81%E7%A8%8B.png" alt="add流程"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">longAccumulate</span><span class="params">(<span class="keyword">long</span> x, LongBinaryOperator fn,</span></span></span><br><span class="line"><span class="function"><span class="params">                              <span class="keyword">boolean</span> wasUncontended)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> h;</span><br><span class="line">        <span class="comment">// 当前线程还没有对应的 cell, 需要随机生成一个 h 值用来将当前线程绑定到 cell</span></span><br><span class="line">        <span class="keyword">if</span> ((h = getProbe()) == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// 初始化 probe</span></span><br><span class="line">            ThreadLocalRandom.current();</span><br><span class="line">            <span class="comment">// h 对应新的 probe 值, 用来对应 cell</span></span><br><span class="line">            h = getProbe();</span><br><span class="line">            wasUncontended = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// collide 为 true 表示需要扩容</span></span><br><span class="line">        <span class="keyword">boolean</span> collide = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">            Cell[] as; Cell a; <span class="keyword">int</span> n; <span class="keyword">long</span> v;</span><br><span class="line">            <span class="comment">// 已经有了 cells</span></span><br><span class="line">            <span class="keyword">if</span> ((as = cells) != <span class="keyword">null</span> &amp;&amp; (n = as.length) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 还没有 cell</span></span><br><span class="line">                <span class="keyword">if</span> ((a = as[(n - <span class="number">1</span>) &amp; h]) == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="comment">// 为 cellsBusy 加锁, 创建 cell, cell 的初始累加值为 x</span></span><br><span class="line">                    <span class="comment">// 成功则 break, 否则继续 continue 循环</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 有竞争, 改变线程对应的 cell 来重试 cas</span></span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (!wasUncontended)</span><br><span class="line">                    wasUncontended = <span class="keyword">true</span>;</span><br><span class="line">                    <span class="comment">// cas 尝试累加, fn 配合 LongAccumulator 不为 null, 配合 LongAdder 为 null</span></span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (a.cas(v = a.value, ((fn == <span class="keyword">null</span>) ? v + x : fn.applyAsLong(v, x))))</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                    <span class="comment">// 如果 cells 长度已经超过了最大长度, 或者已经扩容, 改变线程对应的 cell 来重试 cas</span></span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (n &gt;= NCPU || cells != as)</span><br><span class="line">                    collide = <span class="keyword">false</span>;</span><br><span class="line">                    <span class="comment">// 确保 collide 为 false 进入此分支, 就不会进入下面的 else if 进行扩容了</span></span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (!collide)</span><br><span class="line">                    collide = <span class="keyword">true</span>;</span><br><span class="line">                    <span class="comment">// 加锁</span></span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (cellsBusy == <span class="number">0</span> &amp;&amp; casCellsBusy()) &#123;</span><br><span class="line">                    <span class="comment">// 加锁成功, 扩容</span></span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 改变线程对应的 cell</span></span><br><span class="line">                h = advanceProbe(h);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 还没有 cells, 尝试给 cellsBusy 加锁</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (cellsBusy == <span class="number">0</span> &amp;&amp; cells == as &amp;&amp; casCellsBusy()) &#123;</span><br><span class="line">                <span class="comment">// 加锁成功, 初始化 cells, 最开始长度为 2, 并填充一个 cell</span></span><br><span class="line">                <span class="comment">// 成功则 break;</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 上两种情况失败, 尝试给 base 累加</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (casBase(v = base, ((fn == <span class="keyword">null</span>) ? v + x : fn.applyAsLong(v, x))))</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>longAccumulate</code> 流程图  </p>
+<p><img src="longAccumulate%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="longAccumulate流程图"></p>
+<p><img src="cell%E5%88%9B%E5%BB%BA.png" alt="cell创建"></p>
+<p>每个线程刚进入 <code>longAccumulate</code> 时，会尝试对应一个 <code>cell</code> 对象（找到一个坑位）</p>
+<p><img src="cascell.png" alt="cascell">  </p>
+<p>获取最终结果通过 <code>sum</code> 方法  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">sum</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Cell[] as = cells; Cell a;</span><br><span class="line">    <span class="keyword">long</span> sum = base;</span><br><span class="line">    <span class="keyword">if</span> (as != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; as.length; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((a = as[i]) != <span class="keyword">null</span>)</span><br><span class="line">                sum += a.value;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-Unsafe"><a href="#8-Unsafe" class="headerlink" title="8.Unsafe"></a>8.Unsafe</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><code>Unsafe</code> 对象提供了非常底层的，操作内存、线程的方法，<code>Unsafe</code> 对象不能直接调用，只能通过反射获得  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.atomic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sun.misc.Unsafe;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UnsafeAccessor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> Unsafe unsafe;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Field theUnsafe = Unsafe.class.getDeclaredField(<span class="string">"theUnsafe"</span>);</span><br><span class="line">            theUnsafe.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            unsafe = (Unsafe) theUnsafe.get(<span class="keyword">null</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException | IllegalAccessException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> Error(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> Unsafe <span class="title">getUnsafe</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> unsafe;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Unsafe-无锁操作"><a href="#Unsafe-无锁操作" class="headerlink" title="Unsafe 无锁操作"></a>Unsafe 无锁操作</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Employee</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">volatile</span> <span class="keyword">int</span> id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">volatile</span> String name;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.atomic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> jdk.internal.misc.Unsafe;</span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf</span>4j(topic = <span class="string">"c.UnsafeTest"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UnsafeTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NoSuchFieldException </span>&#123;</span><br><span class="line">        Unsafe unsafe = UnsafeAccessor.getUnsafe();</span><br><span class="line">        Field id = Employee.class.getDeclaredField(<span class="string">"id"</span>);</span><br><span class="line">        Field name = Employee.class.getDeclaredField(<span class="string">"name"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获得成员变量的偏移量</span></span><br><span class="line">        <span class="keyword">long</span> idOffset = UnsafeAccessor.unsafe.objectFieldOffset(id);</span><br><span class="line">        <span class="keyword">long</span> nameOffset = UnsafeAccessor.unsafe.objectFieldOffset(name);</span><br><span class="line"></span><br><span class="line">        Employee employee = <span class="keyword">new</span> Employee();</span><br><span class="line">        <span class="comment">// 使用 cas 方法替换成员变量的值</span></span><br><span class="line">        UnsafeAccessor.unsafe.compareAndExchangeInt(employee, idOffset, <span class="number">0</span>, <span class="number">20</span>); <span class="comment">// 返回 true</span></span><br><span class="line">        UnsafeAccessor.unsafe.compareAndExchangeObject(employee, nameOffset, <span class="keyword">null</span>, <span class="string">"张三"</span>); <span class="comment">// 返回 true</span></span><br><span class="line">        log.info(employee.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">11</span>:<span class="number">39</span>:<span class="number">58</span> [main] c.UnsafeTest - Employee(id=<span class="number">20</span>, name=张三)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在 jdk 11 中使用 jdk.internal.misc.Unsafe 会产生：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java.lang.UnsupportedOperationException: <span class="function">Reflective <span class="title">setAccessible</span><span class="params">(<span class="keyword">true</span>)</span> disabled；</span></span><br><span class="line"><span class="function">java.lang.IllegalAccessException: class io.netty.util.internal.PlatformDependent0$6 cannot access class jdk.internal.misc.<span class="title">Unsafe</span> <span class="params">(in <span class="keyword">module</span> java.base)</span> because <span class="keyword">module</span> java.base does not export jdk.internal.misc to unnamed <span class="keyword">module</span> @60438a68；</span></span><br></pre></td></tr></table></figure>
+
+<p>在 <code>vm</code> 参数中添加如下内容即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--add-opens java.base/jdk.internal.misc=ALL-UNNAMED --illegal-access=warn</span><br></pre></td></tr></table></figure>
+
+<p>使用自定义的 <code>AtomicData</code> 实现之前线程安全的原子整数 <code>Account</code> 实现  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.nolock.atomic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> jdk.internal.misc.Unsafe;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf</span>4j(topic = <span class="string">"c.AtomicData"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AtomicData</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">int</span> data;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> Unsafe unsafe;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> DATA_OFFSET;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        unsafe = UnsafeAccessor.getUnsafe();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// data 属性在 DataContainer 对象中的偏移量，用于 Unsafe 直接访问该属性</span></span><br><span class="line">            DATA_OFFSET = unsafe.objectFieldOffset(AtomicData.class.getDeclaredField(<span class="string">"data"</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> Error(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AtomicData</span><span class="params">(<span class="keyword">int</span> data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">decrease</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> oldValue;</span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="comment">// 获取共享变量旧值，可以在这一行加入断点，修改 data 调试来加深理解</span></span><br><span class="line">            oldValue = data;</span><br><span class="line">            <span class="comment">// cas 尝试修改 data 为 旧值 + amount，如果期间旧值被别的线程改了，返回 false</span></span><br><span class="line">            <span class="keyword">if</span> (unsafe.compareAndExchangeInt(<span class="keyword">this</span>, DATA_OFFSET, oldValue, oldValue - amount) == oldValue) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getData</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Account</code> 实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Account.demo(<span class="keyword">new</span> Account() &#123;</span><br><span class="line">    AtomicData atomicData = <span class="keyword">new</span> AtomicData(<span class="number">10000</span>);</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getBalance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> atomicData.getData();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">withdraw</span><span class="params">(Integer amount)</span> </span>&#123;</span><br><span class="line">        atomicData.decrease(amount);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>输出如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span> cost: <span class="number">178</span> ms</span><br></pre></td></tr></table></figure>	
+	</div>
+	
+	<div id="current-post-cover" data-scr="/img/post_cover/java_concurrency02.jpg"></div>
+
+	<!-- relate post, comment...-->
+	<div class="investment-container">
+		<div class="investment-header">
+			<div class="investment-title-1">
+				<div class="on">相关文章</div>
+				<div>评论</div>
+				<div>分享</div>
+			</div>
+			<div class="investment-title-2">	            
+				
+	<span>
+		<a href="javascript: window.scrollTo(0, 0);">返回顶部</a>
+		
+			<a href="/2024/03/02/hello-world/" title="Hello World" rel="prev">
+				&laquo;上一篇
+			</a>
+		
+		
+			<a href="/2022/07/02/Spring-Cloud-Apollo配置中心/" title="Spring Cloud Apollo配置中心" rel="next">
+				下一篇&raquo;
+			</a>
+			
+	</span>
+
+
+      		
+			</div>	
+		</div>
+		
+		<div class="investment-content">
+			<div class="investment-content-list">
+				
+
+<div class="relate-post">
+	
+		<ul>
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/17/Java并发编程（三）-共享模型之内存/" title="Java并发编程（三） 共享模型之内存">
+								Java并发编程（三） 共享模型之内存			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 17日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Java并发编程（三） 共享模型之内存1. Java 内存模型在Java SE 5 (JSR133)中定义的JMM（Java Memory Model）是为了确保当编写并发代码的时候能够提供Java定义和语义，使多线程程序不仅正确，而...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/17/Java并发编程（三）-共享模型之内存/" title="Java并发编程（三） 共享模型之内存">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency03.jpg" alt="Java并发编程（三） 共享模型之内存"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/05/31/Java并发编程（二）-共享模型之管程/" title="Java并发编程（二） 共享模型之管程">
+								Java并发编程（二） 共享模型之管程			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								五月 31日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Java并发编程（二） 共享模型之管程1. 线程安全问题
+两个线程对初始值为 0 的静态变量一个做自增，一个做自减，各做 5000 次，结果是 0 吗？  
+
+1234567891011121314151617181920212223...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/05/31/Java并发编程（二）-共享模型之管程/" title="Java并发编程（二） 共享模型之管程">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency02.jpg" alt="Java并发编程（二） 共享模型之管程"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/12/01/Java并发编程（一）-基础篇/" title="Java并发编程（一） 基础篇">
+								Java并发编程（一） 基础篇			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十二月 1日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Java并发编程（一） 基础篇1. 进程和线程1.1 什么是进程（Process）进程是操作系统进行资源分配的最小单位。因为现在的操作系统都是多任务的操作系统，多任务操作系统是允许多个进程在一个cpu上运行的。对于每一个进程而言，都有...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/12/01/Java并发编程（一）-基础篇/" title="Java并发编程（一） 基础篇">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency.jpg" alt="Java并发编程（一） 基础篇"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/11/26/Java-NIO/" title="Java NIO">
+								Java NIO			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十一月 26日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Java NIO1. Java NIO概述Java NIO(New IO Non Blocking IO)是从java1.4版本开始引入的一个新的IO API,可以替代标准的Java IO API。NIO与原来的IO有同样的作用和目的...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/11/26/Java-NIO/" title="Java NIO">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/NIO.jpg" alt="Java NIO"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/11/Java IO流/" title="Java IO流">
+								Java IO流			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 11日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Java IO流1. 什么是文件？从编程的角度看，文件就是保存数据的载体。可以是文字，图片，音频，视频…
+2. 文件流文件再程序中以流的形式来操作。流数据在文件（数据源）和程序（内存）之间经历的路径。输入流数据从文件（数据源）到程序（...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/11/Java IO流/" title="Java IO流">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/IO.jpg" alt="Java IO流"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2024/03/02/hello-world/" title="Hello World">
+								Hello World			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								三月 2日, 2024				
+							</p>
+							<p class="relate-post-content">
+								一切始于Hello World!
+
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2024/03/02/hello-world/" title="Hello World">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/HelloWorld.jpeg" alt="Hello World"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/07/02/Spring-Cloud-Apollo配置中心/" title="Spring Cloud Apollo配置中心">
+								Spring Cloud Apollo配置中心			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								七月 2日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud Apollo配置中心
+1. 背景随着程序功能的日益复杂，程序的配置日益增多：各种功能的开关、参数的配置、服务器的地址……
+对程序配置的期望值也越来越高：配置修改后实时生效，灰度发布，分环境、分集群管理配置，完...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/07/02/Spring-Cloud-Apollo配置中心/" title="Spring Cloud Apollo配置中心">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/spring-cloud-apollo.jpg" alt="Spring Cloud Apollo配置中心"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/29/Spring-Cloud-Consul配置中心/" title="Spring Cloud Consul配置中心">
+								Spring Cloud Consul配置中心			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 29日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud Consul配置中心之前学习过了Spring Cloud Config，它提供了配置中心的功能，但是需要配合git、svn或外部存储（例如各种数据库），而且需要配合Spring Cloud Bus实现配置刷新...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/29/Spring-Cloud-Consul配置中心/" title="Spring Cloud Consul配置中心">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/spring-cloud-consul.png" alt="Spring Cloud Consul配置中心"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/28/Spring-Cloud之Bus消息总线/" title="Spring Cloud之Bus消息总线">
+								Spring Cloud之Bus消息总线			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 28日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Bus消息总线1. 消息代理消息代理(Message Broker)是一种消息验证、传输、路由的架构模式。它在应用程序之间起到通信调度并最小化应用之间的依赖的作用，使得应用程序可以高效地解耦通信过程。消息代理...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/28/Spring-Cloud之Bus消息总线/" title="Spring Cloud之Bus消息总线">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/spring-cloud-bus.jpg" alt="Spring Cloud之Bus消息总线"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/25/Spring-Cloud之Config配置中心/" title="Spring Cloud之Config配置中心">
+								Spring Cloud之Config配置中心			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 25日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Config配置中心1. 服务配置现状随着微服务系统的不断迭代，整个我服务就成为了一个网状结构，这个时候就要考虑整个微服务系统的扩展性、伸缩性、耦合性等等。其中一个重要的环节就是配置管理的问题。
+2. 常规配...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/25/Spring-Cloud之Config配置中心/" title="Spring Cloud之Config配置中心">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/spring-cloud-config.jpg" alt="Spring Cloud之Config配置中心"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+		</ul>
+	
+</div>	
+			</div>
+			<div class="investment-content-list">
+				<div class="layout-comment">
+
+	
+
+		
+
+			<!-- gitalk comment -->
+			<!-- show gitalk comment -->
+<div id="gitalk-container"></div>
+
+<!-- gitalk`s css & js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<link rel="stylesheet" href="/css/comment.css">
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+	//Thanks O-R
+	//https://github.com/gitalk/gitalk/issues/102#issuecomment-382970552
+	//去除尾部匹配正则数组的字符串  
+	//Remove redundant characters
+	String.prototype.trimEnd = function(regStr) {
+		var result = this;
+		if(regStr == undefined || regStr == null || regStr == "") {
+			return result;
+		}
+		var array = regStr.split(',');
+
+		if(array.length > 0) {
+
+			var c = array.shift();
+			var str = this;
+			var i = str.length;
+			var rg = new RegExp(c);
+			var matchArr = str.match(rg);
+
+			if(matchArr != undefined && matchArr != null && matchArr.length > 0) {
+				var matchStr = matchArr[0].replace(/\\/g, "\\\\").replace(/\*/g, "\\*")
+					.replace(/\+/g, "\\+").replace(/\|/g, "\\|")
+					.replace(/\{/g, "\\{").replace(/\}/g, "\\}")
+					.replace(/\(/g, "\\(").replace(/\)/g, "\\)")
+					.replace(/\^/g, "\\^").replace(/\$/g, "\\$")
+					.replace(/\[/g, "\\[").replace(/\]/g, "\\]")
+					.replace(/\?/g, "\\?").replace(/\,/g, "\\,")
+					.replace(/\./g, "\\.").replace(/\&/g, "\\&");
+				matchStr = matchStr + '$';
+				result = str.replace(new RegExp(matchStr), "");
+			}
+
+			if(array.length > 0) {
+				return result.trimEnd(array.join())
+			} else {
+				return result;
+			}
+		}
+	};
+
+	//Create gitalk
+	var gitalk = new Gitalk({
+		clientID: '36a5ea1eb92d0cdb0a6b',
+		clientSecret: '6e1940c0dcd00e3b9216f008368995a1988bd3fd',
+		//id: window.location.pathname,
+		//id: decodeURI(window.location.pathname),
+		//id: (window.location.pathname).split("/").pop().substring(0, 49),
+		id: decodeURI( md5( location.href.trimEnd('#.*$,\\?.*$,index.html$') ) ),
+		repo: 'Blog-Comment-Repo',
+		owner: '10veU',
+		admin: '10veU',
+		distractionFreeMode: 'true',
+	})
+	gitalk.render('gitalk-container');
+</script>
+
+		
+		
+	
+
+</div>
+			</div>
+			<div class="investment-content-list">
+				<div class="layout-share">
+	
+	
+
+		
+			
+			<!-- socialShare share -->
+			<div class="social-share"></div>
+
+<!--  css & js -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+			
+		
+		
+	
+</div>
+
+
+			</div>
+		</div>	
+	</div>
+	</div>
+</div>
+
+
+
+	<!-- leancloud -->
+	<!--
+	时间：2018-11-27
+	描述：
+		文章访问量：visitors
+		文章喜欢量：likes	
+		文章排行榜：topNPost
+		其他得说明：
+			01-Cookie相关的函数 
+				https://blog.csdn.net/somehow1002/article/details/78511541（Author：somehow1002）
+			02-visitors相关的函数 
+				https://blog.csdn.net/u013553529/article/details/63357382（Author：爱博客大伯）
+				https://notes.doublemine.me/2015-10-21-为NexT主题添加文章阅读量统计功能.html（Author：夏末）
+			03-topNPost相关的函数
+				https://hoxis.github.io/hexo-next-read-rank.html（Author：hoxis）
+			04-likes相关的函数，
+				参考了01 & 02进行简单的设计与实现
+-->
+
+
+
+	<script>
+		var appid = 'xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI',
+            appkey = 'Tkq82uGKwAFYHPeTF3Q6MVDp';	  
+        AnnieLeancloud(appid, appkey);         
+	</script>
+    
+
+	
+
+
+<!-- show math formula -->
+
+
+
+	 
+	<script src="/plugin/clipboard/clipboard.js"></script>
+	<script>
+		// Copy code !
+	    function codePreprocessing() {
+	        $("#article-content .highlight").each(function() {
+
+	            $(this).wrap('<div id="post-code"></div>');
+
+	        })
+
+	        $("#article-content #post-code").each(function() {
+
+	            $(this).prepend('<nav class="copy-nav"><span><i class="code-language"></i></span></nav>');
+
+	        })
+
+	        $("#article-content .copy-nav").each(function() {
+	            var temp = $(this).next().attr('class'),
+	                language = ((temp.length > 9) && (temp != null)) ? temp.substr(10) : "none"; //why 9? Need to check language?
+
+	            $(this).find('.code-language').text(language);
+
+	            $(this).append('<span class="copy-btn"><i class="fa fa-copy" aria-hidden="true"></i></span>');
+
+	        });
+	    }
+
+		function codeCopy() {
+		    $('#article-content #post-code').each(function(i) {
+		        var codeCopyId = 'codeCopy-' + i;
+
+		        var codeNode = $(this).find('.code'),
+		            copyButton = $(this).find('.copy-btn');
+
+		        codeNode.attr('id', codeCopyId);
+		        copyButton.attr('data-clipboard-target-id', codeCopyId);
+		    })
+
+		    
+			var clipboard = new ClipboardJS('.copy-btn', {
+					target: function(trigger) {
+						return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+					}
+		      	});
+
+			//pure js
+			function showTooltip(elem, msg) {		   
+				elem.setAttribute('aria-label', msg);
+				elem.setAttribute('class', 'copy-btn copy-status');
+				setTimeout(function() {
+					elem.setAttribute('class', 'copy-btn');
+				}, 2000);
+			}
+
+			clipboard.on('success', function(e) {
+			    e.clearSelection();
+			    console.info('Action:', e.action);		   
+			    console.info('Trigger:', e.trigger);
+			    showTooltip(e.trigger, 'Copied!');
+			    
+			});
+			clipboard.on('error', function(e) {
+			    console.error('Action:', e.action);
+			    console.error('Trigger:', e.trigger);
+			});
+		
+
+		}
+
+		if ($('.layout-post').length) {
+		    codePreprocessing();
+		    codeCopy();
+		} 
+	</script>
+
+
+
+
+
+<link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+<script src="/plugin/fancybox/jquery.fancybox.js"></script>
+
+<script type="text/javascript">
+	var titleID = $('.article-title a'),
+		imageID = $('.article-content img'),
+		videoID = $('.article-content video');
+
+	var postTitle = titleID.text() ? titleID.text() : "No post title!";
+
+	imageID.each(function() {
+		var imgPath = $(this).attr('src'),
+			imgTitle = $(this).attr('alt') ? $(this).attr('alt') : "No image description!";
+
+		//给每个匹配的<img>元素打包, 即添加父元素<a>
+		$(this).wrap('<a data-fancybox="gallery" data-caption=" 《 ' + postTitle + ' 》 ' + imgTitle + ' "  href=" ' + imgPath + ' "> </a>');
+	});
+
+	videoID.each(function() {
+		var videoPath = $(this).attr('src');
+
+		//给每个匹配的<img>元素打包, 即添加父元素<a>
+		$(this).wrap('<a data-fancybox href=" ' + videoPath + ' "> </a>');
+	});
+	//TODO：支持html5 video
+
+	if($('#layout-post').length) {
+		$('[data-fancybox="gallery"]').fancybox({
+			loop: true,
+			buttons: [
+				"zoom",
+				"share",
+				"slideShow",
+				"fullScreen",
+				//"download",
+				"thumbs",
+				"close"
+			],
+			protect: false
+		});
+	}
+</script>
+		</main>
+
+		<!--footer-->
+		<footer>
+	<div class="social">
+		<ul>
+	
+		<li>
+			<a href="https://github.com/10veU" target="_blank">
+				<i class="fa fa-github"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank">
+				<i class="fa fa-weibo"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/img/wechat.jpg" target="_blank">
+				<i class="fa fa-wechat"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com" target="_blank">
+				<i class="fa fa-qq"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="mailto:xiaojie_wangxj@163.com" target="_blank">
+				<i class="fa fa-envelope"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<i class="fa fa-rss"></i>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+	<div class="copyright">
+		<p>
+			 
+				&copy;2019 - 2024, content by XiaoJie Wang. All Rights Reserved.
+			
+			
+			
+
+	<!-- busuanzi -->
+	<!-- busuanzi -->
+
+		
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+
+		<span id="busuanzi_container_page_pv">
+	  		本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+		</span>
+
+	
+
+
+
+
+		</p>
+		<p>
+			<a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> Theme <a href="https://github.com/Sariay/hexo-theme-Annie" title="Annie" target="_blank" rel="noopener">Annie</a> by Sariay.
+			<a href="javascript:zh_tran('s');" class="zh_click" id="zh_click_s">简体</a> 
+			<a href="javascript:zh_tran('t');" class="zh_click" id="zh_click_t">繁體</a>				
+		</p>
+	</div>	
+</footer>
+		
+	<!-- set '1' to show motto in all pages! -->
+
+	<script src="/plugin/motto/motto.js"></script>
+	
+	<script type="text/javascript">
+		$(".motto").html( getMingYanContent() );
+	</script>	
+
+
+
+
+	<!--
+	时间：2018-10-3
+	描述：
+		插件名称：hexo-generator-search-zip
+		插件来源: https://github.com/SuperKieran/hexo-generator-search-zip
+		代码参考：https://github.com/SuperKieran/TKL/blob/master/layout/_partial/search.ejs(Include: js & css)	
+-->
+<div class="popup search-popup local-search-popup" >
+	<div class="local-search-container">
+		<span class="popup-btn-close">
+      		ESC
+   		</span>
+		<div class="local-search-header">
+			<div class="input-prompt">				
+			</div>
+			<input autocomplete="off" placeholder="Search..." type="text" id="local-search-input">
+		</div>
+		<div class="local-search-body">
+			<div id="local-search-output"></div>
+		</div>
+		<div class="local-search-footer">
+			<div class="topN-post">				
+				
+
+   
+	<div id="topN">
+		<div class="topN-title" data-title= "热门文章"></div> 
+	</div>
+	
+    <script>
+        var appid = 'xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI',
+            appkey = 'Tkq82uGKwAFYHPeTF3Q6MVDp',
+            limitCount = 10;
+        if( $('#topN').length ){
+            AV.initialize(appid, appkey);
+            var Counter = AV.Object.extend("Counter");  
+            topNPost(Counter, limitCount);
+        }
+    </script>
+   
+								
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="/plugin/search/ziploader.js"></script>
+<script src="/plugin/search/search.js"></script>
+
+<script type="text/javascript">
+	var search_path = 'search.json',
+		zip_Path = '/search.zip',
+		version_Path = '/searchVersion.txt',
+		input_Trigger = 'auto',
+		top_N = '2';
+
+	themeLocalSearch({
+		search_path, 
+		zip_Path, 
+		version_Path, 
+		input_Trigger, 
+		top_N
+	});
+</script>
+
+
+<!-- love effect -->
+
+<!-- firework effect -->
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+	<script src="/plugin/love/fireworks.js"></script>
+
+<!--daovoice-->
+
+	<script src="/plugin/daovoice/daovoice.js"></script>
+
+<!-- back to top -->
+
+	
+	<div id="totop">
+  		<a href="javascript:;"  name="TOTOP" class="fa fa-arrow-up" ></a>
+	</div>
+
+
+
+<!-- site analysis -->
+
+
+	<!-- site-analysis -->
+	
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+		var hm = document.createElement("script");
+		hm.src = "//hm.baidu.com/hm.js?bc5394d96eab6c50c0a37cb03555fc96";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+	
+	
+	
+	
+ 
+
+<script src="/plugin/vibrant/vibrant.js"></script>
+<script src="/plugin/chinese/chinese.js"></script>
+<script src="/plugin/imgLazyLoader/yall.min.js"></script>
+<script src="/plugin/imgResize/jquery.resizeimagetoparent.min.js"></script>
+<script src="/plugin/nicescroll/jquery.nicescroll.js"></script>
+<script src="/js/resizediv.js"></script>
+<script src="/js/main.js"></script>
+	</body>	
+</html>
