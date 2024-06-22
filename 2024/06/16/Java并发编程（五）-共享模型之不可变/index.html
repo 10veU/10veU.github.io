@@ -1,0 +1,1211 @@
+<!--
+	作者：Sariay
+	时间：2018-09-25
+	描述：There may be a bug, but don't worry, QiLing(器灵) says that it can work normally!
+-->
+<!DOCTYPE html>
+<html class="html-loading">
+		
+
+<head><meta name="generator" content="Hexo 3.9.0">
+	<meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <title>
+    
+      Java并发编程（五）-共享模型之不可变 | null
+    
+  </title>
+  <meta name="author" content="XiaoJie Wang">
+  <meta name="keywords" content>
+  <meta name="description" content>
+	<!-- favicon -->
+  <link rel="shortcut icon" href="/img/Mr-Wang-facvion.ico">
+
+  <!-- css -->
+  <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/Annie.css">
+  
+  <!-- jquery -->
+	<script src="/js/jquery.min.js"></script>
+
+  <!-- leancloud -->
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+<script src="/js/leancloud.js"></script>
+</head>
+	<body>
+		<!-- Preloader -->
+
+	<div id="preloader">
+		<div class="pre-container">
+			
+				<div class="spinner">
+					<div class="double-bounce1"></div>
+					<div class="double-bounce2"></div>
+				</div>
+						
+		</div>
+	</div>
+
+
+<!-- header -->
+<header class="fixbackground" data-img-mode="random" data-normal-src="/" data-random-max="110" data-random-src="https://10veu.github.io/Random-img/">
+	<div class="mask">
+		<!-- Logo and navigation -->
+		<div class="h-header">
+			<div id="logo">
+				<a href="/">
+					
+						
+					
+				</a>
+			</div>
+			
+			<div id="navigation-show">
+				<ul>
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home">主页</a>
+		</li>
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive">归档</a>
+		</li>
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories">分类</a>
+		</li>
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags">标签</a>
+		</li>
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about">关于</a>
+		</li>
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery">相册</a>
+		</li>
+	
+
+	
+		<li class="menu-search">
+			<a href="javascript:;" class="popup-trigger">搜索</a>
+		</li>
+	
+</ul>
+			</div>				
+		</div>
+
+		<!-- motto -->
+		<div class="h-body">	
+			
+				<p class="motto"></p>
+			
+		</div>
+		
+		<!-- others: such as time... -->			
+		<div class="h-footer">
+			<a href="javascript:;" id="read-more"><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+			</a>
+
+			
+				<!-- 
+	This is only a demo, please go to "https://time.is" to set your city time! 
+-->
+<style type="text/css">
+	.header-date {
+		font-size: 1.6rem;
+		color: #fff;
+		position: absolute;
+		bottom: 5px;
+		right: 1rem;
+		writing-mode: tb-rl;
+	}	
+	
+	.header-date a {
+		border-bottom: none;
+	}
+
+	@media only screen and (max-width: 768 ) {
+		.header-date {
+			font-size: 1rem;
+		}			
+	}
+</style>
+<div class="header-date">
+	<a href="https://time.is/Beijing" id="time_is_link" rel="nofollow" ></a>
+	<span id="Beijing_z43d"></span>
+</div>
+<script src="//widget.time.is/zh.js"></script>
+<script>
+	time_is_widget.init({
+		Beijing_z43d:{
+			template:"DATE", 
+			date_format:"year年 monthname dnum日"
+		}
+	});
+</script>
+			
+		</div>
+	</div>
+</header>
+
+<div id="navigation-hide">
+	<!-- Progress bar -->
+	<div id="progress-bar"></div>
+
+	<!-- Progress percent -->
+	<div id="progress-percentage"><h1>0.0%</h1></div>
+
+	<div class="toc-switch"><span class="switch-button">目录</span></div>
+
+	<!-- Page title -->
+	<p>
+		
+			当前文章&nbsp;:&nbsp;《Java并发编程（五）-共享模型之不可变》
+		
+	</p>
+
+	<!-- Nav trigger for navigation-H-->
+	<a class="nav-trigger"><span></span></a>
+</div>
+
+<!-- Navigation in div(id="navigation-H") -->
+<nav class="nav-container" id="cd-nav">
+	<div class="nav-header">
+		<h3>Navigation</h3>
+		<a href="javascript:;" class="nav-close"></a>
+	</div>
+	<div class="nav-body">
+		<ul>
+	
+		<li class="menu-home">
+			<a href="/" class="menu-item-home">主页</a>
+		</li>
+	
+		<li class="menu-archive">
+			<a href="/archives" class="menu-item-archive">归档</a>
+		</li>
+	
+		<li class="menu-categories">
+			<a href="/categories" class="menu-item-categories">分类</a>
+		</li>
+	
+		<li class="menu-tags">
+			<a href="/tags" class="menu-item-tags">标签</a>
+		</li>
+	
+		<li class="menu-about">
+			<a href="/about" class="menu-item-about">关于</a>
+		</li>
+	
+		<li class="menu-gallery">
+			<a href="/gallery" class="menu-item-gallery">相册</a>
+		</li>
+	
+
+	
+		<li class="menu-search">
+			<a href="javascript:;" class="popup-trigger">搜索</a>
+		</li>
+	
+</ul>
+	</div>
+	<div class="nav-footer">
+		<ul>
+	
+		<li>
+			<a href="https://github.com/10veU" target="_blank">
+				<i class="fa fa-github"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank">
+				<i class="fa fa-weibo"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/img/wechat.jpg" target="_blank">
+				<i class="fa fa-wechat"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com" target="_blank">
+				<i class="fa fa-qq"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="mailto:xiaojie_wangxj@163.com" target="_blank">
+				<i class="fa fa-envelope"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<i class="fa fa-rss"></i>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+</nav>
+			
+		<!--main-->
+		<main>
+			<!--
+	时间：2018-11-17
+	描述：
+		插件名称：katelog.min.js
+		插件作者：KELEN
+		插件来源: https://github.com/KELEN/katelog
+-->
+
+	
+		<div class="layout-toc">
+			<div id="layout-toc">
+				<div class="k-catelog-list" id="catelog-list" data-title="文章目录"></div>
+			</div>
+		</div>
+
+		
+		<script src="/plugin/toc/katelog.min.js"></script>
+
+		
+	 
+
+<div class="layout-post">
+	<div id="layout-post">
+	<div class="article-title">
+		<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+		
+	<a href="/2024/06/16/Java并发编程（五）-共享模型之不可变/" itemprop="url">
+		Java并发编程（五）-共享模型之不可变
+	</a>
+
+	</div>
+
+	<div class="article-meta">
+		<span>
+			<i class="fa fa-calendar"></i>
+			
+
+
+	发布于
+
+	<a href="/2024/06/16/Java并发编程（五）-共享模型之不可变/" itemprop="url">
+		<time datetime="2024-06-16T17:23:18.000Z" itemprop="datePublished">
+	  		2024-06-16
+	  </time>
+	</a>
+	&nbsp;
+
+
+
+
+
+			
+
+
+
+
+	更新于
+
+	<a href="/2024/06/16/Java并发编程（五）-共享模型之不可变/" itemprop="url">
+		<time datetime="2024-06-16T17:23:18.000Z" itemprop="dateUpdated">
+	  		2024-06-22
+	  </time>
+	</a> 
+
+
+
+		</span>
+		<span>
+			<i class="fa fa-tags"></i>
+			
+	
+		<a href="/tags/Java/" class=" ">
+			Java
+		</a>
+	
+		<a href="/tags/多线程/" class=" ">
+			多线程
+		</a>
+	
+		<a href="/tags/并发编程/" class=" ">
+			并发编程
+		</a>
+	
+		
+		</span>
+		
+		
+
+	
+    <span class="leancloud_visitors" id="/2024/06/16/Java并发编程（五）-共享模型之不可变/_visitors" data-url="/2024/06/16/Java并发编程（五）-共享模型之不可变/" data-title="Java并发编程（五）-共享模型之不可变">
+       	<i class="fa fa-eye"></i>
+       	热度
+        <i class="leancloud_visitors_count" id="leancloud_visitors_count">0</i>
+    </span>
+    
+
+
+
+	
+    <span class="leancloud_likes" id="/2024/06/16/Java并发编程（五）-共享模型之不可变/_likes" data-url="/2024/06/16/Java并发编程（五）-共享模型之不可变/" data-title="Java并发编程（五）-共享模型之不可变" rel="unlike">
+        <i class="fa fa-heart"></i>
+        喜欢
+        <i class="leancloud_likes_count" id="leancloud_likes_count">0</i>
+    </span>
+
+	</div>
+
+	<div class="article-content" id="article-content">
+		<p>本章内容</p>
+<ul>
+<li>不可变类使用</li>
+<li>不可变类设计</li>
+<li>无状态类设计<h2 id="1-日期转换的问题"><a href="#1-日期转换的问题" class="headerlink" title="1. 日期转换的问题"></a>1. 日期转换的问题</h2><h3 id="问题提出"><a href="#问题提出" class="headerlink" title="问题提出"></a>问题提出</h3>下面的代码在运行时，由于 <code>SimpleDateFormat</code> 不是线程安全的。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">SimpleDateFormat sdf = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line"> <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line"> <span class="keyword">try</span> &#123;</span><br><span class="line"> log.debug(<span class="string">"&#123;&#125;"</span>, sdf.parse(<span class="string">"1951-04-21"</span>));</span><br><span class="line"> &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line"> log.error(<span class="string">"&#123;&#125;"</span>, e);</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>有很大几率出现 <code>java.lang.NumberFormatException</code> 或者出现不正确的日期解析结果，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">20:40:47 [Thread-4] c.DateFormatTest - &#123;&#125;</span><br><span class="line">java.lang.NumberFormatException: For input string: &quot;&quot;</span><br><span class="line">	at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)</span><br><span class="line">	at java.base/java.lang.Long.parseLong(Long.java:702)</span><br><span class="line">	at java.base/java.lang.Long.parseLong(Long.java:817)</span><br><span class="line">	at java.base/java.text.DigitList.getLong(DigitList.java:195)</span><br><span class="line">	at java.base/java.text.DecimalFormat.parse(DecimalFormat.java:2121)</span><br><span class="line">	at java.base/java.text.SimpleDateFormat.subParse(SimpleDateFormat.java:1933)</span><br><span class="line">	at java.base/java.text.SimpleDateFormat.parse(SimpleDateFormat.java:1541)</span><br><span class="line">	at java.base/java.text.DateFormat.parse(DateFormat.java:393)</span><br><span class="line">	at com.java.demo.immutable.DateFormatTest.lambda$main$0(DateFormatTest.java:15)</span><br><span class="line">	at java.base/java.lang.Thread.run(Thread.java:834)</span><br><span class="line">20:40:47 [Thread-7] c.DateFormatTest - &#123;&#125;</span><br><span class="line">java.lang.NumberFormatException: multiple points</span><br><span class="line">	at java.base/jdk.internal.math.FloatingDecimal.readJavaFormatString(FloatingDecimal.java:1890)</span><br><span class="line">	at java.base/jdk.internal.math.FloatingDecimal.parseDouble(FloatingDecimal.java:110)</span><br><span class="line">	at java.base/java.lang.Double.parseDouble(Double.java:543)</span><br><span class="line">	at java.base/java.text.DigitList.getDouble(DigitList.java:169)</span><br><span class="line">	at java.base/java.text.DecimalFormat.parse(DecimalFormat.java:2126)</span><br><span class="line">	at java.base/java.text.SimpleDateFormat.subParse(SimpleDateFormat.java:1933)</span><br><span class="line">	at java.base/java.text.SimpleDateFormat.parse(SimpleDateFormat.java:1541)</span><br><span class="line">	at java.base/java.text.DateFormat.parse(DateFormat.java:393)</span><br><span class="line">	at com.java.demo.immutable.DateFormatTest.lambda$main$0(DateFormatTest.java:15)</span><br><span class="line">	at java.base/java.lang.Thread.run(Thread.java:834)</span><br><span class="line">20:40:47 [Thread-6] c.DateFormatTest - &#123;&#125;</span><br><span class="line">java.lang.NumberFormatException: multiple points</span><br><span class="line">	at java.base/jdk.internal.math.FloatingDecimal.readJavaFormatString(FloatingDecimal.java:1890)</span><br><span class="line">	at java.base/jdk.internal.math.FloatingDecimal.parseDouble(FloatingDecimal.java:110)</span><br><span class="line">	at java.base/java.lang.Double.parseDouble(Double.java:543)</span><br><span class="line">	at java.base/java.text.DigitList.getDouble(DigitList.java:169)</span><br><span class="line">	at java.base/java.text.DecimalFormat.parse(DecimalFormat.java:2126)</span><br><span class="line">	at java.base/java.text.SimpleDateFormat.subParse(SimpleDateFormat.java:1933)</span><br><span class="line">	at java.base/java.text.SimpleDateFormat.parse(SimpleDateFormat.java:1541)</span><br><span class="line">	at java.base/java.text.DateFormat.parse(DateFormat.java:393)</span><br><span class="line">	at com.java.demo.immutable.DateFormatTest.lambda$main$0(DateFormatTest.java:15)</span><br><span class="line">	at java.base/java.lang.Thread.run(Thread.java:834)</span><br><span class="line">20:40:47 [Thread-0] c.DateFormatTest - Sat Apr 21 00:00:00 CST 1951</span><br><span class="line">20:40:47 [Thread-3] c.DateFormatTest - Sat Jan 19 00:00:00 CST 1957</span><br><span class="line">20:40:47 [Thread-1] c.DateFormatTest - Sat Apr 21 00:00:00 CST 1951</span><br><span class="line">20:40:47 [Thread-9] c.DateFormatTest - Mon Apr 21 00:00:00 CST 21</span><br><span class="line">20:40:47 [Thread-5] c.DateFormatTest - Sat Apr 21 00:00:00 CST 1951</span><br><span class="line">20:40:47 [Thread-8] c.DateFormatTest - Sat Apr 21 00:00:00 CST 1951</span><br><span class="line">20:40:47 [Thread-2] c.DateFormatTest - Mon Apr 21 00:00:00 CST 2121</span><br></pre></td></tr></table></figure>
+
+<h3 id="问题解决-同步锁"><a href="#问题解决-同步锁" class="headerlink" title="问题解决-同步锁"></a>问题解决-同步锁</h3><p>虽能解决问题，但带来的是性能上的损失，并不算很好：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">SimpleDateFormat sdf = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">50</span>; i++) &#123;</span><br><span class="line"> <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line"> <span class="keyword">synchronized</span> (sdf) &#123;</span><br><span class="line"> <span class="keyword">try</span> &#123;</span><br><span class="line"> log.debug(<span class="string">"&#123;&#125;"</span>, sdf.parse(<span class="string">"1951-04-21"</span>));</span><br><span class="line"> &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line"> log.error(<span class="string">"&#123;&#125;"</span>, e);</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="问题解决-不可变"><a href="#问题解决-不可变" class="headerlink" title="问题解决-不可变"></a>问题解决-不可变</h3><p>如果一个对象在不能够修改其内部状态（属性），那么它就是线程安全的，因为不存在并发修改啊！这样的对象在<br><code>Java</code> 中有很多，例如在 <code>Java 8</code> 后，提供了一个新的日期格式化类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DateTimeFormatter dtf = DateTimeFormatter.ofPattern(<span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line"> <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line"> LocalDate date = dtf.parse(<span class="string">"2018-10-01"</span>, LocalDate::from);</span><br><span class="line"> log.debug(<span class="string">"&#123;&#125;"</span>, date);</span><br><span class="line"> &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看 <code>DateTimeFormatter</code> 的文档：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@implSpec</span><br><span class="line">This class is immutable and thread-safe.</span><br><span class="line"></span><br><span class="line">@since 1.8</span><br></pre></td></tr></table></figure>
+
+<p>不可变对象，实际是另一种避免竞争的方式。</p>
+<h2 id="2-不可变设计"><a href="#2-不可变设计" class="headerlink" title="2. 不可变设计"></a>2. 不可变设计</h2><p>另外一个 String 类也是不可变类，以他为例，说明一下不可变设计的要素</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">String</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span>, <span class="title">Comparable</span>&lt;<span class="title">String</span>&gt;, <span class="title">CharSequence</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The value is used for character storage.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@implNote</span> This field is trusted by the VM, and is a subject to</span></span><br><span class="line"><span class="comment">     * constant folding if String instance is constant. Overwriting this</span></span><br><span class="line"><span class="comment">     * field after construction will cause problems.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * Additionally, it is marked with &#123;<span class="doctag">@link</span> Stable&#125; to trust the contents</span></span><br><span class="line"><span class="comment">     * of the array. No other facility in JDK provides this functionality (yet).</span></span><br><span class="line"><span class="comment">     * &#123;<span class="doctag">@link</span> Stable&#125; is safe here, because value is never null.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Stable</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">byte</span>[] value;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The identifier of the encoding used to encode the bytes in</span></span><br><span class="line"><span class="comment">     * &#123;<span class="doctag">@code</span> value&#125;. The supported values in this implementation are</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * LATIN1</span></span><br><span class="line"><span class="comment">     * UTF16</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@implNote</span> This field is trusted by the VM, and is a subject to</span></span><br><span class="line"><span class="comment">     * constant folding if String instance is constant. Overwriting this</span></span><br><span class="line"><span class="comment">     * field after construction will cause problems.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">byte</span> coder;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Cache the hash code for the string */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> hash; </span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-final-的使用"><a href="#2-1-final-的使用" class="headerlink" title="2.1 final 的使用"></a>2.1 final 的使用</h3><p>该类中所有的属性都是 final 的</p>
+<ul>
+<li>属性用 final 修饰保证了该属性是只读的，不能修改</li>
+<li>类用 final 修饰保证了该类中的方法不能被覆盖，防止子类无意间破坏不可变性</li>
+</ul>
+<h3 id="2-2-保护性拷贝"><a href="#2-2-保护性拷贝" class="headerlink" title="2.2 保护性拷贝"></a>2.2 保护性拷贝</h3><p>使用字符串时，也有一些修改相关的方法，比如 substring() 等，下面就是 substring() 的实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Returns a string that is a substring of this string. The</span></span><br><span class="line"><span class="comment">     * substring begins with the character at the specified index and</span></span><br><span class="line"><span class="comment">     * extends to the end of this string. &lt;p&gt;</span></span><br><span class="line"><span class="comment">     * Examples:</span></span><br><span class="line"><span class="comment">     * &lt;blockquote&gt;&lt;pre&gt;</span></span><br><span class="line"><span class="comment">     * "unhappy".substring(2) returns "happy"</span></span><br><span class="line"><span class="comment">     * "Harbison".substring(3) returns "bison"</span></span><br><span class="line"><span class="comment">     * "emptiness".substring(9) returns "" (an empty string)</span></span><br><span class="line"><span class="comment">     * &lt;/pre&gt;&lt;/blockquote&gt;</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>      beginIndex   the beginning index, inclusive.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span>     the specified substring.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@exception</span>  IndexOutOfBoundsException  if</span></span><br><span class="line"><span class="comment">     *             &#123;<span class="doctag">@code</span> beginIndex&#125; is negative or larger than the</span></span><br><span class="line"><span class="comment">     *             length of this &#123;<span class="doctag">@code</span> String&#125; object.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">substring</span><span class="params">(<span class="keyword">int</span> beginIndex)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (beginIndex &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> StringIndexOutOfBoundsException(beginIndex);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> subLen = length() - beginIndex;</span><br><span class="line">        <span class="keyword">if</span> (subLen &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> StringIndexOutOfBoundsException(subLen);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (beginIndex == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> isLatin1() ? StringLatin1.newString(value, beginIndex, subLen)</span><br><span class="line">                          : StringUTF16.newString(value, beginIndex, subLen);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现其内部就是调用 <code>String</code> 的构造方法创建一个新字符串，再看看这个构造，是否对 <code>final char[] value</code> 做出了修改：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">	* Package private constructor. Trailing Void argument is there for</span></span><br><span class="line"><span class="comment">	* disambiguating it against other (public) constructors.</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">String(AbstractStringBuilder asb, Void sig) &#123;</span><br><span class="line">	<span class="keyword">byte</span>[] val = asb.getValue();</span><br><span class="line">	<span class="keyword">int</span> length = asb.length();</span><br><span class="line">	<span class="keyword">if</span> (asb.isLatin1()) &#123;</span><br><span class="line">		<span class="keyword">this</span>.coder = LATIN1;</span><br><span class="line">		<span class="keyword">this</span>.value = Arrays.copyOfRange(val, <span class="number">0</span>, length);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (COMPACT_STRINGS) &#123;</span><br><span class="line">			<span class="keyword">byte</span>[] buf = StringUTF16.compress(val, <span class="number">0</span>, length);</span><br><span class="line">			<span class="keyword">if</span> (buf != <span class="keyword">null</span>) &#123;</span><br><span class="line">				<span class="keyword">this</span>.coder = LATIN1;</span><br><span class="line">				<span class="keyword">this</span>.value = buf;</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">this</span>.coder = UTF16;</span><br><span class="line">		<span class="keyword">this</span>.value = Arrays.copyOfRange(val, <span class="number">0</span>, length &lt;&lt; <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果发现也没有，构造新字符串对象时，会生成新的 <code>char[] value</code>，对内容进行复制 。这种通过创建副本对象来避<br>免共享的手段称之为<strong>保护性拷贝（defensive copy）</strong></p>
+<h2 id="3-享元模式"><a href="#3-享元模式" class="headerlink" title="3. 享元模式"></a>3. 享元模式</h2><h3 id="3-1-简介"><a href="#3-1-简介" class="headerlink" title="3.1 简介"></a>3.1 简介</h3><p>定义 英文名称：<code>Flyweight pattern</code>. 当需要重用数量有限的同一类对象时</p>
+<blockquote>
+<p>wikipedia： A flyweight is an object that minimizes memory usage by sharing as much data aspossible with other similar objects  </p>
+</blockquote>
+<p>出自 <code>Gang of Four</code> design patterns<br>归类 Structual patterns  </p>
+<h3 id="3-2-体现"><a href="#3-2-体现" class="headerlink" title="3.2 体现"></a>3.2 体现</h3><h3 id="3-2-1-包装类"><a href="#3-2-1-包装类" class="headerlink" title="3.2.1 包装类"></a>3.2.1 包装类</h3><p>在 <code>JDK</code> 中 <code>Boolean</code>，<code>Byte</code>，<code>Short</code>，<code>Integer</code>，<code>Long</code>，<code>Character</code> 等包装类提供了 <code>valueOf</code> 方法，例如 <code>Long</code> 的<br>valueOf 会缓存 <code>-128~127</code> 之间的 <code>Long</code> 对象，在这个范围之间会重用对象，大于这个范围，才会新建 <code>Long</code> 对<br>象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Long <span class="title">valueOf</span><span class="params">(<span class="keyword">long</span> l)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">final</span> <span class="keyword">int</span> offset = <span class="number">128</span>;</span><br><span class="line"> <span class="keyword">if</span> (l &gt;= -<span class="number">128</span> &amp;&amp; l &lt;= <span class="number">127</span>) &#123; <span class="comment">// will cache</span></span><br><span class="line"> <span class="keyword">return</span> LongCache.cache[(<span class="keyword">int</span>)l + offset];</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">new</span> Long(l);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：<br>Byte, Short, Long 缓存的范围都是 -128-127<br>Character 缓存的范围是 0-127<br>Integer的默认范围是 -128-127<br>最小值不能变<br>但最大值可以通过调整虚拟机参数 <code>-Djava.lang.Integer.IntegerCache.high</code> 来改变<br>Boolean 缓存了 TRUE 和 FALSE</p>
+</blockquote>
+<h4 id="3-2-2-String-串池"><a href="#3-2-2-String-串池" class="headerlink" title="3.2.2 String 串池"></a>3.2.2 String 串池</h4><h4 id="3-2-3-BigDecimal-BigInteger"><a href="#3-2-3-BigDecimal-BigInteger" class="headerlink" title="3.2.3 BigDecimal/BigInteger"></a>3.2.3 BigDecimal/BigInteger</h4><p>单个的方法都是线程安全的，但是多个方法组合在一起，并并不是原子性的。</p>
+<h2 id="4-自定义连接池"><a href="#4-自定义连接池" class="headerlink" title="4. 自定义连接池"></a>4. 自定义连接池</h2><p>例如：一个线上商城应用，QPS 达到数千，如果每次都重新创建和关闭数据库连接，性能会受到极大影响。 这时<br>预先创建好一批连接，放入连接池。一次请求到达后，从连接池获取连接，使用完毕后再还回连接池，这样既节约<br>了连接的创建和关闭时间，也实现了连接的重用，不至于让庞大的连接数压垮数据库。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.java.demo.immutable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.*;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executor;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicIntegerArray;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Slf</span>4j(topic = <span class="string">"c.Pool"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pool</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接池大小</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> poolSize;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接池对象数组</span></span><br><span class="line">    <span class="keyword">private</span> Connection[] connections;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 链接状态数组 0-空闲， 1-使用</span></span><br><span class="line">    <span class="keyword">private</span> AtomicIntegerArray states;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pool</span><span class="params">(<span class="keyword">int</span> poolSize)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.poolSize = poolSize;</span><br><span class="line">        <span class="keyword">this</span>.connections = <span class="keyword">new</span> Connection[poolSize];</span><br><span class="line">        <span class="keyword">this</span>.states = <span class="keyword">new</span> AtomicIntegerArray(<span class="keyword">new</span> <span class="keyword">int</span>[poolSize]);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; poolSize; i++) &#123;</span><br><span class="line">            connections[i] = <span class="keyword">new</span> MockConnection(<span class="string">"连接"</span> + (i + <span class="number">1</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用连接</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Connection <span class="title">getConnection</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; poolSize; i++) &#123;</span><br><span class="line">                <span class="comment">// 获取空闲连接</span></span><br><span class="line">                <span class="keyword">if</span>(states.get(i) == <span class="number">0</span> &amp;&amp; states.compareAndSet(i, <span class="number">0</span>, <span class="number">1</span>))&#123;</span><br><span class="line">                    log.debug(<span class="string">"get connection:&#123;&#125;"</span>, connections[i]);</span><br><span class="line">                    <span class="keyword">return</span> connections[i];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 没有空闲连接，当前线程进入等待</span></span><br><span class="line">            <span class="keyword">synchronized</span> (<span class="keyword">this</span>)&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    log.debug(<span class="string">"wait..."</span>);</span><br><span class="line">                    <span class="keyword">this</span>.wait();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 释放连接</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> connection</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">releaseConnection</span><span class="params">(Connection connection)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; poolSize; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (connections[i] == connection)&#123;</span><br><span class="line">                states.set(i, <span class="number">0</span>);</span><br><span class="line">                <span class="keyword">synchronized</span> (<span class="keyword">this</span>)&#123;</span><br><span class="line">                    log.debug(<span class="string">"release connection:&#123;&#125;"</span>, connection);</span><br><span class="line">                    <span class="keyword">this</span>.notifyAll();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MockConnection</span> <span class="keyword">implements</span> <span class="title">Connection</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MockConnection</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"MockConnection&#123;"</span> +</span><br><span class="line">                <span class="string">"name='"</span> + name + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 实现接口方法略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.immutable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PoolTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Pool pool = <span class="keyword">new</span> Pool(<span class="number">2</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">                Connection connection = pool.getConnection();</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="keyword">new</span> Random().nextInt(<span class="number">1000</span>));</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">                &#125;</span><br><span class="line">                pool.releaseConnection(connection);</span><br><span class="line">            &#125;, <span class="string">"线程"</span> + (i+<span class="number">1</span>)).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">18:45:06 [线程5] c.Pool - <span class="built_in">wait</span>...</span><br><span class="line">18:45:06 [线程4] c.Pool - <span class="built_in">wait</span>...</span><br><span class="line">18:45:06 [线程3] c.Pool - <span class="built_in">wait</span>...</span><br><span class="line">18:45:06 [线程2] c.Pool - get connection:MockConnection&#123;name=<span class="string">'连接2'</span>&#125;</span><br><span class="line">18:45:06 [线程1] c.Pool - get connection:MockConnection&#123;name=<span class="string">'连接1'</span>&#125;</span><br><span class="line">18:45:06 [线程2] c.Pool - release connection:MockConnection&#123;name=<span class="string">'连接2'</span>&#125;</span><br><span class="line">18:45:06 [线程3] c.Pool - <span class="built_in">wait</span>...</span><br><span class="line">18:45:06 [线程5] c.Pool - get connection:MockConnection&#123;name=<span class="string">'连接2'</span>&#125;</span><br><span class="line">18:45:06 [线程4] c.Pool - <span class="built_in">wait</span>...</span><br><span class="line">18:45:06 [线程5] c.Pool - release connection:MockConnection&#123;name=<span class="string">'连接2'</span>&#125;</span><br><span class="line">18:45:06 [线程3] c.Pool - get connection:MockConnection&#123;name=<span class="string">'连接2'</span>&#125;</span><br><span class="line">18:45:06 [线程4] c.Pool - <span class="built_in">wait</span>...</span><br><span class="line">18:45:07 [线程3] c.Pool - release connection:MockConnection&#123;name=<span class="string">'连接2'</span>&#125;</span><br><span class="line">18:45:07 [线程4] c.Pool - get connection:MockConnection&#123;name=<span class="string">'连接2'</span>&#125;</span><br><span class="line">18:45:07 [线程1] c.Pool - release connection:MockConnection&#123;name=<span class="string">'连接1'</span>&#125;</span><br><span class="line">18:45:07 [线程4] c.Pool - release connection:MockConnection&#123;name=<span class="string">'连接2'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上实现没有考虑：</p>
+<ul>
+<li>连接的动态增长与收缩</li>
+<li>连接保活（可用性检测）</li>
+<li>等待超时处理</li>
+<li>分布式 hash<br>对于关系型数据库，有比较成熟的连接池实现，例如c3p0, druid等 对于更通用的对象池，可以考虑使用apache<br>commons pool，例如redis连接池可以参考jedis中关于连接池的实现</li>
+</ul>
+<h2 id="5-final-原理"><a href="#5-final-原理" class="headerlink" title="5. final 原理"></a>5. final 原理</h2><h3 id="5-1-设置-final-变量的原理"><a href="#5-1-设置-final-变量的原理" class="headerlink" title="5.1 设置 final 变量的原理"></a>5.1 设置 final 变量的原理</h3><p>理解了 volatile 原理，再对比 final 的实现就比较简单</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestFinal</span> </span>&#123;</span><br><span class="line"> <span class="keyword">final</span> <span class="keyword">int</span> a = <span class="number">20</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>字节码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">0: aload_0</span><br><span class="line">1: invokespecial #1 // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">4: aload_0</span><br><span class="line">5: bipush 20</span><br><span class="line">7: putfield #2 // Field a:I</span><br><span class="line"> &lt;-- 写屏障</span><br><span class="line">10: return</span><br></pre></td></tr></table></figure>
+
+<p><code>final</code> 变量的赋值也会通过 <code>putfield</code> 指令来完成，同样在这条指令之后也会加入写屏障，保证在其它线程读到它的值时不会出现为 <code>0</code> 的情况  </p>
+<h3 id="5-2-获取-final-变量的原理"><a href="#5-2-获取-final-变量的原理" class="headerlink" title="5.2 获取 final 变量的原理"></a>5.2 获取 final 变量的原理</h3><p>通过分析下面代码的字节码了解其原理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.demo.immutable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FinalTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> A = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> B = Short.MAX_VALUE+<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> a = <span class="number">20</span>;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> b = Integer.MAX_VALUE;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UseFinal1</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(FinalTest.A);</span><br><span class="line">        System.out.println(FinalTest.B);</span><br><span class="line">        System.out.println(<span class="keyword">new</span> FinalTest().a);</span><br><span class="line">        System.out.println(<span class="keyword">new</span> FinalTest().b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UseFinal2</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(FinalTest.A);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-无状态"><a href="#6-无状态" class="headerlink" title="6. 无状态"></a>6. 无状态</h2><p>在 <code>web</code> 阶段学习时，设计 <code>Servlet</code> 时为了保证其线程安全，都会有这样的建议，不要为 <code>Servlet</code> 设置成员变量，这种没有任何成员变量的类是线程安全的。   </p>
+<blockquote>
+<p>因为成员变量保存的数据也可以称为状态信息，因此没有成员变量就称之为<strong>无状态</strong>。</p>
+</blockquote>
+	
+	</div>
+	
+	<div id="current-post-cover" data-scr="/img/post_cover/java_concurrency05.jpg"></div>
+
+	<!-- relate post, comment...-->
+	<div class="investment-container">
+		<div class="investment-header">
+			<div class="investment-title-1">
+				<div class="on">相关文章</div>
+				<div>评论</div>
+				<div>分享</div>
+			</div>
+			<div class="investment-title-2">	            
+				
+	<span>
+		<a href="javascript: window.scrollTo(0, 0);">返回顶部</a>
+		
+			<a href="/2024/06/22/hello-world/" title="Hello World" rel="prev">
+				&laquo;上一篇
+			</a>
+		
+		
+			<a href="/2023/09/09/Java并发编程（四）-共享模型之无锁/" title="Java并发编程（四）-共享模型之无锁" rel="next">
+				下一篇&raquo;
+			</a>
+			
+	</span>
+
+
+      		
+			</div>	
+		</div>
+		
+		<div class="investment-content">
+			<div class="investment-content-list">
+				
+
+<div class="relate-post">
+	
+		<ul>
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2023/09/09/Java并发编程（四）-共享模型之无锁/" title="Java并发编程（四）-共享模型之无锁">
+								Java并发编程（四）-共享模型之无锁			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 9日, 2023				
+							</p>
+							<p class="relate-post-content">
+								本章内容
+
+CAS 与 volatile
+原子整数
+原子引用
+原子累加器
+Unsafe
+
+1. 问题提出有如下需求，保证 account.withdraw 取款方法的线程安全
+12345678910111213141516171819...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2023/09/09/Java并发编程（四）-共享模型之无锁/" title="Java并发编程（四）-共享模型之无锁">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency04.jpg" alt="Java并发编程（四）-共享模型之无锁"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/17/Java并发编程（三）-共享模型之内存/" title="Java并发编程（三） 共享模型之内存">
+								Java并发编程（三） 共享模型之内存			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 17日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Java并发编程（三） 共享模型之内存1. Java 内存模型在Java SE 5 (JSR133)中定义的JMM（Java Memory Model）是为了确保当编写并发代码的时候能够提供Java定义和语义，使多线程程序不仅正确，而...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/17/Java并发编程（三）-共享模型之内存/" title="Java并发编程（三） 共享模型之内存">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency03.jpg" alt="Java并发编程（三） 共享模型之内存"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/05/31/Java并发编程（二）-共享模型之管程/" title="Java并发编程（二） 共享模型之管程">
+								Java并发编程（二） 共享模型之管程			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								五月 31日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Java并发编程（二） 共享模型之管程1. 线程安全问题
+两个线程对初始值为 0 的静态变量一个做自增，一个做自减，各做 5000 次，结果是 0 吗？  
+
+1234567891011121314151617181920212223...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/05/31/Java并发编程（二）-共享模型之管程/" title="Java并发编程（二） 共享模型之管程">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency02.jpg" alt="Java并发编程（二） 共享模型之管程"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/12/01/Java并发编程（一）-基础篇/" title="Java并发编程（一） 基础篇">
+								Java并发编程（一） 基础篇			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十二月 1日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Java并发编程（一） 基础篇1. 进程和线程1.1 什么是进程（Process）进程是操作系统进行资源分配的最小单位。因为现在的操作系统都是多任务的操作系统，多任务操作系统是允许多个进程在一个cpu上运行的。对于每一个进程而言，都有...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/12/01/Java并发编程（一）-基础篇/" title="Java并发编程（一） 基础篇">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency.jpg" alt="Java并发编程（一） 基础篇"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/11/26/Java-NIO/" title="Java NIO">
+								Java NIO			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								十一月 26日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Java NIO1. Java NIO概述Java NIO(New IO Non Blocking IO)是从java1.4版本开始引入的一个新的IO API,可以替代标准的Java IO API。NIO与原来的IO有同样的作用和目的...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/11/26/Java-NIO/" title="Java NIO">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/NIO.jpg" alt="Java NIO"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2021/09/11/Java IO流/" title="Java IO流">
+								Java IO流			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								九月 11日, 2021				
+							</p>
+							<p class="relate-post-content">
+								Java IO流1. 什么是文件？从编程的角度看，文件就是保存数据的载体。可以是文字，图片，音频，视频…
+2. 文件流文件再程序中以流的形式来操作。流数据在文件（数据源）和程序（内存）之间经历的路径。输入流数据从文件（数据源）到程序（...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2021/09/11/Java IO流/" title="Java IO流">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/IO.jpg" alt="Java IO流"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2024/06/22/hello-world/" title="Hello World">
+								Hello World			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 22日, 2024				
+							</p>
+							<p class="relate-post-content">
+								一切始于Hello World!
+
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2024/06/22/hello-world/" title="Hello World">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/HelloWorld.jpeg" alt="Hello World"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/07/02/Spring-Cloud-Apollo配置中心/" title="Spring Cloud Apollo配置中心">
+								Spring Cloud Apollo配置中心			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								七月 2日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud Apollo配置中心
+1. 背景随着程序功能的日益复杂，程序的配置日益增多：各种功能的开关、参数的配置、服务器的地址……
+对程序配置的期望值也越来越高：配置修改后实时生效，灰度发布，分环境、分集群管理配置，完...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/07/02/Spring-Cloud-Apollo配置中心/" title="Spring Cloud Apollo配置中心">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/spring-cloud-apollo.jpg" alt="Spring Cloud Apollo配置中心"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/29/Spring-Cloud-Consul配置中心/" title="Spring Cloud Consul配置中心">
+								Spring Cloud Consul配置中心			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 29日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud Consul配置中心之前学习过了Spring Cloud Config，它提供了配置中心的功能，但是需要配合git、svn或外部存储（例如各种数据库），而且需要配合Spring Cloud Bus实现配置刷新...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/29/Spring-Cloud-Consul配置中心/" title="Spring Cloud Consul配置中心">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/spring-cloud-consul.png" alt="Spring Cloud Consul配置中心"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2022/06/28/Spring-Cloud之Bus消息总线/" title="Spring Cloud之Bus消息总线">
+								Spring Cloud之Bus消息总线			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 28日, 2022				
+							</p>
+							<p class="relate-post-content">
+								Spring Cloud之Bus消息总线1. 消息代理消息代理(Message Broker)是一种消息验证、传输、路由的架构模式。它在应用程序之间起到通信调度并最小化应用之间的依赖的作用，使得应用程序可以高效地解耦通信过程。消息代理...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2022/06/28/Spring-Cloud之Bus消息总线/" title="Spring Cloud之Bus消息总线">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/spring-cloud-bus.jpg" alt="Spring Cloud之Bus消息总线"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+		</ul>
+	
+</div>	
+			</div>
+			<div class="investment-content-list">
+				<div class="layout-comment">
+
+	
+
+		
+
+			<!-- gitalk comment -->
+			<!-- show gitalk comment -->
+<div id="gitalk-container"></div>
+
+<!-- gitalk`s css & js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<link rel="stylesheet" href="/css/comment.css">
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+	//Thanks O-R
+	//https://github.com/gitalk/gitalk/issues/102#issuecomment-382970552
+	//去除尾部匹配正则数组的字符串  
+	//Remove redundant characters
+	String.prototype.trimEnd = function(regStr) {
+		var result = this;
+		if(regStr == undefined || regStr == null || regStr == "") {
+			return result;
+		}
+		var array = regStr.split(',');
+
+		if(array.length > 0) {
+
+			var c = array.shift();
+			var str = this;
+			var i = str.length;
+			var rg = new RegExp(c);
+			var matchArr = str.match(rg);
+
+			if(matchArr != undefined && matchArr != null && matchArr.length > 0) {
+				var matchStr = matchArr[0].replace(/\\/g, "\\\\").replace(/\*/g, "\\*")
+					.replace(/\+/g, "\\+").replace(/\|/g, "\\|")
+					.replace(/\{/g, "\\{").replace(/\}/g, "\\}")
+					.replace(/\(/g, "\\(").replace(/\)/g, "\\)")
+					.replace(/\^/g, "\\^").replace(/\$/g, "\\$")
+					.replace(/\[/g, "\\[").replace(/\]/g, "\\]")
+					.replace(/\?/g, "\\?").replace(/\,/g, "\\,")
+					.replace(/\./g, "\\.").replace(/\&/g, "\\&");
+				matchStr = matchStr + '$';
+				result = str.replace(new RegExp(matchStr), "");
+			}
+
+			if(array.length > 0) {
+				return result.trimEnd(array.join())
+			} else {
+				return result;
+			}
+		}
+	};
+
+	//Create gitalk
+	var gitalk = new Gitalk({
+		clientID: '36a5ea1eb92d0cdb0a6b',
+		clientSecret: '6e1940c0dcd00e3b9216f008368995a1988bd3fd',
+		//id: window.location.pathname,
+		//id: decodeURI(window.location.pathname),
+		//id: (window.location.pathname).split("/").pop().substring(0, 49),
+		id: decodeURI( md5( location.href.trimEnd('#.*$,\\?.*$,index.html$') ) ),
+		repo: 'Blog-Comment-Repo',
+		owner: '10veU',
+		admin: '10veU',
+		distractionFreeMode: 'true',
+	})
+	gitalk.render('gitalk-container');
+</script>
+
+		
+		
+	
+
+</div>
+			</div>
+			<div class="investment-content-list">
+				<div class="layout-share">
+	
+	
+
+		
+			
+			<!-- socialShare share -->
+			<div class="social-share"></div>
+
+<!--  css & js -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+			
+		
+		
+	
+</div>
+
+
+			</div>
+		</div>	
+	</div>
+	</div>
+</div>
+
+
+
+	<!-- leancloud -->
+	<!--
+	时间：2018-11-27
+	描述：
+		文章访问量：visitors
+		文章喜欢量：likes	
+		文章排行榜：topNPost
+		其他得说明：
+			01-Cookie相关的函数 
+				https://blog.csdn.net/somehow1002/article/details/78511541（Author：somehow1002）
+			02-visitors相关的函数 
+				https://blog.csdn.net/u013553529/article/details/63357382（Author：爱博客大伯）
+				https://notes.doublemine.me/2015-10-21-为NexT主题添加文章阅读量统计功能.html（Author：夏末）
+			03-topNPost相关的函数
+				https://hoxis.github.io/hexo-next-read-rank.html（Author：hoxis）
+			04-likes相关的函数，
+				参考了01 & 02进行简单的设计与实现
+-->
+
+
+
+	<script>
+		var appid = 'xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI',
+            appkey = 'Tkq82uGKwAFYHPeTF3Q6MVDp';	  
+        AnnieLeancloud(appid, appkey);         
+	</script>
+    
+
+	
+
+
+<!-- show math formula -->
+
+
+
+	 
+	<script src="/plugin/clipboard/clipboard.js"></script>
+	<script>
+		// Copy code !
+	    function codePreprocessing() {
+	        $("#article-content .highlight").each(function() {
+
+	            $(this).wrap('<div id="post-code"></div>');
+
+	        })
+
+	        $("#article-content #post-code").each(function() {
+
+	            $(this).prepend('<nav class="copy-nav"><span><i class="code-language"></i></span></nav>');
+
+	        })
+
+	        $("#article-content .copy-nav").each(function() {
+	            var temp = $(this).next().attr('class'),
+	                language = ((temp.length > 9) && (temp != null)) ? temp.substr(10) : "none"; //why 9? Need to check language?
+
+	            $(this).find('.code-language').text(language);
+
+	            $(this).append('<span class="copy-btn"><i class="fa fa-copy" aria-hidden="true"></i></span>');
+
+	        });
+	    }
+
+		function codeCopy() {
+		    $('#article-content #post-code').each(function(i) {
+		        var codeCopyId = 'codeCopy-' + i;
+
+		        var codeNode = $(this).find('.code'),
+		            copyButton = $(this).find('.copy-btn');
+
+		        codeNode.attr('id', codeCopyId);
+		        copyButton.attr('data-clipboard-target-id', codeCopyId);
+		    })
+
+		    
+			var clipboard = new ClipboardJS('.copy-btn', {
+					target: function(trigger) {
+						return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+					}
+		      	});
+
+			//pure js
+			function showTooltip(elem, msg) {		   
+				elem.setAttribute('aria-label', msg);
+				elem.setAttribute('class', 'copy-btn copy-status');
+				setTimeout(function() {
+					elem.setAttribute('class', 'copy-btn');
+				}, 2000);
+			}
+
+			clipboard.on('success', function(e) {
+			    e.clearSelection();
+			    console.info('Action:', e.action);		   
+			    console.info('Trigger:', e.trigger);
+			    showTooltip(e.trigger, 'Copied!');
+			    
+			});
+			clipboard.on('error', function(e) {
+			    console.error('Action:', e.action);
+			    console.error('Trigger:', e.trigger);
+			});
+		
+
+		}
+
+		if ($('.layout-post').length) {
+		    codePreprocessing();
+		    codeCopy();
+		} 
+	</script>
+
+
+
+
+
+<link rel="stylesheet" href="/plugin/fancybox/jquery.fancybox.css">
+<script src="/plugin/fancybox/jquery.fancybox.js"></script>
+
+<script type="text/javascript">
+	var titleID = $('.article-title a'),
+		imageID = $('.article-content img'),
+		videoID = $('.article-content video');
+
+	var postTitle = titleID.text() ? titleID.text() : "No post title!";
+
+	imageID.each(function() {
+		var imgPath = $(this).attr('src'),
+			imgTitle = $(this).attr('alt') ? $(this).attr('alt') : "No image description!";
+
+		//给每个匹配的<img>元素打包, 即添加父元素<a>
+		$(this).wrap('<a data-fancybox="gallery" data-caption=" 《 ' + postTitle + ' 》 ' + imgTitle + ' "  href=" ' + imgPath + ' "> </a>');
+	});
+
+	videoID.each(function() {
+		var videoPath = $(this).attr('src');
+
+		//给每个匹配的<img>元素打包, 即添加父元素<a>
+		$(this).wrap('<a data-fancybox href=" ' + videoPath + ' "> </a>');
+	});
+	//TODO：支持html5 video
+
+	if($('#layout-post').length) {
+		$('[data-fancybox="gallery"]').fancybox({
+			loop: true,
+			buttons: [
+				"zoom",
+				"share",
+				"slideShow",
+				"fullScreen",
+				//"download",
+				"thumbs",
+				"close"
+			],
+			protect: false
+		});
+	}
+</script>
+		</main>
+
+		<!--footer-->
+		<footer>
+	<div class="social">
+		<ul>
+	
+		<li>
+			<a href="https://github.com/10veU" target="_blank">
+				<i class="fa fa-github"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="https://weibo.com/5559797464/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank">
+				<i class="fa fa-weibo"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/img/wechat.jpg" target="_blank">
+				<i class="fa fa-wechat"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="tencent://message/?menu=yes&uin=514084647&websitename=im.qq.com" target="_blank">
+				<i class="fa fa-qq"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="mailto:xiaojie_wangxj@163.com" target="_blank">
+				<i class="fa fa-envelope"></i>
+			</a>
+		</li>
+	
+		<li>
+			<a href="/atom.xml" target="_blank">
+				<i class="fa fa-rss"></i>
+			</a>
+		</li>
+			
+</ul>
+
+	</div>
+	<div class="copyright">
+		<p>
+			 
+				&copy;2019 - 2024, content by XiaoJie Wang. All Rights Reserved.
+			
+			
+			
+
+	<!-- busuanzi -->
+	<!-- busuanzi -->
+
+		
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+
+		<span id="busuanzi_container_page_pv">
+	  		本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+		</span>
+
+	
+
+
+
+
+		</p>
+		<p>
+			<a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> Theme <a href="https://github.com/Sariay/hexo-theme-Annie" title="Annie" target="_blank" rel="noopener">Annie</a> by Sariay.
+			<a href="javascript:zh_tran('s');" class="zh_click" id="zh_click_s">简体</a> 
+			<a href="javascript:zh_tran('t');" class="zh_click" id="zh_click_t">繁體</a>				
+		</p>
+	</div>	
+</footer>
+		
+	<!-- set '1' to show motto in all pages! -->
+
+	<script src="/plugin/motto/motto.js"></script>
+	
+	<script type="text/javascript">
+		$(".motto").html( getMingYanContent() );
+	</script>	
+
+
+
+
+	<!--
+	时间：2018-10-3
+	描述：
+		插件名称：hexo-generator-search-zip
+		插件来源: https://github.com/SuperKieran/hexo-generator-search-zip
+		代码参考：https://github.com/SuperKieran/TKL/blob/master/layout/_partial/search.ejs(Include: js & css)	
+-->
+<div class="popup search-popup local-search-popup" >
+	<div class="local-search-container">
+		<span class="popup-btn-close">
+      		ESC
+   		</span>
+		<div class="local-search-header">
+			<div class="input-prompt">				
+			</div>
+			<input autocomplete="off" placeholder="Search..." type="text" id="local-search-input">
+		</div>
+		<div class="local-search-body">
+			<div id="local-search-output"></div>
+		</div>
+		<div class="local-search-footer">
+			<div class="topN-post">				
+				
+
+   
+	<div id="topN">
+		<div class="topN-title" data-title= "热门文章"></div> 
+	</div>
+	
+    <script>
+        var appid = 'xjORdBJdoaL0hhncjL9HJTJN-MdYXbMMI',
+            appkey = 'Tkq82uGKwAFYHPeTF3Q6MVDp',
+            limitCount = 10;
+        if( $('#topN').length ){
+            AV.initialize(appid, appkey);
+            var Counter = AV.Object.extend("Counter");  
+            topNPost(Counter, limitCount);
+        }
+    </script>
+   
+								
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="/plugin/search/ziploader.js"></script>
+<script src="/plugin/search/search.js"></script>
+
+<script type="text/javascript">
+	var search_path = 'search.json',
+		zip_Path = '/search.zip',
+		version_Path = '/searchVersion.txt',
+		input_Trigger = 'auto',
+		top_N = '2';
+
+	themeLocalSearch({
+		search_path, 
+		zip_Path, 
+		version_Path, 
+		input_Trigger, 
+		top_N
+	});
+</script>
+
+
+<!-- love effect -->
+
+<!-- firework effect -->
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+	<script src="/plugin/love/fireworks.js"></script>
+
+<!--daovoice-->
+
+	<script src="/plugin/daovoice/daovoice.js"></script>
+
+<!-- back to top -->
+
+	
+	<div id="totop">
+  		<a href="javascript:;"  name="TOTOP" class="fa fa-arrow-up" ></a>
+	</div>
+
+
+
+<!-- site analysis -->
+
+
+	<!-- site-analysis -->
+	
+<script>
+	var _hmt = _hmt || [];
+	(function() {
+		var hm = document.createElement("script");
+		hm.src = "//hm.baidu.com/hm.js?bc5394d96eab6c50c0a37cb03555fc96";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hm, s);
+	})();
+</script>
+
+	
+	
+	
+	
+ 
+
+<script src="/plugin/vibrant/vibrant.js"></script>
+<script src="/plugin/chinese/chinese.js"></script>
+<script src="/plugin/imgLazyLoader/yall.min.js"></script>
+<script src="/plugin/imgResize/jquery.resizeimagetoparent.min.js"></script>
+<script src="/plugin/nicescroll/jquery.nicescroll.js"></script>
+<script src="/js/resizediv.js"></script>
+<script src="/js/main.js"></script>
+	</body>	
+</html>

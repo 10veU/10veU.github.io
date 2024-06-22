@@ -13,7 +13,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
   <title>
     
-      Spring Cloud之Config配置中心 | Mr.Wang-Blog
+      Spring Cloud之Config配置中心 | null
     
   </title>
   <meta name="author" content="XiaoJie Wang">
@@ -55,8 +55,8 @@
 		<div class="h-header">
 			<div id="logo">
 				<a href="/">
+					
 						
-						<img src="/img/Mr-Wang-logo.png" alt="Logo">
 					
 				</a>
 			</div>
@@ -319,7 +319,7 @@
 
 	<a href="/2022/06/25/Spring-Cloud之Config配置中心/" itemprop="url">
 		<time datetime="2022-06-25T17:58:43.000Z" itemprop="dateUpdated">
-	  		2024-03-02
+	  		2024-06-22
 	  </time>
 	</a> 
 
@@ -599,7 +599,7 @@
 </blockquote>
 <h4 id="Java-keytool-使用说明"><a href="#Java-keytool-使用说明" class="headerlink" title="Java-keytool 使用说明"></a>Java-keytool 使用说明</h4><p><code>Keytool</code> 用来管理私钥仓库(<code>keystore</code>)和与之相关的<code>X.509</code>证书链（用以验证与私钥对应的公钥），也可以用来管理其他信任实体。</p>
 <p>默认大家都配置了 Java 的环境变量，打开 <code>CMD</code> 窗口运行以下命令。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 生成名为 config.keystore 的 keystore 文件，别名为 config，加密算法类型使用 RSA，密钥库口令和密钥口令均为：config</span><br><span class="line">keytool -genkeypair -keystore config.keystore -alias config -keyalg RSA -keypass config -storepass config</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 生成名为 config.keystore 的 keystore 文件，别名为 config，加密算法类型使用 RSA，密钥库口令和密钥口令均为：config</span></span><br><span class="line">keytool -genkeypair -keystore config.keystore -alias config -keyalg RSA -keypass config -storepass config</span><br></pre></td></tr></table></figure>
 
 <p><img src="%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86-01.png" alt></p>
 <p>此时在对应的目录下会生成一个 <code>config.keystore</code> 文件。</p>
@@ -857,12 +857,12 @@
 			
 					<li>
 						<div class="relate-post-text">
-							<a class="relate-post-title" href="/2024/03/02/hello-world/" title="Hello World">
+							<a class="relate-post-title" href="/2024/06/22/hello-world/" title="Hello World">
 								Hello World			
 							</a>
 							<p class="relate-post-date">
 								<i class="fa fa-calendar"></i>
-								三月 2日, 2024				
+								六月 22日, 2024				
 							</p>
 							<p class="relate-post-content">
 								一切始于Hello World!
@@ -871,9 +871,36 @@
 						</div>
 
 						<div class="relate-post-cover">
-							<a href="/2024/03/02/hello-world/" title="Hello World">				
+							<a href="/2024/06/22/hello-world/" title="Hello World">				
 								
 								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/HelloWorld.jpeg" alt="Hello World"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2024/06/16/Java并发编程（五）-共享模型之不可变/" title="Java并发编程（五）-共享模型之不可变">
+								Java并发编程（五）-共享模型之不可变			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 16日, 2024				
+							</p>
+							<p class="relate-post-content">
+								本章内容
+
+不可变类使用
+不可变类设计
+无状态类设计1. 日期转换的问题问题提出下面的代码在运行时，由于 SimpleDateFormat 不是线程安全的。12345678910SimpleDateFormat sdf = new S...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2024/06/16/Java并发编程（五）-共享模型之不可变/" title="Java并发编程（五）-共享模型之不可变">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency05.jpg" alt="Java并发编程（五）-共享模型之不可变"/>
 							</a>
 						</div>
 					</li>											
@@ -905,30 +932,7 @@ Unsafe
 						<div class="relate-post-cover">
 							<a href="/2023/09/09/Java并发编程（四）-共享模型之无锁/" title="Java并发编程（四）-共享模型之无锁">				
 								
-								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency02.jpg" alt="Java并发编程（四）-共享模型之无锁"/>
-							</a>
-						</div>
-					</li>											
-			
-			
-					<li>
-						<div class="relate-post-text">
-							<a class="relate-post-title" href="/2022/06/17/Java并发编程（三）-共享模型之内存/" title="Java并发编程（三） 共享模型之内存">
-								Java并发编程（三） 共享模型之内存			
-							</a>
-							<p class="relate-post-date">
-								<i class="fa fa-calendar"></i>
-								六月 17日, 2022				
-							</p>
-							<p class="relate-post-content">
-								Java并发编程（三） 共享模型之内存1. Java 内存模型在Java SE 5 (JSR133)中定义的JMM（Java Memory Model）是为了确保当编写并发代码的时候能够提供Java定义和语义，使多线程程序不仅正确，而...
-							</p>
-						</div>
-
-						<div class="relate-post-cover">
-							<a href="/2022/06/17/Java并发编程（三）-共享模型之内存/" title="Java并发编程（三） 共享模型之内存">				
-								
-								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency03.jpg" alt="Java并发编程（三） 共享模型之内存"/>
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency04.jpg" alt="Java并发编程（四）-共享模型之无锁"/>
 							</a>
 						</div>
 					</li>											

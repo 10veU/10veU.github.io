@@ -13,7 +13,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
   <title>
     
-      Spring Cloud之Consul 服务注册中心 | Mr.Wang-Blog
+      Spring Cloud之Consul 服务注册中心 | null
     
   </title>
   <meta name="author" content="XiaoJie Wang">
@@ -55,8 +55,8 @@
 		<div class="h-header">
 			<div id="logo">
 				<a href="/">
+					
 						
-						<img src="/img/Mr-Wang-logo.png" alt="Logo">
 					
 				</a>
 			</div>
@@ -319,7 +319,7 @@
 
 	<a href="/2021/09/01/Spring-Cloud之Consul-服务注册中心/" itemprop="url">
 		<time datetime="2021-09-01T19:30:44.000Z" itemprop="dateUpdated">
-	  		2024-03-02
+	  		2024-06-22
 	  </time>
 	</a> 
 
@@ -393,7 +393,7 @@
 <h3 id="健康检查"><a href="#健康检查" class="headerlink" title="健康检查"></a>健康检查</h3><p>当 Consumer 请求 Product 时，会先从 Consul 中拿到存储 Product 服务的 IP 和 Port 的临时表(temp table)，从temp table 表中任选一个· Producer 的 IP 和 Port， 然后根据这个 IP 和 Port，发送访问请求；temp table 表只包含通过了健康检查的 Producer 信息，并且每隔 10s（默认）更新。</p>
 <h2 id="5-Consul的安装"><a href="#5-Consul的安装" class="headerlink" title="5. Consul的安装"></a>5. Consul的安装</h2><p>Eureka 其实就是个 Servlet 程序，跑在 Servlet 容器中；Consul 则是用 go 语言编写的第三方工具需要单独安装使用。<br><a href="https://www.consul.io/downloads" target="_blank" rel="noopener">Download Consul</a></p>
 <h3 id="Windows下单节点安装"><a href="#Windows下单节点安装" class="headerlink" title="Windows下单节点安装"></a>Windows下单节点安装</h3><p>下载一个Consul的windows安装包<br><img src="consul_package.png" alt="consul_package"><br>cd到对应的目录下，使用cmd启动Consul。  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> -dev表示开发模式运行，另外还有 -server 表示服务模式运行</span><br><span class="line">consul agent -dev -client=0.0.0.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> -dev表示开发模式运行，另外还有 -server 表示服务模式运行</span></span><br><span class="line">consul agent -dev -client=0.0.0.0</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>Consul在开发模式下启动本地代理，这是一种内存服务器模式，为了方便使用，启用了一些常见特性(尽管存在安全风险) ，并且关闭了所有持久性选项。这种模式不安全也不可伸缩，但是不需要额外的配置就可以轻松地实验大多数领事的功能。</p>
@@ -622,12 +622,12 @@
 			
 					<li>
 						<div class="relate-post-text">
-							<a class="relate-post-title" href="/2024/03/02/hello-world/" title="Hello World">
+							<a class="relate-post-title" href="/2024/06/22/hello-world/" title="Hello World">
 								Hello World			
 							</a>
 							<p class="relate-post-date">
 								<i class="fa fa-calendar"></i>
-								三月 2日, 2024				
+								六月 22日, 2024				
 							</p>
 							<p class="relate-post-content">
 								一切始于Hello World!
@@ -636,9 +636,36 @@
 						</div>
 
 						<div class="relate-post-cover">
-							<a href="/2024/03/02/hello-world/" title="Hello World">				
+							<a href="/2024/06/22/hello-world/" title="Hello World">				
 								
 								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/HelloWorld.jpeg" alt="Hello World"/>
+							</a>
+						</div>
+					</li>											
+			
+			
+					<li>
+						<div class="relate-post-text">
+							<a class="relate-post-title" href="/2024/06/16/Java并发编程（五）-共享模型之不可变/" title="Java并发编程（五）-共享模型之不可变">
+								Java并发编程（五）-共享模型之不可变			
+							</a>
+							<p class="relate-post-date">
+								<i class="fa fa-calendar"></i>
+								六月 16日, 2024				
+							</p>
+							<p class="relate-post-content">
+								本章内容
+
+不可变类使用
+不可变类设计
+无状态类设计1. 日期转换的问题问题提出下面的代码在运行时，由于 SimpleDateFormat 不是线程安全的。12345678910SimpleDateFormat sdf = new S...
+							</p>
+						</div>
+
+						<div class="relate-post-cover">
+							<a href="/2024/06/16/Java并发编程（五）-共享模型之不可变/" title="Java并发编程（五）-共享模型之不可变">				
+								
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency05.jpg" alt="Java并发编程（五）-共享模型之不可变"/>
 							</a>
 						</div>
 					</li>											
@@ -670,30 +697,7 @@ Unsafe
 						<div class="relate-post-cover">
 							<a href="/2023/09/09/Java并发编程（四）-共享模型之无锁/" title="Java并发编程（四）-共享模型之无锁">				
 								
-								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency02.jpg" alt="Java并发编程（四）-共享模型之无锁"/>
-							</a>
-						</div>
-					</li>											
-			
-			
-					<li>
-						<div class="relate-post-text">
-							<a class="relate-post-title" href="/2022/06/17/Java并发编程（三）-共享模型之内存/" title="Java并发编程（三） 共享模型之内存">
-								Java并发编程（三） 共享模型之内存			
-							</a>
-							<p class="relate-post-date">
-								<i class="fa fa-calendar"></i>
-								六月 17日, 2022				
-							</p>
-							<p class="relate-post-content">
-								Java并发编程（三） 共享模型之内存1. Java 内存模型在Java SE 5 (JSR133)中定义的JMM（Java Memory Model）是为了确保当编写并发代码的时候能够提供Java定义和语义，使多线程程序不仅正确，而...
-							</p>
-						</div>
-
-						<div class="relate-post-cover">
-							<a href="/2022/06/17/Java并发编程（三）-共享模型之内存/" title="Java并发编程（三） 共享模型之内存">				
-								
-								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency03.jpg" alt="Java并发编程（三） 共享模型之内存"/>
+								<img class="lazy" src="/img/placeholder.jpg" data-src="/img/post_cover/java_concurrency04.jpg" alt="Java并发编程（四）-共享模型之无锁"/>
 							</a>
 						</div>
 					</li>											
