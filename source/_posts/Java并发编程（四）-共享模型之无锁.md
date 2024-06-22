@@ -4,7 +4,7 @@ date: 2023-09-09 13:00:29
 categories: 
     - Java
     - 并发编程
-cover: /img/post_cover/java_concurrency02.jpg
+cover: /img/post_cover/java_concurrency04.jpg
 tags:
     - Java
     - 多线程
